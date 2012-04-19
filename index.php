@@ -12,8 +12,6 @@ require 'Slim/View.php';
 
 require 'GopherGetter.php';
 
-//Require the custom View
-//require_once 'Slim/Views/SmartyView.php';
 
 /**
  * Step 2: Instantiate the Slim application
@@ -41,7 +39,10 @@ $app = new Slim();
  * The routes below work with PHP >= 5.3.
  */
 
-//GET route
+
+//
+// default route
+//
 $app->get('/', function () use($app) {
 	$app->render('home.html');
 });
@@ -52,22 +53,57 @@ $app->get('/code', function () use($app) {
 	$app->render('home.html');
 });
 
-$app->notFound(function () use ($app) {
-	$resourceUri = $app->request()->getResourceUri();
+/**
+ * handle binary file requests
+ */
+$app->get('/file', function () use($app) {
+	$path = $_GET['path'];
+	$file = $_GET['name'];
 
-	$x = new GopherGetter($resourceUri);
-	if ( $x->isValid() ) {
-	  $x->get();
-	  echo $x->result;
-	}
-	else {
-	  $app->render('404.html');
-	}
+	// if you have sendfile, you can use this
+	// header("X-Sendfile: $path");
+	// header("Content-type: application/octet-stream");
+	// header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+
+	header("Content-type: application/octet-stream");
+	header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+	header("Content-Length: ". filesize($path));
+	readfile($path);
 });
 
-//POST route
-$app->post('/post', function () {
-    echo 'This is a POST route';
+/**
+ * this will handle incoming requests that have a gopher URL tacked onto the end
+ */
+$app->notFound(function () use ($app) {
+	$app->render('home.html');
+});
+
+
+
+/**
+ * handle requests for a gopher page
+ */
+$app->post('/gopher', function () {
+	$result = array();
+
+	$x = new GopherGetter($_POST["url"]);
+	if ( $x->isValid() ) {
+	  $x->get();
+
+	  if ( !$x->isBinary() ) {
+		$result['url'] = $_POST["url"];
+		$result['data'] = $x->result;
+	  }
+	  else {
+		$result['url'] = "/file?name=" . basename($_POST["url"]) . "&path=" . $x->urlFor();
+	  }
+	}
+	else {
+	  $result['error'] = "Sorry, there was a problem";
+	}
+
+	echo json_encode($result);
+
 });
 
 /**

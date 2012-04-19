@@ -6,6 +6,9 @@ RewriteEngine On
 #
 # RewriteBase /
 
+# if you want to use x-sendfile
+# XSendFile on
+
 RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteRule ^ index.php [QSA,L]
 RewriteRule (.*) index.php?x=$1 [QSA,L]

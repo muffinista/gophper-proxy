@@ -1,14 +1,18 @@
 <?php
-require 'JG_Cache.php';
+require 'Cache.php';
 
 class GopherGetter {
   public $uri;
   public $host;
   public $port;
   public $path;
+  public $key;
 
+  private $cache;
 
   function __construct($u) {
+	$this->cache = new Cache('assets/cache');  //Make sure it exists and is writeable
+
 	$this->uri = "gopher:/$u";
 
 	// split host and port from uri
@@ -24,24 +28,35 @@ class GopherGetter {
 	else {
 	  $this->path = "/";
 	}
+
+	$this->path = urldecode($this->path);
+
+	$this->key = "$this->host:$this->port$this->path";
+
   }
 
   function isValid() {
 	return isSet($this->host) && isSet($this->port) && isSet($this->path);
   }
 
+
+  function isBinary() {
+	return $this->cache->isBinary($this->key);
+  }
+
+  function urlFor() {
+	return $this->cache->url($this->key);
+  }
+
   function get() {
-	$cache = new JG_Cache('/tmp');  //Make sure it exists and is writeable
 
 	$this->result = "";
 	$this->errstr = "";
 	$this->errno = "";
 
 
-	$this->result = $cache->get('key', 1000000);
+	$this->result = $this->cache->get($this->key);
 	if ( $this->result === FALSE ) {
-	  //	echo $path;
-
 	  $fp = stream_socket_client("tcp://$this->host:$this->port", $this->errno, $this->errstr, 30);
 
 	  if (!$fp) {
@@ -55,7 +70,7 @@ class GopherGetter {
 		fclose($fp);
 	  }
 
-	  $cache->set($this->uri, $this->result);
+	  $this->cache->set($this->key, $this->result);
 	}
 
 	return TRUE;
