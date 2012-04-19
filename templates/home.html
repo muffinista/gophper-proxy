@@ -51,21 +51,19 @@
 -->
 
 	  <div id="gopher">
-1The QuIX Auditorium	1/audio	quix.us	70	+
-1The "Bullet-Proof" "Golden Age" Software Repository	1/repo	quix.us	70	+
-1Jay's Dangerous Essays	1/essays	quix.us	70	+
-0About Autism	0/aboutAutism	quix.us	70	+
-0About the Archivist	0/aboutJay	quix.us	70	+
-1All the Computers I have Known Before	1/comp	quix.us	70	+
-1File Archive for the Quay County MCCH Council (2002-2004)	1/mcch	quix.us	70	+
-1The Founding Documents of the United States of America	1/founding	quix.us	70	+
-.
+		<?php
+		   if ( array_key_exists('data', $this->data) ) {
+		     echo $this->data['data'];
+        	}
+	     ?>
 	  </div>
 
 
     </div> <!-- /container -->
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="/assets/js/jquery.history.js"></script>
     <script src="/assets/js/gopher.js"></script>
+    <script src="/assets/js/site.js"></script>
   </body>
 </html>
