@@ -40,15 +40,26 @@
               <li><a href="#contact">Contact</a></li>
             </ul>
           </div><!--/.nav-collapse -->
+
+		  <form class="gopher-uri form-inline">
+			<input type="text" class="input-medium" style="margin-top:5px" placeholder="URL" />
+			<button type="submit" class="btn">go</button>
+		  </form>
+
         </div>
       </div>
     </div>
 
     <div class="container">
-<!--
-      <h1>Bootstrap starter template</h1>
-      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
--->
+
+	  <?php if ( ! array_key_exists('data', $this->data) ) { ?>
+	  <div id="intro">
+		<h1>Gophper -- A Gopher Proxy for Modern Times</h1>
+		<p>
+		  Use this document as a way to quick start any new project.<br>
+		  All you get is this message and a barebones HTML document.</p>
+	  </div>
+	  <?php } ?>
 
 	  <div id="gopher">
 		<?php
