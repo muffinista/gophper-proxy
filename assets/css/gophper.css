@@ -1,0 +1,8 @@
+#gopher {
+	font-family:monospace;
+	white-space: pre;
+}
+
+#gopher .as-html {
+	white-space: normal;
+}

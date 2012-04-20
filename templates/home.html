@@ -8,13 +8,14 @@
     <meta name="author" content="">
 
 
-    <link href="/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
     <style>
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
     </style>
-    <link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="/assets/css/gophper.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -27,22 +28,17 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="#">Gophper</a>
+          <a class="brand" href="/">Gophper</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li class="active"><a href="/">Home</a></li>
+              <li><a href="/about">About</a></li>
+              <li><a href="https://github.com/muffinista/gophper-proxy">Code</a></li>
             </ul>
           </div><!--/.nav-collapse -->
 
 		  <form class="gopher-uri form-inline">
-			<input type="text" class="input-medium" style="margin-top:5px" placeholder="URL" />
+			<input type="text" name="uri" class="span4" style="margin-top:5px" placeholder="URL" />
 			<button type="submit" class="btn">go</button>
 		  </form>
 
@@ -50,27 +46,103 @@
       </div>
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
+	  <div class="row-fluid">
+		<div class="span4"></div>
+		<div class="span8">
 
-	  <?php if ( ! array_key_exists('data', $this->data) ) { ?>
-	  <div id="intro">
-		<h1>Gophper -- A Gopher Proxy for Modern Times</h1>
-		<p>
-		  Use this document as a way to quick start any new project.<br>
-		  All you get is this message and a barebones HTML document.</p>
-	  </div>
-	  <?php } ?>
+		  <?php if ( ! array_key_exists('data', $this->data) ) { ?>
+		  <div id="intro">
+			<h1>Gophper -- A Gopher Proxy for Modern Times</h1>
+			<p>
+			  The <a href="http://en.wikipedia.org/wiki/Gopher_(protocol)">Gopher</a>
+			  protocol was published in 1991. It was popular for some
+			  time, but died off in the late 1990s, mostly because of some
+			  poor decisions by the University of Minnesota (which owned
+			  the licensing rights), and also because HTTP and HTML was
+			  undoubtedly a better system for many things.
+			</p>
+			<p>
+			  There are still gopher servers out there today, but most
+			  browsers can't visit them anymore, because support for the
+			  Gopher protocol has been removed. There are a couple of
+			  proxy servers out there, but they all suck, and none of them
+			  are open-source, so I wrote Gophper, a very simple proxy
+			  server with a small PHP backend, and a parser written in
+			  Javascript.
+			</p>
 
-	  <div id="gopher">
-		<?php
-		   if ( array_key_exists('data', $this->data) ) {
-		     echo $this->data['data'];
-        	}
-	     ?>
-	  </div>
+			<h2>About Gophper</h2>
+			<p>
+			  Gophper has a bunch of cool features:
+			  <ul>
+				<li>The backend is written in PHP using the Slim
+				  framework. It is very simple and easy to modify.</li>
+				<li>The bulk of the work is done in Javascript, so you can
+				  very easily re-implement with a different backend if
+				  desired.</li>
+				<li>It caches gopher pages for fast performance.</li>
+				<li>It detects when a user has requested a binary file
+				  (Image, Document, etc) and returns that file to the browser,
+				  rather than returning junk and crashing your browser like
+				  most gopher proxies.</li>
+				<li>Coming Soon: Stats, etc</li>
+			  </ul>
+			</p>
+		  </div>
+		  <?php } ?>
 
+		  <div id="breadcrumb"></div>
+		  <div id="gopher">
+			<?php
+			   if ( array_key_exists('data', $this->data) ) {
+   		         echo $this->data['data'];
+			   }
+			   else {
+			?>
+			<div class="as-html">
+			  <h3>Let's Do This!</h3>
+			  <p>If you know where you would like to go, enter the URL
+				below, or you can always enter a URL into the box at the top
+				of the page.</p>
+			  <form class="well gopher-uri">
+				<fieldset>
+				  <label>Gopher URI to visit:</label>
+				  <input type="text" name="uri" class="span3" placeholder="URL">
+				</fieldset>
+				<button type="submit" class="btn">go!</button>
+			  </form>
 
+			  <h3>Or, you can try one of these popular Gopher servers</h3>
+			  <ul>
+				<li><a href="/gopher.meulie.net">gopher.meulie.net</a></li>
+				<li><a href="/sdf.org">sdf.org</a></li>
+				<li><a href="/moo.ca">moo.ca</a></li>
+				<li><a href="/gopher.floodgap.com">gopher.floodgap.com</a></li>
+				<li><a href="/gopher.std.com">gopher.std.com</a></li>
+				<li><a href="/gopher.quux.org">gopher.quux.org</a></li>
+				<li><a href="/nemesis.cs.berkeley.edu">nemesis.cs.berkeley.edu</a></li>
+				<li><a href="/telefisk.org">telefisk.org</a></li>
+				<li><a href="/gopher.viste-family.net">gopher.viste-family.net</a></li>
+				<li><a href="/quix.us">quix.us</a></li>
+			  </ul>
+			</div> <!-- /as-html -->
+
+			<?php } ?>
+		  </div> <!-- /gopher -->
+
+		</div> <!-- /span10 -->
+
+	  </div><!-- /row -->
     </div> <!-- /container -->
+
+    <div class="navbar navbar-fixed-bottom">
+      <div class="navbar-inner">
+        <div class="container">
+		Footy
+		</div>
+	  </div>
+	</div>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="/assets/js/jquery.history.js"></script>

@@ -3,19 +3,19 @@ function GopherParser() {};
 // regex for matching gopher entries. it didn't quite work in it's original form (see below)
 GopherParser.prototype.entryPattern = /^(.)(.*?)\t(.*?)\t(.*?)\t(\d+).*/;
 GopherParser.prototype.entryTypes = {
-	info: { style: 'info' },
-	error: { style: 'error' },
-	directory: { style: 'info' },
-	document: { style: 'document' },
-	binhex: { style: 'file' },
-	dosbinary: { style: 'file' },
-	uuencoded: { style: 'file' },
-	binary: { style: 'file' },
-	html: { style: 'html' },
-	search: { style: 'search' },
-	image: { style: 'image' },
-	audio: { style: 'audio' },
-	unknown: { style: 'unknown' }
+	info: { style: 'info', link : false },
+	error: { style: 'error', link : false },
+	directory: { style: 'info', link : true },
+	document: { style: 'document', link : true },
+	binhex: { style: 'file', link : true },
+	dosbinary: { style: 'file', link : true },
+	uuencoded: { style: 'file', link : true },
+	binary: { style: 'file', link : true },
+	html: { style: 'html', link : true },
+	search: { style: 'search', link : true },
+	image: { style: 'image', link : true },
+	audio: { style: 'audio', link : true },
+	unknown: { style: 'unknown', link : true }
 };
 
 
@@ -31,7 +31,9 @@ GopherParser.prototype.parseGopher = function(data) {
 	var lines = [];
 	data = data.split("\n");
 	for ( var i = 0; i < data.length; i++ ) {
-		lines.push(this.parseEntry(data[i]));
+		if ( data[i] != "." ) {
+			lines.push(this.parseEntry(data[i]));
+		}
 	}
 
 	return lines;
@@ -180,13 +182,17 @@ GopherParser.prototype.parseEntry = function(dirent) {
 			for ( var i = 0; i < entries.length; i++ ) {
 				var e = entries[i];
 
-				var href = "/" + e.host + "/" + e.path;
+				if ( e.path[0] != "/" ) {
+					e.path = "/" + e.path;
+				}
+
+				var href = "/" + e.host + e.path;
 				var text = e.title;
 				var type = e.type;
 				var result;
 
 				// if there was no path, don't output a URL
-				if ( !e.path || e.path == "" ) {
+				if ( type.link == false || !e.path || e.path == "" ) {
 					result = text;
 				}
 				else {
