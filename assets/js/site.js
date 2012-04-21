@@ -88,7 +88,10 @@ $(document).ready(function() {
 	$("#gopher,#breadcrumb").on("click", "a", function() {
 		loadGopherUri($(this).attr("href"));
 		return false;
-	});
+	}).on("submit", "form", function() {
+		console.log("form!");
+		return false;
+	});;
 
 
 	/**

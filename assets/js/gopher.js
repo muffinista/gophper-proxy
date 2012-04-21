@@ -12,7 +12,7 @@ GopherParser.prototype.entryTypes = {
 	uuencoded: { style: 'file', link : true },
 	binary: { style: 'file', link : true },
 	html: { style: 'html', link : true },
-	search: { style: 'search', link : true },
+	search: { style: 'search', link : true, form: true },
 	image: { style: 'image', link : true },
 	audio: { style: 'audio', link : true },
 	unknown: { style: 'unknown', link : true }
@@ -191,8 +191,24 @@ GopherParser.prototype.parseEntry = function(dirent) {
 				var type = e.type;
 				var result;
 
-				// if there was no path, don't output a URL
-				if ( type.link == false || !e.path || e.path == "" ) {
+				if ( type.form == true ) {
+
+					// handle search input
+
+					result = $("<form method='post' />").
+						attr("action", href).
+						addClass("gopher-" + type.style).
+						addClass("form-inline");
+
+					$(result).append("<input name='text' class='span3' placeholder='input' />");
+					var button = $("<button />").attr("type", "submit").addClass("btn").html("Go!");
+					$(result).append(button);
+
+				}
+				else if ( type.link == false || !e.path || e.path == "" ) {
+
+					// if there was no path, don't output a URL
+
 					result = text;
 				}
 				else {
