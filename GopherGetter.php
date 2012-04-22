@@ -8,9 +8,11 @@ class GopherGetter {
   public $path;
   public $key;
 
+  public $input;
+
   private $cache;
 
-  function __construct($u) {
+  function __construct($u, $i = NULL) {
 	$this->cache = new Cache('assets/cache');  //Make sure it exists and is writeable
 
 	$this->uri = "gopher:/$u";
@@ -30,9 +32,10 @@ class GopherGetter {
 	}
 
 	$this->path = urldecode($this->path);
+	$this->input = $i;
 
-	$this->key = "$this->host:$this->port$this->path";
-
+	$this->key = "$this->host:$this->port$this->path?$this->input";
+	error_log("KEY: $this->key");
   }
 
   function isValid() {
@@ -57,13 +60,20 @@ class GopherGetter {
 
 	$this->result = $this->cache->get($this->key);
 	if ( $this->result === FALSE ) {
+	  error_log("tcp://$this->host:$this->port\t$this->input");
 	  $fp = stream_socket_client("tcp://$this->host:$this->port", $this->errno, $this->errstr, 30);
 
 	  if (!$fp) {
 		return FALSE;
 	  }
 	  else {
-		fwrite($fp, "$this->path\r\n");
+
+	  $data = $this->path;
+	  if ( isset($this->input) && $this->input != "" ) {
+	  	 $data .= "\t$this->input";
+	  }
+
+		fwrite($fp, "$data\r\n");
 		while (!feof($fp)) {
 		  $this->result .= fgets($fp, 1024);
 		}

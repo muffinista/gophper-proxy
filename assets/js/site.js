@@ -1,3 +1,51 @@
+/*
+
+You can now create a spinner using any of the variants below:
+
+$("#el").spin(); // Produces default Spinner using the text color of #el.
+$("#el").spin("small"); // Produces a 'small' Spinner using the text color of #el.
+$("#el").spin("large", "white"); // Produces a 'large' Spinner in white (or any valid CSS color).
+$("#el").spin({ ... }); // Produces a Spinner using your custom settings.
+
+$("#el").spin(false); // Kills the spinner.
+
+*/
+(function($) {
+	$.fn.spin = function(opts, color) {
+		var presets = {
+			"tiny": { lines: 8, length: 2, width: 2, radius: 3 },
+			"small": { lines: 8, length: 4, width: 3, radius: 5 },
+			"large": { lines: 10, length: 8, width: 4, radius: 8 }
+		};
+		if (Spinner) {
+			return this.each(function() {
+				var $this = $(this),
+					data = $this.data();
+
+				if (data.spinner) {
+					data.spinner.stop();
+					delete data.spinner;
+				}
+				if (opts !== false) {
+					if (typeof opts === "string") {
+						if (opts in presets) {
+							opts = presets[opts];
+						} else {
+							opts = {};
+						}
+						if (color) {
+							opts.color = color;
+						}
+					}
+					data.spinner = new Spinner($.extend({color: $this.css('color')}, opts)).spin(this);
+				}
+			});
+		} else {
+			throw "Spinner class not available.";
+		}
+	};
+})(jQuery);
+
 $(document).ready(function() {
 	/**
 	 * on stateChange events, we will get the data from that page
@@ -45,15 +93,25 @@ $(document).ready(function() {
 	 * click handler for gopher menus. pass the URI along to the proxy
 	 * server, and handle the results.
 	 */
-	var loadGopherUri = function(u) {
+	var loadGopherUri = function(url, input, onComplete) {
+		var data = {
+			url : url
+		};
+
+		if ( typeof(input) !== "undefined" ) {
+			data.input = input;
+		}
+
 		$.ajax({
 			url: "/gopher",
 			type: 'post',
 			dataType: 'json',
-			data: {
-				url: u
-			}
+			data: data
 		}).done(function ( data ) {
+
+			if ( typeof(onComplete) !== "undefined" ) {
+				onComplete();
+			}
 
 			// hide the intro text if it is still there
 			$("#intro").hide();
@@ -86,10 +144,13 @@ $(document).ready(function() {
 	 * handle clicks on gopher selectors
 	 */
 	$("#gopher,#breadcrumb").on("click", "a", function() {
-		loadGopherUri($(this).attr("href"));
+		$(this).next("span").spin("small");
+		loadGopherUri($(this).attr("href"), null, function() {
+			$(this).next("span").spin(false);
+		});
 		return false;
 	}).on("submit", "form", function() {
-		console.log("form!");
+		loadGopherUri($(this).attr("action"), $(this).find("input").val());
 		return false;
 	});;
 

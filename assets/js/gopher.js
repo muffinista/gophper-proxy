@@ -218,7 +218,7 @@ GopherParser.prototype.parseEntry = function(dirent) {
 						html(text);
 				}
 
-				$(this).append(result).append("<br />");
+				$(this).append(result).append("<span class='spinny' />").append("<br />");
 			}
 		}
 		return $(this);
