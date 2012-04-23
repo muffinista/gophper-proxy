@@ -4,18 +4,18 @@ function GopherParser() {};
 GopherParser.prototype.entryPattern = /^(.)(.*?)\t(.*?)\t(.*?)\t(\d+).*/;
 GopherParser.prototype.entryTypes = {
 	info: { style: 'info', link : false },
-	error: { style: 'error', link : false },
-	directory: { style: 'info', link : true },
-	document: { style: 'document', link : true },
-	binhex: { style: 'file', link : true },
-	dosbinary: { style: 'file', link : true },
-	uuencoded: { style: 'file', link : true },
-	binary: { style: 'file', link : true },
-	html: { style: 'html', link : true },
-	search: { style: 'search', link : true, form: true },
-	image: { style: 'image', link : true },
-	audio: { style: 'audio', link : true },
-	unknown: { style: 'unknown', link : true }
+	error: { style: 'error', link : false, icon : 'icon-exclamation-sign' },
+	directory: { style: 'info', link : true, icon : 'icon-folder-open' },
+	document: { style: 'document', link : true, icon : 'icon-file' },
+	binhex: { style: 'file', link : true, icon : 'icon-download-alt' },
+	dosbinary: { style: 'file', link : true, icon : 'icon-download-alt' },
+	uuencoded: { style: 'file', link : true, icon : 'icon-download-alt' },
+	binary: { style: 'file', link : true, icon : 'icon-download-alt' },
+	html: { style: 'html', link : true, icon : 'icon-bookmark' },
+	search: { style: 'search', link : true, form: true, icon : 'icon-search' },
+	image: { style: 'image', link : true, icon : 'icon-picture' },
+	audio: { style: 'audio', link : true, icon : 'icon-music' },
+	unknown: { style: 'unknown', link : true, icon : 'icon-question-sign' }
 };
 
 
@@ -71,6 +71,8 @@ GopherParser.prototype.parseEntry = function(dirent) {
 
 
 	var entry = dirent.match(this.entryPattern);
+
+	// parse error
 	if (entry === null) {
 		return {};
 	}
@@ -116,8 +118,6 @@ GopherParser.prototype.parseEntry = function(dirent) {
 	default:
 		type = this.entryTypes.unknown;
 	}
-
-console.log(dirent, type);
 
 
 	return {
@@ -187,6 +187,7 @@ console.log(dirent, type);
 			for ( var i = 0; i < entries.length; i++ ) {
 				var e = entries[i];
 
+				// don't freak out if there's no valid type, just skip the line
 				if ( ! e.type ) {
 					continue;
 				}
@@ -198,7 +199,14 @@ console.log(dirent, type);
 				var href = "/" + e.host + e.path;
 				var text = e.title;
 				var type = e.type;
+
+
 				var result;
+				var icon = "";
+
+				if ( type.icon ) {
+					icon = $("<i />").addClass(type.icon).append("&nbsp;");
+				}
 
 				if ( typeof(type.form) !== "undefined" && type.form == true ) {
 
@@ -214,7 +222,7 @@ console.log(dirent, type);
 					$(result).append(button).append("<span class='spinny' />");
 
 				}
-				else if ( type.link == false || !e.path || e.path == "" ) {
+				else if ( type.link == false ) { //|| !e.path || e.path == "" ) {
 
 					// if there was no path, don't output a URL
 
@@ -225,9 +233,11 @@ console.log(dirent, type);
 						attr("href", href).
 						addClass("gopher-" + type.style).
 						html(text).after("<span class='spinny' />");
+
+
 				}
 
-				$(this).append(result).append("<br />");
+				$(this).append(icon).append(result).append("<br />");
 			}
 		}
 		return $(this);

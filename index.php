@@ -64,12 +64,17 @@ $app->post('/gopher', function () {
 	if ( $x->isValid() ) {
 	  $x->get();
 
-	  if ( !$x->isBinary() ) {
-		$result['url'] = $_POST["url"];
-		$result['data'] = $x->result;
+	  // send binary files and large text back as an attachment
+	  if ( $x->isBinary() || $x->size() > 1000000 ) {
+		$result['url'] = "/file?name=" . basename($_POST["url"]) . "&path=" . $x->urlFor();
 	  }
 	  else {
-		$result['url'] = "/file?name=" . basename($_POST["url"]) . "&path=" . $x->urlFor();
+		$result['url'] = $_POST["url"];
+		$result['data'] = $x->result;
+
+		if (!mb_check_encoding($result['data'], 'UTF-8')) {
+		  $result['data'] = utf8_encode($result['data']);
+		}
 	  }
 	}
 	else {

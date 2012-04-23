@@ -85,5 +85,10 @@ class GopherGetter {
 
 	return TRUE;
   }
+
+  function size() {
+	return strlen($this->result);
+  }
+
 };
 ?>

@@ -86,6 +86,8 @@ $(document).ready(function() {
 
 			$(".breadcrumb").append(li);
 		}
+
+		$(".breadcrumb").after("<span class='spinny' />");
 	};
 
 
@@ -100,7 +102,6 @@ $(document).ready(function() {
 			data.url = params;
 		}
 		else {
-			//url, input, onComplete
 			data.url = params.url;
 			data.input = params.input;
 		}
@@ -122,6 +123,7 @@ $(document).ready(function() {
 
 			// did we get valid data? if so, try and render it
 			if ( data.data ) {
+
 				// update browser url and store the data hash for
 				// later use. for now we'll set the title to be the
 				// URI as well
@@ -146,13 +148,15 @@ $(document).ready(function() {
 		});
 	};
 
+	var spinOpts = { top : 2, lines: 8, length: 2, width: 2, radius: 3 };
+
 	/**
 	 * handle clicks on gopher selectors
 	 */
 	$("#gopher,#breadcrumb").on("click", "a", function() {
 		var link = $(this);
 
-		$(this).next("span").spin("tiny");
+		$(this).next(".spinny").spin(spinOpts);
 		loadGopherUri({
 			url : $(this).attr("href"),
 			onComplete : function() {
@@ -162,13 +166,13 @@ $(document).ready(function() {
 		return false;
 	}).on("submit", "form", function() {
 		var link = $(this);
-		$(this).find("span.spinny").spin("tiny");
+		$(this).find(".spinny").spin(spinOpts);
 
 		loadGopherUri({
 			url : $(this).attr("action"),
 			input : $(this).find("input").val(),
 			onComplete : function() {
-				$(this).find("span.spinny").spin(false);
+				$(this).find(".spinny").spin(false);
 			}
 		});
 		return false;

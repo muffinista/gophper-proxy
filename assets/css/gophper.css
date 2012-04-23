@@ -7,7 +7,8 @@
 	white-space: normal;
 }
 .spinny {
-	padding-left: 40px;
+  position: fixed;
+  padding-left: 20px;
 }
 /*#gopher a {
 	-webkit-transition: all 0.35s linear;
@@ -15,3 +16,7 @@
 #gopher a:hover {
 	background-color: #220000;
 }*/
+
+#gopher i {
+  width: 25px;
+}
