@@ -68,6 +68,8 @@ GopherParser.prototype.parseEntry = function(dirent) {
 	 * s = Audio file format, primarily a WAV file
 	 */
 
+
+
 	var entry = dirent.match(this.entryPattern);
 	if (entry === null) {
 		return {};
@@ -114,6 +116,9 @@ GopherParser.prototype.parseEntry = function(dirent) {
 	default:
 		type = this.entryTypes.unknown;
 	}
+
+console.log(dirent, type);
+
 
 	return {
 		type: type,
@@ -182,7 +187,11 @@ GopherParser.prototype.parseEntry = function(dirent) {
 			for ( var i = 0; i < entries.length; i++ ) {
 				var e = entries[i];
 
-				if ( e.path[0] != "/" ) {
+				if ( ! e.type ) {
+					continue;
+				}
+
+				if ( e.path && e.path[0] != "/" ) {
 					e.path = "/" + e.path;
 				}
 
@@ -191,7 +200,7 @@ GopherParser.prototype.parseEntry = function(dirent) {
 				var type = e.type;
 				var result;
 
-				if ( type.form == true ) {
+				if ( typeof(type.form) !== "undefined" && type.form == true ) {
 
 					// handle search input
 

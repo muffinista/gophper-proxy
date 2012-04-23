@@ -133,6 +133,8 @@ $(document).ready(function() {
 
 				// render the content
 				$("#gopher").html(data.data).fromGopher();
+
+				$('html, body').animate({ scrollTop: 0 }, 0);
 			}
 			else {
 				// binary file (or something we can't render) -- redirect to cached copy on proxy server
