@@ -93,14 +93,18 @@ $(document).ready(function() {
 	 * click handler for gopher menus. pass the URI along to the proxy
 	 * server, and handle the results.
 	 */
-	var loadGopherUri = function(url, input, onComplete) {
-		var data = {
-			url : url
-		};
+	var loadGopherUri = function(params) {
+		var data = {};
 
-		if ( typeof(input) !== "undefined" ) {
-			data.input = input;
+		if ( typeof(params) === "string" ) {
+			data.url = params;
 		}
+		else {
+			//url, input, onComplete
+			data.url = params.url;
+			data.input = params.input;
+		}
+
 
 		$.ajax({
 			url: "/gopher",
@@ -109,8 +113,8 @@ $(document).ready(function() {
 			data: data
 		}).done(function ( data ) {
 
-			if ( typeof(onComplete) !== "undefined" ) {
-				onComplete();
+			if ( typeof(params.onComplete) !== "undefined" ) {
+				params.onComplete();
 			}
 
 			// hide the intro text if it is still there
@@ -144,13 +148,27 @@ $(document).ready(function() {
 	 * handle clicks on gopher selectors
 	 */
 	$("#gopher,#breadcrumb").on("click", "a", function() {
-		$(this).next("span").spin("small");
-		loadGopherUri($(this).attr("href"), null, function() {
-			$(this).next("span").spin(false);
+		var link = $(this);
+
+		$(this).next("span").spin("tiny");
+		loadGopherUri({
+			url : $(this).attr("href"),
+			onComplete : function() {
+				$(link).next("span").spin(false);
+			}
 		});
 		return false;
 	}).on("submit", "form", function() {
-		loadGopherUri($(this).attr("action"), $(this).find("input").val());
+		var link = $(this);
+		$(this).find("span.spinny").spin("tiny");
+
+		loadGopherUri({
+			url : $(this).attr("action"),
+			input : $(this).find("input").val(),
+			onComplete : function() {
+				$(this).find("span.spinny").spin(false);
+			}
+		});
 		return false;
 	});;
 

@@ -202,7 +202,7 @@ GopherParser.prototype.parseEntry = function(dirent) {
 
 					$(result).append("<input name='text' class='span3' placeholder='input' />");
 					var button = $("<button />").attr("type", "submit").addClass("btn").html("Go!");
-					$(result).append(button);
+					$(result).append(button).append("<span class='spinny' />");
 
 				}
 				else if ( type.link == false || !e.path || e.path == "" ) {
@@ -215,10 +215,10 @@ GopherParser.prototype.parseEntry = function(dirent) {
 					result = $("<a />").
 						attr("href", href).
 						addClass("gopher-" + type.style).
-						html(text);
+						html(text).after("<span class='spinny' />");
 				}
 
-				$(this).append(result).append("<span class='spinny' />").append("<br />");
+				$(this).append(result).append("<br />");
 			}
 		}
 		return $(this);
