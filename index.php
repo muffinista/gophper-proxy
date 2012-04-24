@@ -36,7 +36,10 @@ $app->get('/file', function () use($app) {
 	// header("Content-type: application/octet-stream");
 	// header('Content-Disposition: attachment; filename="' . basename($file) . '"');
 
-	header("Content-type: application/octet-stream");
+	error_log("send $path to browser " . mime_content_type($path));
+
+	$app->contentType(mime_content_type($path));
+	header("Content-type: " . mime_content_type($path));
 	header('Content-Disposition: attachment; filename="' . basename($file) . '"');
 	header("Content-Length: ". filesize($path));
 	readfile($path);
@@ -67,6 +70,8 @@ $app->post('/gopher', function () {
 	  // send binary files and large text back as an attachment
 	  if ( $x->isBinary() || $x->size() > 1000000 ) {
 		$result['url'] = "/file?name=" . basename($_POST["url"]) . "&path=" . $x->urlFor();
+		$result['image'] = $x->isImage();
+
 	  }
 	  else {
 		$result['url'] = $_POST["url"];
@@ -78,7 +83,8 @@ $app->post('/gopher', function () {
 	  }
 	}
 	else {
-	  $result['error'] = "Sorry, there was a problem";
+	  $result['url'] = $_POST["url"];
+	  $result['data'] = "3Sorry, there was a problem with your request\t\tNULL\t70";
 	}
 
 	echo json_encode($result);

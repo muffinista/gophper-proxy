@@ -42,6 +42,20 @@ class Cache {
 	return substr(finfo_file($finfo, $cache_path), 0, 4) != 'text';
   }
 
+  public function isImage($key, $expiration = 3600) {
+	if ( !is_dir($this->dir) OR !is_writable($this->dir)) {
+	  return FALSE;
+	}
+
+	$cache_path = $this->_name($key);
+
+	// return mime type ala mimetype extension
+	$finfo = finfo_open(FILEINFO_MIME);
+
+	//check to see if the mime-type starts with 'text' -- if not, BINARY
+	return substr(finfo_file($finfo, $cache_path), 0, 5) == 'image';
+  }
+
   public function url($key) {
 	$cache_path = $this->_name($key);
 	return $cache_path;

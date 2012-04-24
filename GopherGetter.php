@@ -47,6 +47,10 @@ class GopherGetter {
 	return $this->cache->isBinary($this->key);
   }
 
+  function isImage() {
+	return $this->cache->isImage($this->key);
+  }
+
   function urlFor() {
 	return $this->cache->url($this->key);
   }

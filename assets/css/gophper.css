@@ -6,17 +6,16 @@
 #gopher .as-html {
 	white-space: normal;
 }
-.spinny {
-  position: fixed;
-  padding-left: 20px;
-}
-/*#gopher a {
-	-webkit-transition: all 0.35s linear;
-}
-#gopher a:hover {
-	background-color: #220000;
-}*/
 
 #gopher i {
   width: 25px;
+}
+
+#spinner {
+	float: right;
+}
+#spinner img {
+	position: fixed;
+	right: 25px;
+	display: none;
 }

@@ -1,51 +1,3 @@
-/*
-
-You can now create a spinner using any of the variants below:
-
-$("#el").spin(); // Produces default Spinner using the text color of #el.
-$("#el").spin("small"); // Produces a 'small' Spinner using the text color of #el.
-$("#el").spin("large", "white"); // Produces a 'large' Spinner in white (or any valid CSS color).
-$("#el").spin({ ... }); // Produces a Spinner using your custom settings.
-
-$("#el").spin(false); // Kills the spinner.
-
-*/
-(function($) {
-	$.fn.spin = function(opts, color) {
-		var presets = {
-			"tiny": { lines: 8, length: 2, width: 2, radius: 3 },
-			"small": { lines: 8, length: 4, width: 3, radius: 5 },
-			"large": { lines: 10, length: 8, width: 4, radius: 8 }
-		};
-		if (Spinner) {
-			return this.each(function() {
-				var $this = $(this),
-					data = $this.data();
-
-				if (data.spinner) {
-					data.spinner.stop();
-					delete data.spinner;
-				}
-				if (opts !== false) {
-					if (typeof opts === "string") {
-						if (opts in presets) {
-							opts = presets[opts];
-						} else {
-							opts = {};
-						}
-						if (color) {
-							opts.color = color;
-						}
-					}
-					data.spinner = new Spinner($.extend({color: $this.css('color')}, opts)).spin(this);
-				}
-			});
-		} else {
-			throw "Spinner class not available.";
-		}
-	};
-})(jQuery);
-
 $(document).ready(function() {
 	/**
 	 * on stateChange events, we will get the data from that page
@@ -57,6 +9,13 @@ $(document).ready(function() {
 		$("#gopher").html(state.data.data).fromGopher();
     });
 
+
+	var spin = function() {
+		$("#spinner img").fadeIn();
+	};
+	var unspin = function() {
+		$("#spinner img").fadeOut();
+	};
 
 	/**
 	 * output a breadcrumb which will just split the current URI and
@@ -86,8 +45,6 @@ $(document).ready(function() {
 
 			$(".breadcrumb").append(li);
 		}
-
-		$(".breadcrumb").after("<span class='spinny' />");
 	};
 
 
@@ -107,12 +64,16 @@ $(document).ready(function() {
 		}
 
 
+		spin();
+
 		$.ajax({
 			url: "/gopher",
 			type: 'post',
 			dataType: 'json',
 			data: data
 		}).done(function ( data ) {
+
+			unspin();
 
 			if ( typeof(params.onComplete) !== "undefined" ) {
 				params.onComplete();
@@ -122,33 +83,42 @@ $(document).ready(function() {
 			$("#intro").hide();
 
 			// did we get valid data? if so, try and render it
-			if ( data.data ) {
-
+			if ( data.error ) {
+				$("#gopher").html(data.error);
+			}
+			else if ( data.data ) {
 				// update browser url and store the data hash for
 				// later use. for now we'll set the title to be the
 				// URI as well
 				History.pushState(data, data.url, data.url);
 
+				// update the URI in the header
 				$("form input[name=uri]").val(data.url);
 
+				// update our breadcrumb nav
 				updateBreadcrumb(data.url);
 
 				// render the content
 				$("#gopher").html(data.data).fromGopher();
 
+				// scroll to the top of the page
 				$('html, body').animate({ scrollTop: 0 }, 0);
 			}
 			else {
-				// binary file (or something we can't render) -- redirect to cached copy on proxy server
-				window.location.replace(data.url);
+				if ( data.image ) {
+					$.colorbox({photo: true, href: data.url});
+				}
+				else {
+					// binary file (or something we can't render) -- redirect to cached copy on proxy server
+					window.location.replace(data.url);
+				}
 			}
 
-			// @todo handle errors
-
+		}).fail(function(jqXHR, textStatus) {
+			$("#gopher").html("Sorry, there was a problem with your request, please try again.");
 		});
-	};
 
-	var spinOpts = { top : 2, lines: 8, length: 2, width: 2, radius: 3 };
+	};
 
 	/**
 	 * handle clicks on gopher selectors
@@ -156,24 +126,18 @@ $(document).ready(function() {
 	$("#gopher,#breadcrumb").on("click", "a", function() {
 		var link = $(this);
 
-		$(this).next(".spinny").spin(spinOpts);
+
 		loadGopherUri({
-			url : $(this).attr("href"),
-			onComplete : function() {
-				$(link).next("span").spin(false);
-			}
+			url : $(this).attr("href")
 		});
 		return false;
 	}).on("submit", "form", function() {
 		var link = $(this);
-		$(this).find(".spinny").spin(spinOpts);
 
+		spin();
 		loadGopherUri({
 			url : $(this).attr("action"),
-			input : $(this).find("input").val(),
-			onComplete : function() {
-				$(this).find(".spinny").spin(false);
-			}
+			input : $(this).find("input").val()
 		});
 		return false;
 	});;

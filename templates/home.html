@@ -9,6 +9,7 @@
 
 
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/colorbox.css" rel="stylesheet">
     <style>
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -48,6 +49,11 @@
 
     <div class="container-fluid">
 	  <div class="row-fluid">
+
+		  <div id="spinner">
+			<img src="/assets/img/spinner.gif" />
+		  </div>
+
 		<div class="span4"></div>
 		<div class="span8">
 
@@ -93,6 +99,7 @@
 		  <?php } ?>
 
 		  <div id="breadcrumb"></div>
+
 		  <div id="gopher">
 			<?php
 			   if ( array_key_exists('data', $this->data) ) {
@@ -145,6 +152,7 @@
 	</div>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="/assets/js/jquery.colorbox-min.js"></script>
     <script src="/assets/js/jquery.history.js"></script>
     <script src="/assets/js/spin.min.js"></script>
     <script src="/assets/js/gopher.js"></script>
