@@ -10,6 +10,9 @@
 #gopher i {
   width: 25px;
 }
+#gopher i.icon-search {
+  float: left
+}
 
 #spinner {
 	float: right;
@@ -18,4 +21,18 @@
 	position: fixed;
 	right: 25px;
 	display: none;
+}
+
+
+footer {
+    color: #666;
+    background: #222;
+    padding: 8px 0 8px 0;
+    border-top: 1px solid #000;
+}
+footer a {
+    color: #999;
+}
+footer a:hover {
+    color: #efefef;
 }
