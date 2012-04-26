@@ -2,20 +2,37 @@ $(document).ready(function() {
 	/**
 	 * on stateChange events, we will get the data from that page
 	 * (stored when loadGopherUri is complete), and re-render the
-	 * gopher output .
+	 * gopher output.
 	 */
     History.Adapter.bind(window,'statechange',function() {
         var state = History.getState();
-		$("#gopher").html(state.data.data).fromGopher();
+
+		if ( state.data.data ) {
+			$("#gopher").html(state.data.data).fromGopher();
+
+			// update our breadcrumb nav
+			updateBreadcrumb(state.data.url);
+		}
+		else {
+			$("#gopher,#breadcrumb").fadeOut().html("");
+			$("#intro").fadeIn();
+
+		}
     });
 
 
-	var spin = function() {
-		$("#spinner img").fadeIn();
+	/**
+	 * very simple methods to manage a 'please wait' spinner
+	 */
+	var spinner = {
+		spin : function() {
+			$("#spinner img").fadeIn();
+		},
+		unspin : function() {
+			$("#spinner img").fadeOut();
+		}
 	};
-	var unspin = function() {
-		$("#spinner img").fadeOut();
-	};
+
 
 	/**
 	 * output a breadcrumb which will just split the current URI and
@@ -64,16 +81,25 @@ $(document).ready(function() {
 		}
 
 
-		spin();
+		var displayError = function() {
+			spinner.unspin();
+			$("#gopher").show().html("Sorry, there was a problem with your request, please try again.");
+			$('html,body').animate({scrollTop: $("#gopher").offset().top}, 'slow');
+		};
+
+		spinner.spin();
 
 		$.ajax({
 			url: "/gopher",
 			type: 'post',
 			dataType: 'json',
-			data: data
+			data: data,
+			error : function() {
+				displayError();
+			}
 		}).done(function ( data ) {
 
-			unspin();
+			spinner.unspin();
 
 			if ( typeof(params.onComplete) !== "undefined" ) {
 				params.onComplete();
@@ -82,10 +108,14 @@ $(document).ready(function() {
 			// hide the intro text if it is still there
 			$("#intro").hide();
 
-			// did we get valid data? if so, try and render it
+			// did we get valid data? if not, display the error
 			if ( data.error ) {
 				$("#gopher").html(data.error);
 			}
+
+			//
+			// we got data, let's render it
+			//
 			else if ( data.data ) {
 				// update browser url and store the data hash for
 				// later use. for now we'll set the title to be the
@@ -104,7 +134,12 @@ $(document).ready(function() {
 				// scroll to the top of the page
 				$('html, body').animate({ scrollTop: 0 }, 0);
 			}
+
+			//
+			// at this point, we probably just have a URL for a file, link to it
+			//
 			else {
+				// if it's an image, load in a colorbox
 				if ( data.image ) {
 					$.colorbox({photo: true, href: data.url});
 				}
@@ -115,7 +150,7 @@ $(document).ready(function() {
 			}
 
 		}).fail(function(jqXHR, textStatus) {
-			$("#gopher").html("Sorry, there was a problem with your request, please try again.");
+			displayError();
 		});
 
 	};
@@ -123,18 +158,12 @@ $(document).ready(function() {
 	/**
 	 * handle clicks on gopher selectors
 	 */
-	$("#gopher,#breadcrumb").on("click", "a", function() {
-		var link = $(this);
-
-
+	$("#gopher,#breadcrumb,#intro .as-html").on("click", "a", function() {
 		loadGopherUri({
 			url : $(this).attr("href")
 		});
 		return false;
 	}).on("submit", "form", function() {
-		var link = $(this);
-
-		spin();
 		loadGopherUri({
 			url : $(this).attr("action"),
 			input : $(this).find("input").val()

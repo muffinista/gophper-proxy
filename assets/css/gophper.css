@@ -1,8 +1,8 @@
 #gopher {
 	font-family:monospace;
 	white-space: pre;
+	padding-bottom: 100px;
 }
-
 #gopher .as-html {
 	white-space: normal;
 }
@@ -23,16 +23,6 @@
 	display: none;
 }
 
-
-footer {
-    color: #666;
-    background: #222;
-    padding: 8px 0 8px 0;
-    border-top: 1px solid #000;
-}
-footer a {
-    color: #999;
-}
-footer a:hover {
-    color: #efefef;
+.navbar-fixed-bottom .container {
+  padding-top: 5px;
 }

@@ -4,11 +4,15 @@ require 'Slim/View.php';
 
 require 'GopherGetter.php';
 
+require_once 'meekrodb.2.0.class.php';
+require_once 'config.php';
+
 $app = new Slim();
 
 /**
  * Step 3: Define the Slim application routes
  */
+
 
 
 //
@@ -35,8 +39,6 @@ $app->get('/file', function () use($app) {
 	// header("X-Sendfile: $path");
 	// header("Content-type: application/octet-stream");
 	// header('Content-Disposition: attachment; filename="' . basename($file) . '"');
-
-	error_log("send $path to browser " . mime_content_type($path));
 
 	$app->contentType(mime_content_type($path));
 	header("Content-type: " . mime_content_type($path));

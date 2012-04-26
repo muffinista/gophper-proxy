@@ -1,7 +1,19 @@
 function GopherParser() {};
 
-// regex for matching gopher entries. it didn't quite work in it's original form (see below)
+/**
+ *  regex for matching gopher entries. it didn't quite work in its original form (see below)
+ */
 GopherParser.prototype.entryPattern = /^(.)(.*?)\t(.*?)\t(.*?)\t(\d+).*/;
+
+/**
+ * the different sorts of gopher entries we will handle. each entry here is a
+ * hash with the following keys:
+ *
+ * style - general style of the entry -- information, error, link, etc.
+ * link - true/false, should we link to the selector for this entry?
+ * icon - an icon class to render with this file. these icons are from
+ *   the Twitter Bootstrap library
+ */
 GopherParser.prototype.entryTypes = {
 	info: { style: 'info', link : false },
 	error: { style: 'error', link : false, icon : 'icon-exclamation-sign' },
@@ -19,14 +31,21 @@ GopherParser.prototype.entryTypes = {
 };
 
 
+/**
+ * determine if we should render the string as a gopher menu or not
+ * @param d data to test
+ * @return true if we should parse as gopher menu, false otherwise
+ */
 GopherParser.prototype.shouldRender = function(d) {
 	var data = d.split("\n");
 	return data[0].match(this.entryPattern) !== null;
 };
-GopherParser.prototype.isBinary = function(d) {
-	return /[\x00-\x1F]/.test(d);
-};
 
+/**
+ * parse the incoming data as a gopher menu
+ * @param data text to parse
+ * @return array of objects which represent the data of the menu
+ */
 GopherParser.prototype.parseGopher = function(data) {
 	var lines = [];
 	data = data.split("\n");
@@ -39,9 +58,62 @@ GopherParser.prototype.parseGopher = function(data) {
 	return lines;
 };
 
+
 /**
- * borrowed from phpjs:
+ * given an item type, return the EntryType used to represent it.
+ * @param entry type as specified in RFC 1436 section 3.8
+ * @return entry type object
+ */
+GopherParser.prototype.getType = function(t) {
+	switch (t) {
+	case 'i':
+		return this.entryTypes.info;
+		break;
+	case '3':
+		return this.entryTypes.error;
+		break;
+	case '1':
+		return this.entryTypes.directory;
+		break;
+	case '0':
+		return this.entryTypes.document;
+		break;
+	case '4':
+		return this.entryTypes.binhex;
+		break;
+	case '5':
+		return this.entryTypes.dosbinary;
+		break;
+	case '6':
+		return this.entryTypes.uuencoded;
+		break;
+	case '7':
+		return this.entryTypes.search;
+		break;
+	case '9':
+		return this.entryTypes.binary;
+		break;
+	case 'h':
+		return this.entryTypes.html;
+		break;
+	case 'd':
+		return this.entryTypes.image;
+		break;
+	case 's':
+		return this.entryTypes.audio;
+		break;
+	default:
+		return this.entryTypes.unknown;
+	}
+};
+
+/**
+ * parse a line from a gopher menu
+ * borrowed and modified from phpjs:
  * @see http://phpjs.org/functions/gopher_parsedir:833
+ *
+ * @param dirent the line to parse
+ * @return object
  */
 GopherParser.prototype.parseEntry = function(dirent) {
 	//var entryPattern = /^(.)(.*?)\t(.*?)\t(.*?)\t(.*?)\u000d\u000a$/;
@@ -51,25 +123,6 @@ GopherParser.prototype.parseEntry = function(dirent) {
 	// *     example 1: entry.title;
 	// *     returns 1: 'All about my gopher site.'
 
-	/* Types
-	 * 0 = plain text file
-	 * 1 = directory menu listing
-	 * 2 = CSO search query
-	 * 3 = error message
-	 * 4 = BinHex encoded text file
-	 * 5 = binary archive file
-	 * 6 = UUEncoded text file
-	 * 7 = search engine query
-	 * 8 = telnet session pointer
-	 * 9 = binary file
-	 * g = Graphics file format, primarily a GIF file
-	 * h = HTML file
-	 * i = informational message
-	 * s = Audio file format, primarily a WAV file
-	 */
-
-
-
 	var entry = dirent.match(this.entryPattern);
 
 	// parse error
@@ -77,51 +130,8 @@ GopherParser.prototype.parseEntry = function(dirent) {
 		return {};
 	}
 
-	var type;
-	switch (entry[1]) {
-	case 'i':
-		type = this.entryTypes.info;
-		break;
-	case '3':
-		type = this.entryTypes.error;
-		break;
-	case '1':
-		type = this.entryTypes.directory;
-		break;
-	case '0':
-		type = this.entryTypes.document;
-		break;
-	case '4':
-		type = this.entryTypes.binhex;
-		break;
-	case '5':
-		type = this.entryTypes.dosbinary;
-		break;
-	case '6':
-		type = this.entryTypes.uuencoded;
-		break;
-	case '7':
-		type = this.entryTypes.search;
-		break;
-	case '9':
-		type = this.entryTypes.binary;
-		break;
-	case 'h':
-		type = this.entryTypes.html;
-		break;
-	case 'd':
-		type = this.entryTypes.image;
-		break;
-	case 's':
-		type = this.entryTypes.audio;
-		break;
-	default:
-		type = this.entryTypes.unknown;
-	}
-
-
 	return {
-		type: type,
+		type: this.getType(entry[1]),
 		title: entry[2],
 		path: entry[3],
 		host: entry[4],
@@ -192,22 +202,28 @@ GopherParser.prototype.parseEntry = function(dirent) {
 					continue;
 				}
 
+				// clean up the path a bit
 				if ( e.path && e.path[0] != "/" ) {
 					e.path = "/" + e.path;
 				}
 
+				// the html style link for this entry will be /HOST/SELECTOR
 				var href = "/" + e.host + e.path;
+
 				var text = e.title;
 				var type = e.type;
-
 
 				var result;
 				var icon = "";
 
+				// if we have an icon class, add it here
 				if ( type.icon ) {
 					icon = $("<i />").addClass(type.icon).append("&nbsp;");
 				}
 
+				//
+				// generate a form for search entries
+				//
 				if ( typeof(type.form) !== "undefined" && type.form == true ) {
 
 					// handle search input
@@ -217,26 +233,26 @@ GopherParser.prototype.parseEntry = function(dirent) {
 						addClass("gopher-" + type.style).
 						addClass("form-inline");
 
-					$(result).append("<input name='text' class='span3' placeholder='input' />");
 					var button = $("<button />").attr("type", "submit").addClass("btn").html("Go!");
-					$(result).append(button).append("<span class='spinny' />");
+					$(result).
+						append("<input name='text' class='span3' placeholder='input' />").
+						append(button);
 
 				}
-				else if ( type.link == false ) { //|| !e.path || e.path == "" ) {
 
-					// if there was no path, don't output a URL
-
+				// if there was no path, don't output a URL
+				else if ( type.link == false ) {
 					result = text;
 				}
+
+				// output a link with the right class/etc
 				else {
 					result = $("<a />").
 						attr("href", href).
-						addClass("gopher-" + type.style).
-						html(text).after("<span class='spinny' />");
-
-
+						html(text);
 				}
 
+				// add the output!
 				$(this).append(icon).append(result).append("<br />");
 			}
 		}

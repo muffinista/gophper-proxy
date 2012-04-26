@@ -62,6 +62,9 @@ class GopherGetter {
 	$this->errno = "";
 
 
+	$this->logTraffic($this->host, $this->path);
+
+
 	$this->result = $this->cache->get($this->key);
 	if ( $this->result === FALSE ) {
 	  error_log("tcp://$this->host:$this->port\t$this->input");
@@ -84,11 +87,30 @@ class GopherGetter {
 		fclose($fp);
 	  }
 
+
 	  $this->cache->set($this->key, $this->result);
 	}
 
 	return TRUE;
   }
+
+  function logTraffic($host, $selector) {
+	/*	error_log(LOG_STATS);
+	if ( ! isset(LOG_STATS) || LOG_STATS != true ) {
+	  return;
+	  }*/
+
+	$ip_address = ip2long($_SERVER['REMOTE_ADDR']);
+
+	DB::insert('traffic', array(
+								'hostname' => $host,
+								'selector' => $selector,
+								'remote_ip' => $ip_address,
+								'request_at' => DB::sqleval("NOW()")
+								));
+
+  }
+
 
   function size() {
 	return strlen($this->result);
