@@ -3,6 +3,7 @@ CREATE TABLE traffic (
 	   hostname varchar(100) NOT NULL,
 	   selector varchar(100) NOT NULL,
 	   remote_ip INT UNSIGNED NOT NULL,
+	   filesize INT UNSIGNED NOT NULL DEFAULT 0,
 	   request_at datetime NOT NULL
 );
 

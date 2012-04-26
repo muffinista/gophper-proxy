@@ -98,6 +98,19 @@ class Cache {
 	return $cache;
   }
 
+  public function size($key, $expiration = 3600) {
+	if ( !is_dir($this->dir) OR !is_writable($this->dir)) {
+	  return FALSE;
+	}
+
+	$cache_path = $this->_name($key);
+
+	if (!@file_exists($cache_path)) {
+	  return FALSE;
+	}
+
+	return filesize($cache_path);
+  }
 
   private function mkdir_p($path) {
 	if (!is_dir($path)) {
