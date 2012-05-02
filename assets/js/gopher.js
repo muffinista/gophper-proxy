@@ -186,7 +186,8 @@ GopherParser.prototype.parseEntry = function(dirent) {
 		// make sure we should render -- if this doesn't look like gophertext,
 		// we'll just spit back the text itself
 		if ( ! parser.shouldRender(data) ) {
-			$(this).html(nl2br(data));
+//			$(this).html(nl2br(data));
+			$(this).html(data);
 		}
 		else {
 			entries = parser.parseGopher(data);
@@ -208,7 +209,13 @@ GopherParser.prototype.parseEntry = function(dirent) {
 				}
 
 				// the html style link for this entry will be /HOST/SELECTOR
-				var href = "/" + e.host + e.path;
+				var href = "/" + e.host;
+
+				if ( e.port != 70 ) {
+					href = href + ":" + e.port;
+				}
+
+				href = href + e.path;
 
 				var text = e.title;
 				var type = e.type;
