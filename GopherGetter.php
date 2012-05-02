@@ -23,6 +23,11 @@ class GopherGetter {
 	$this->host = $data['host'];
 	$this->port = array_key_exists('port', $data) ? $data['port'] : 70;
 
+	// only allow port 70, or if ALLOW_ALL_PORTS is true, also allow ports over 1024
+	if ( $this->port != 70 && ( ALLOW_ALL_PORTS != true || $this->port < 1024 ) ) {
+	  throw new Exception("Port violation");
+	}
+
 	// strip the leading slash from the path
 	if ( array_key_exists('path', $data) ) {
 	  $this->path = ltrim($data['path'], '/');

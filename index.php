@@ -65,28 +65,33 @@ $app->post('/gopher', function () {
 	$url = $_POST["url"];
 	$input = isset($_POST["input"]) ? $_POST["input"] : NULL;
 
-	$x = new GopherGetter($url, $input);
-	if ( $x->isValid() ) {
-	  $x->get();
+	try {
+	  $x = new GopherGetter($url, $input);
+	  if ( $x->isValid() ) {
+		$x->get();
 
-	  // send binary files and large text back as an attachment
-	  if ( $x->isBinary() || $x->size() > 1000000 ) {
-		$result['url'] = "/file?name=" . basename($_POST["url"]) . "&path=" . $x->urlFor();
-		$result['image'] = $x->isImage();
+		// send binary files and large text back as an attachment
+		if ( $x->isBinary() || $x->size() > 1000000 ) {
+		  $result['url'] = "/file?name=" . basename($_POST["url"]) . "&path=" . $x->urlFor();
+		  $result['image'] = $x->isImage();
 
+		}
+		else {
+		  $result['url'] = $_POST["url"];
+		  $result['data'] = $x->result;
+
+		  if (!mb_check_encoding($result['data'], 'UTF-8')) {
+			$result['data'] = utf8_encode($result['data']);
+		  }
+		}
 	  }
 	  else {
 		$result['url'] = $_POST["url"];
-		$result['data'] = $x->result;
-
-		if (!mb_check_encoding($result['data'], 'UTF-8')) {
-		  $result['data'] = utf8_encode($result['data']);
-		}
+		$result['data'] = "3Sorry, there was a problem with your request\t\tNULL\t70";
 	  }
-	}
-	else {
+	} catch(Exception $e) {
 	  $result['url'] = $_POST["url"];
-	  $result['data'] = "3Sorry, there was a problem with your request\t\tNULL\t70";
+	  $result['data'] = "3Sorry, there was a problem with your request (" . $e->getMessage() . ")\t\tNULL\t70";
 	}
 
 	echo json_encode($result);
