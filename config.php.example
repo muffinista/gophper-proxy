@@ -1,4 +1,11 @@
 <?php
+define('GA_ACCOUNT', 'UA-XXXXXXX-X');
+define('ALLOW_ALL_PORTS', true);
+define('CACHE_LIFETIME', 3600);
+
+define('APP_NAME', 'Gophper');
+
+define('LOG_STATS', true);
 
 DB::$user = '';
 DB::$password = '';

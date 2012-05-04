@@ -15,19 +15,19 @@ GopherParser.prototype.entryPattern = /^(.)(.*?)\t(.*?)\t(.*?)\t(\d+).*/;
  *   the Twitter Bootstrap library
  */
 GopherParser.prototype.entryTypes = {
-	info: { style: 'info', link : false },
-	error: { style: 'error', link : false, icon : 'icon-exclamation-sign' },
-	directory: { style: 'info', link : true, icon : 'icon-folder-open' },
-	document: { style: 'document', link : true, icon : 'icon-file' },
-	binhex: { style: 'file', link : true, icon : 'icon-download-alt' },
-	dosbinary: { style: 'file', link : true, icon : 'icon-download-alt' },
-	uuencoded: { style: 'file', link : true, icon : 'icon-download-alt' },
-	binary: { style: 'file', link : true, icon : 'icon-download-alt' },
-	html: { style: 'html', link : true, icon : 'icon-bookmark' },
-	search: { style: 'search', link : true, form: true, icon : 'icon-search' },
-	image: { style: 'image', link : true, icon : 'icon-picture' },
-	audio: { style: 'audio', link : true, icon : 'icon-music' },
-	unknown: { style: 'unknown', link : true, icon : 'icon-question-sign' }
+	info: { link : false },
+	error: { link : false, icon : 'icon-exclamation-sign' },
+	directory: { link : true, icon : 'icon-folder-open' },
+	document: { link : true, icon : 'icon-file' },
+	binhex: { link : true, icon : 'icon-download-alt' },
+	dosbinary: { link : true, icon : 'icon-download-alt' },
+	uuencoded: { link : true, icon : 'icon-download-alt' },
+	binary: { link : true, icon : 'icon-download-alt' },
+	html: { link : true, icon : 'icon-bookmark' },
+	search: { link : true, form: true, icon : 'icon-search' },
+	image: { link : true, icon : 'icon-picture' },
+	audio: { link : true, icon : 'icon-music' },
+	unknown: { link : true, icon : 'icon-question-sign' }
 };
 
 
@@ -116,13 +116,6 @@ GopherParser.prototype.getType = function(t) {
  * @return object
  */
 GopherParser.prototype.parseEntry = function(dirent) {
-	//var entryPattern = /^(.)(.*?)\t(.*?)\t(.*?)\t(.*?)\u000d\u000a$/;
-	// http://kevin.vanzonneveld.net
-	// +   original by: Brett Zamir (http://brett-zamir.me)
-	// *     example 1: var entry = gopher_parsedir('0All about my gopher site.\t/allabout.txt\tgopher.example.com\t70\u000d\u000a');
-	// *     example 1: entry.title;
-	// *     returns 1: 'All about my gopher site.'
-
 	var entry = dirent.match(this.entryPattern);
 
 	// parse error
@@ -140,30 +133,39 @@ GopherParser.prototype.parseEntry = function(dirent) {
 
 };
 
-(function( $ ){
+/**
+ * take a gopher menu entry, and turn it into an href path which can be used to request the selector via the proxy.
+ *
+ * the html style link for this entry will be /HOST(:PORT)/SELECTOR
+ *
+ * @return a href that will request this menu entry via the proxy
+ */
+GopherParser.prototype.entryToLink = function(e) {
+	var href = "/" + e.host;
 
+	// add the port if needed
+	if ( e.port != 70 ) {
+		href = href + ":" + e.port;
+	}
+
+	// clean up the path a bit, make sure there's always a slash
+	if ( e.path && e.path[0] != "/" ) {
+		e.path = "/" + e.path;
+	}
+
+
+	href = href + e.path;
+
+	return href;
+};
+
+(function( $ ){
 	/**
 	 * convert newlines to breaks
+	 * @see http://phpjs.org/functions/nl2br:480
 	 */
 	function nl2br (str, is_xhtml) {
-		// http://kevin.vanzonneveld.net
-		// +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-		// +   improved by: Philip Peterson
-		// +   improved by: Onno Marsman
-		// +   improved by: Atli Þór
-		// +   bugfixed by: Onno Marsman
-		// +      input by: Brett Zamir (http://brett-zamir.me)
-		// +   bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-		// +   improved by: Brett Zamir (http://brett-zamir.me)
-		// +   improved by: Maximusya
-		// *     example 1: nl2br('Kevin\nvan\nZonneveld');
-		// *     returns 1: 'Kevin<br />\nvan<br />\nZonneveld'
-		// *     example 2: nl2br("\nOne\nTwo\n\nThree\n", false);
-		// *     returns 2: '<br>\nOne<br>\nTwo<br>\n<br>\nThree<br>\n'
-		// *     example 3: nl2br("\nOne\nTwo\n\nThree\n", true);
-		// *     returns 3: '<br />\nOne<br />\nTwo<br />\n<br />\nThree<br />\n'
 		var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
-
 		return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 	}
 
@@ -176,6 +178,7 @@ GopherParser.prototype.parseEntry = function(dirent) {
 		var data, entries;
 		var parser = new GopherParser();
 
+		// if we didn't get any incoming data, use the content of our target
 		if ( typeof(d) === "undefined" ) {
 			data = $(this).html().trim();
 		}
@@ -186,8 +189,14 @@ GopherParser.prototype.parseEntry = function(dirent) {
 		// make sure we should render -- if this doesn't look like gophertext,
 		// we'll just spit back the text itself
 		if ( ! parser.shouldRender(data) ) {
-//			$(this).html(nl2br(data));
-			$(this).html(data);
+			// if we're specifying preformatted text via CSS, then
+			// don't add any newlines to the output
+			if ( $(this).css("white-space") == "pre" ) {
+				$(this).html(data);
+			}
+			else {
+				$(this).html(nl2br(data));
+			}
 		}
 		else {
 			entries = parser.parseGopher(data);
@@ -203,41 +212,20 @@ GopherParser.prototype.parseEntry = function(dirent) {
 					continue;
 				}
 
-				// clean up the path a bit
-				if ( e.path && e.path[0] != "/" ) {
-					e.path = "/" + e.path;
-				}
-
-				// the html style link for this entry will be /HOST/SELECTOR
-				var href = "/" + e.host;
-
-				if ( e.port != 70 ) {
-					href = href + ":" + e.port;
-				}
-
-				href = href + e.path;
-
+				var href = parser.entryToLink(e);
 				var text = e.title;
 				var type = e.type;
 
 				var result;
 				var icon = "";
 
-				// if we have an icon class, add it here
-				if ( type.icon ) {
-					icon = $("<i />").addClass(type.icon).append("&nbsp;");
-				}
 
 				//
 				// generate a form for search entries
 				//
 				if ( typeof(type.form) !== "undefined" && type.form == true ) {
-
-					// handle search input
-
 					result = $("<form method='post' />").
 						attr("action", href).
-						addClass("gopher-" + type.style).
 						addClass("form-inline");
 
 					var button = $("<button />").attr("type", "submit").addClass("btn").html("Go!");
@@ -252,11 +240,16 @@ GopherParser.prototype.parseEntry = function(dirent) {
 					result = text;
 				}
 
-				// output a link with the right class/etc
+				// output a link
 				else {
 					result = $("<a />").
 						attr("href", href).
 						html(text);
+				}
+
+				// if we have an icon class, add it here
+				if ( type.icon ) {
+					icon = $("<i />").addClass(type.icon).append("&nbsp;");
 				}
 
 				// add the output!

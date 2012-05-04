@@ -4,8 +4,8 @@ $(document).ready(function() {
 	 * (stored when loadGopherUri is complete), and re-render the
 	 * gopher output.
 	 */
-    History.Adapter.bind(window,'statechange',function() {
-        var state = History.getState();
+  History.Adapter.bind(window,'statechange',function() {
+    var state = History.getState();
 
 		if ( state.data.data ) {
 			$("#gopher").html(state.data.data).fromGopher();
@@ -16,9 +16,8 @@ $(document).ready(function() {
 		else {
 			$("#gopher,#breadcrumb").fadeOut().html("");
 			$("#intro").fadeIn();
-
 		}
-    });
+	});
 
 
 	/**
@@ -47,7 +46,6 @@ $(document).ready(function() {
 
 		for ( var i = 0; i < bc.length; i++ ) {
 			crumb = crumb + bc[i] + "/";
-
 
 			li = $("<li />");
 			if ( i + 1 == bc.length ) {
@@ -182,9 +180,10 @@ $(document).ready(function() {
 
 
 	/**
-	 * Handle existing URI on the browser's URL
+	 * Handle existing URI on the browser's URL -- we'll only do this if the intro is hidden, 
+	 * and there's something to load. We'll add the 'hide' class to the output in home.html to trigger this.
 	 */
-	if ( window.location.pathname != "/" ) {
+	if ( window.location.pathname != "/" && $("#intro").hasClass("hide") ) {
 		loadGopherUri(unescape(window.location.pathname));
 	}
 });

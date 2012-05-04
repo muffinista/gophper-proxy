@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+
+<?php 
+if ( ! array_key_exists('class', $this->data) ) {
+	$this->data["class"] = "";
+}
+?>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -38,10 +44,10 @@
             </ul>
           </div><!--/.nav-collapse -->
 
-		  <form class="gopher-uri form-inline">
-			<input type="text" name="uri" class="span4" style="margin-top:5px" placeholder="URL" />
-			<button type="submit" class="btn">go</button>
-		  </form>
+				  <form class="gopher-uri form-inline">
+						<input type="text" name="uri" class="span4" style="margin-top:5px" placeholder="URL" />
+						<button type="submit" class="btn">go</button>
+				  </form>
 
         </div>
       </div>
@@ -56,7 +62,7 @@
 
 		<div class="span4"></div>
 		<div class="span8">
-		  <div id="intro" <?php if ( array_key_exists('data', $this->data) ) {?>class="hide"<?php } ?>>
+		  <div id="intro" class="<?php echo $this->data["class"] ?>">
 			<h1>Gophper: A Gopher Proxy for Modern Times</h1>
 			<p>
 			  The <a href="http://en.wikipedia.org/wiki/Gopher_(protocol)">Gopher</a>
@@ -64,7 +70,7 @@
 			  time, but died off in the late 1990s, partially because of some
 			  poor decisions by the University of Minnesota (which owned
 			  the licensing rights), and also because HTTP and HTML was
-			  undoubtedly a better system for many things.
+			  undoubtedly a better system for what became the World Wide Web.
 			</p>
 			<p>
 			  There are still gopher servers out there today, but most
@@ -124,13 +130,7 @@
 		  </div>
 
 		  <div id="breadcrumb"></div>
-		  <div id="gopher">
-			<?php
-			   if ( array_key_exists('data', $this->data) ) {
-   		         echo $this->data['data'];
-			   }
-			?>
-		  </div> <!-- /gopher -->
+		  <div id="gopher"></div> <!-- /gopher -->
 
 		</div> <!-- /span10 -->
 

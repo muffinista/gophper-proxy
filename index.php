@@ -9,12 +9,6 @@ require_once 'config.php';
 
 $app = new Slim();
 
-/**
- * Step 3: Define the Slim application routes
- */
-
-
-
 //
 // default route
 //
@@ -51,7 +45,7 @@ $app->get('/file', function () use($app) {
  * this will handle incoming requests that have a gopher URL tacked onto the end
  */
 $app->notFound(function () use ($app) {
-	$app->render('home.html');
+	$app->render('home.html', array("class" => "hide"));
 });
 
 
@@ -68,26 +62,26 @@ $app->post('/gopher', function () {
 	try {
 	  $x = new GopherGetter($url, $input);
 	  if ( $x->isValid() ) {
-		$x->get();
+			$x->get();
 
-		// send binary files and large text back as an attachment
-		if ( $x->isBinary() || $x->size() > 1000000 ) {
-		  $result['url'] = "/file?name=" . basename($_POST["url"]) . "&path=" . $x->urlFor();
-		  $result['image'] = $x->isImage();
+			// send binary files and large text back as an attachment
+			if ( $x->isBinary() || $x->size() > 1000000 ) {
+			  $result['url'] = "/file?name=" . basename($_POST["url"]) . "&path=" . $x->urlFor();
+			  $result['image'] = $x->isImage();
 
-		}
-		else {
-		  $result['url'] = $_POST["url"];
-		  $result['data'] = $x->result;
+			}
+			else {
+			  $result['url'] = $_POST["url"];
+			  $result['data'] = $x->result;
 
-		  if (!mb_check_encoding($result['data'], 'UTF-8')) {
-			$result['data'] = utf8_encode($result['data']);
-		  }
-		}
+			  if (!mb_check_encoding($result['data'], 'UTF-8')) {
+				$result['data'] = utf8_encode($result['data']);
+			  }
+			}
 	  }
 	  else {
-		$result['url'] = $_POST["url"];
-		$result['data'] = "3Sorry, there was a problem with your request\t\tNULL\t70";
+			$result['url'] = $_POST["url"];
+			$result['data'] = "3Sorry, there was a problem with your request\t\tNULL\t70";
 	  }
 	} catch(Exception $e) {
 	  $result['url'] = $_POST["url"];
