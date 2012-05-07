@@ -13,10 +13,10 @@ $app = new Slim();
 // default route
 //
 $app->get('/', function () use($app) {
-	$app->render('home.html');
+	$app->render('home.html', array("file" => "intro.html"));
 });
 $app->get('/about', function () use($app) {
-	$app->render('about.html');
+	$app->render('home.html', array("file" => "about.html"));
 });
 
 /**

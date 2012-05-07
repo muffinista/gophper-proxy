@@ -1,5 +1,20 @@
+@font-face {
+    font-family: 'DroidSansMonoRegular';
+    src: url('/assets/font/DroidSansMono-webfont.eot');
+    src: url('/assets/font/DroidSansMono-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/assets/font/DroidSansMono-webfont.woff') format('woff'),
+         url('/assets/font/DroidSansMono-webfont.ttf') format('truetype'),
+         url('/assets/font/DroidSansMono-webfont.svg#DroidSansMonoRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+  padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+
 #gopher {
-	font-family:monospace;
+  font-family: DroidSansMonoRegular, monospace;
 	white-space: pre;
 	padding-bottom: 100px;
 }
@@ -8,7 +23,7 @@
 }
 
 #gopher i {
-  width: 25px;
+  width: 25px; /* padding for icons */
 }
 #gopher i.icon-search {
   float: left
