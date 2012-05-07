@@ -16,10 +16,7 @@ $app->get('/', function () use($app) {
 	$app->render('home.html');
 });
 $app->get('/about', function () use($app) {
-	$app->render('home.html');
-});
-$app->get('/code', function () use($app) {
-	$app->render('home.html');
+	$app->render('about.html');
 });
 
 /**

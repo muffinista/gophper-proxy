@@ -4,7 +4,7 @@ $(document).ready(function() {
 	 * (stored when loadGopherUri is complete), and re-render the
 	 * gopher output.
 	 */
-  History.Adapter.bind(window,'statechange',function() {
+  History.Adapter.bind(window, 'statechange', function() {
     var state = History.getState();
 
 		if ( state.data.data ) {
@@ -78,6 +78,9 @@ $(document).ready(function() {
 			data.input = params.input;
 		}
 
+			// hide the intro text if it is still there
+			$("#intro").hide();
+			$("#gopher").show();
 
 		var displayError = function() {
 			spinner.unspin();
@@ -103,9 +106,6 @@ $(document).ready(function() {
 				params.onComplete();
 			}
 
-			// hide the intro text if it is still there
-			$("#intro").hide();
-
 			// did we get valid data? if not, display the error
 			if ( data.error ) {
 				$("#gopher").html(data.error);
@@ -115,6 +115,7 @@ $(document).ready(function() {
 			// we got data, let's render it
 			//
 			else if ( data.data ) {
+
 				// update browser url and store the data hash for
 				// later use. for now we'll set the title to be the
 				// URI as well
@@ -131,7 +132,13 @@ $(document).ready(function() {
 
 				// scroll to the top of the page
 				$('html, body').animate({ scrollTop: 0 }, 0);
+
+				// Google Analytics support
+		    if ( window._gaq ) {
+		      _gaq.push(['_trackPageview']);
+		    }
 			}
+
 
 			//
 			// at this point, we probably just have a URL for a file, link to it

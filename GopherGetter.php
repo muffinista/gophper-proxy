@@ -13,7 +13,7 @@ class GopherGetter {
   private $cache;
 
   function __construct($u, $i = NULL) {
-		$this->cache = new Cache('assets/cache');  //Make sure it exists and is writeable
+		$this->cache = new Cache(CACHE_PATH);  //Make sure it exists and is writeable
 
 		// split the incoming URI on :// to prevent too much fooling 
 		// around and to make sure that we normalize our data
@@ -31,9 +31,14 @@ class GopherGetter {
 		$this->port = array_key_exists('port', $data) ? $data['port'] : 70;
 
 		// only allow port 70, or if ALLOW_ALL_PORTS is true, also allow ports over 1024
-		if ( $this->port != 70 && ( ALLOW_ALL_PORTS != true || $this->port < 1024 ) ) {
+		if ( $this->port != 70 && ( (defined('ALLOW_ALL_PORTS') && ALLOW_ALL_PORTS != true) || $this->port < 1024 ) ) {
 		  throw new Exception("Port violation");
 		}
+
+		if ( defined('RESTRICT_TO_MATCH') && ! preg_match(RESTRICT_TO_MATCH, $this->host) ) {
+		  throw new Exception("Host violation");
+		}
+
 
 		// strip the leading slash from the path
 		if ( array_key_exists('path', $data) ) {
@@ -107,7 +112,7 @@ class GopherGetter {
   }
 
   function logTraffic($host, $selector) {
-		if ( LOG_STATS != true ) {
+		if ( ! defined('LOG_STATS') || LOG_STATS != true ) {
 		  return;
 		}
 

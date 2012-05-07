@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<?php if ( ! array_key_exists('class', $this->data) ) {
+<?php 
+// class default for gopher intro
+if ( ! array_key_exists('class', $this->data) ) {
 	$this->data["class"] = "";
 } ?>
 <html lang="en">
@@ -9,7 +11,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-
 
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/colorbox.css" rel="stylesheet">
@@ -25,6 +26,7 @@
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+		<?php include_once("stats.html"); ?>
   </head>
 
   <body>
@@ -51,87 +53,23 @@
     </div>
 
     <div class="container">
-	  <div class="row">
+		  <div class="row">
 
-		<div id="spinner">
-		  <img src="/assets/img/spinner.gif" />
-		</div>
+				<div id="spinner">
+				  <img src="/assets/img/spinner.gif" />
+				</div>
 
-		<div class="span4"></div>
-		<div class="span8">
-		  <div id="intro" class="<?php echo $this->data["class"] ?>">
-			<h1>Gophper: A Gopher Proxy for Modern Times</h1>
-			<p>
-			  The <a href="http://en.wikipedia.org/wiki/Gopher_(protocol)">Gopher</a>
-			  protocol was published in 1991. It was popular for some
-			  time, but died off in the late 1990s, partially because of some
-			  poor decisions by the University of Minnesota (which owned
-			  the licensing rights), and also because HTTP and HTML was
-			  undoubtedly a better system for what became the World Wide Web.
-			</p>
-			<p>
-			  There are still gopher servers out there today, but most
-			  browsers can't visit them anymore, because support for the
-			  Gopher protocol has been removed. There are a couple of
-			  proxy servers out there, but they all suck, and none of them
-			  are open-source, so I wrote Gophper, a very simple proxy
-			  server with a small PHP backend, and a parser written in
-			  Javascript.
-			</p>
+				<div class="span4"></div>
+				<div class="span8">
+				  <div id="intro" class="<?php echo $this->data["class"] ?>">
+						<?php include_once("intro.html"); ?>
+				  </div>
 
-			<h2>About Gophper</h2>
-			<p>
-			  Gophper has a bunch of cool features:
-			  <ul>
-				<li>The backend is written in PHP using the Slim
-				  framework. It is very simple and easy to modify.</li>
-				<li>The bulk of the work is done in Javascript, so you can
-				  very easily re-implement with a different backend if
-				  desired.</li>
-				<li>It caches gopher pages for fast performance.</li>
-				<li>It detects when a user has requested a binary file
-				  (Image, Document, etc) and returns that file to the browser,
-				  rather than returning junk and crashing your browser like
-				  most gopher proxies.</li>
-				<li>Coming Soon: Stats, etc</li>
-			  </ul>
-			</p>
+				  <div id="breadcrumb"></div>
+				  <div id="gopher"></div> <!-- /gopher -->
+				</div> <!-- /span8 -->
 
-			<div class="as-html">
-			  <h3>Let's Do This!</h3>
-			  <p>If you know where you would like to go, enter the URL
-				below, or you can always enter a URL into the box at the top
-				of the page.</p>
-			  <form class="well gopher-uri">
-					<fieldset>
-					  <label>Gopher URI to visit:</label>
-					  <input type="text" name="uri" class="span3" placeholder="URL">
-					</fieldset>
-					<button type="submit" class="btn">go!</button>
-			  </form>
-
-			  <h3>Or, you can try one of these popular Gopher servers</h3>
-			  <ul>
-					<li><a href="/gopher.meulie.net">gopher.meulie.net</a></li>
-					<li><a href="/sdf.org">sdf.org</a></li>
-					<li><a href="/moo.ca">moo.ca</a></li>
-					<li><a href="/gopher.floodgap.com">gopher.floodgap.com</a></li>
-					<li><a href="/gopher.std.com">gopher.std.com</a></li>
-					<li><a href="/gopher.quux.org">gopher.quux.org</a></li>
-					<li><a href="/nemesis.cs.berkeley.edu">nemesis.cs.berkeley.edu</a></li>
-					<li><a href="/telefisk.org">telefisk.org</a></li>
-					<li><a href="/gopher.viste-family.net">gopher.viste-family.net</a></li>
-					<li><a href="/quix.us">quix.us</a></li>
-			  </ul>
-			</div> <!-- /as-html -->
-		  </div>
-
-		  <div id="breadcrumb"></div>
-		  <div id="gopher"></div> <!-- /gopher -->
-
-		</div> <!-- /span10 -->
-
-	  </div><!-- /row -->
+		  </div><!-- /row -->
     </div> <!-- /container -->
 
 		<div class="navbar navbar-fixed-bottom">
@@ -147,7 +85,6 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="/assets/js/jquery.colorbox-min.js"></script>
     <script src="/assets/js/jquery.history.js"></script>
-    <script src="/assets/js/spin.min.js"></script>
     <script src="/assets/js/gopher.js"></script>
     <script src="/assets/js/site.js"></script>
   </body>
