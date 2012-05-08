@@ -1,7 +1,7 @@
 function GopherParser() {};
 
 /**
- *  regex for matching gopher entries. it didn't quite work in its original form (see below)
+ *  regex for matching gopher entries. borrowed and modified from phpjs
  */
 GopherParser.prototype.entryPattern = /^(.)(.*?)\t(.*?)\t(.*?)\t(\d+).*/;
 
