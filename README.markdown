@@ -19,7 +19,8 @@ Javascript.
 
 Gophper has a bunch of cool features:
 
-* The backend is written in PHP using the Slim framework. It is very simple and easy to modify.
+* The backend is written in PHP using the Slim framework. It is very
+  simple and easy to modify.
 * The bulk of the work is done in Javascript, so you can very easily
   re-implement with a different backend if desired.
 * Uses the Twitter Bootstrap framework for output -- it's visually
@@ -43,6 +44,9 @@ Using Gophper is easy:
 * If you want to track traffic in the database, run stats.sql, and
   make sure that you've set the right login credentials in the config
   file.
+* Update templates/intro.html if you want, to point to your Gopher
+  server, etc. Right now, it has a description of gophper-proxy and
+  links to some popular gopher sites.
 
 ## Bugs/Troubleshooting ##
 
