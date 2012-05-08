@@ -1,6 +1,6 @@
 # Gophper: A Gopher Proxy for Modern Times #
 
-The [http://en.wikipedia.org/wiki/Gopher_(protocol)](Gopher)
+The [Gopher](http://en.wikipedia.org/wiki/Gopher_(protocol))
 protocol was published in 1991. It was popular for some
 time, but died off in the late 1990s, partially because of some
 poor decisions by the University of Minnesota (which owned
@@ -51,3 +51,10 @@ If you have a problem, feel free to submit a support request on Github.
 ## TODO ##
 
 * Make it possible to run in a subdirectory
+
+## Copyright/License ##
+
+Copyright (c) 2012 Colin Mitchell. Licensed under WTFPL
+licence. Please see LICENSE.txt for further details.
+
+http://muffinlabs.com
