@@ -2,9 +2,9 @@
 require 'Slim/Slim.php';
 require 'Slim/View.php';
 
-require 'GopherGetter.php';
+require 'lib/GopherGetter.php';
+require_once 'lib/meekrodb.2.0.class.php';
 
-require_once 'meekrodb.2.0.class.php';
 require_once 'config.php';
 
 $app = new Slim();
