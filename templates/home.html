@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <?php
-// class default for gopher intro
-if ( ! array_key_exists('class', $this->data) ) {
-	$this->data["class"] = "";
-}
-if ( ! array_key_exists('file', $this->data) ) {
-	$this->data["file"] = "intro.html";
-}
- ?>
+   // class default for gopher intro
+   if ( ! array_key_exists('class', $this->data) ) {
+     $this->data["class"] = "";
+   }
+   if ( ! array_key_exists('file', $this->data) ) {
+     $this->data["file"] = "intro.html";
+   }
+?>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -17,16 +17,16 @@ if ( ! array_key_exists('file', $this->data) ) {
     <meta name="author" content="">
 
     <link href="/assets/css/assets.css" rel="stylesheet">
-<!--
-    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="/assets/css/colorbox.css" rel="stylesheet">
-    <link href="/assets/css/gophper.css" rel="stylesheet">
--->
+    <!--
+        <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/assets/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="/assets/css/colorbox.css" rel="stylesheet">
+        <link href="/assets/css/gophper.css" rel="stylesheet">
+        -->
     <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-		<?php include_once("stats.html"); ?>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    <?php include_once("stats.html"); ?>
   </head>
 
   <body>
@@ -43,52 +43,51 @@ if ( ! array_key_exists('file', $this->data) ) {
             </ul>
           </div><!--/.nav-collapse -->
 
-				  <form class="gopher-uri form-inline">
-						<input type="text" name="uri" class="span4" style="margin-top:5px" placeholder="URL" />
-						<button type="submit" class="btn">go</button>
-				  </form>
-
+	  <form class="gopher-uri form-inline">
+	    <input type="text" name="uri" class="span4" style="margin-top:5px" placeholder="URL" />
+	    <button type="submit" class="btn">go</button>
+	  </form>
         </div>
       </div>
     </div>
 
     <div class="container">
-		  <div class="row">
+      <div class="row">
 
-				<div id="spinner">
-				  <img src="/assets/img/spinner.gif" />
-				</div>
+	<div id="spinner">
+	  <img src="/assets/img/spinner.gif" />
+	</div>
 
-				<div class="span4"></div>
-				<div class="span8">
-				  <div id="intro" class="<?php echo $this->data["class"] ?>">
-						<?php include_once($this->data["file"]); ?>
-				  </div>
+	<div class="span4"></div>
+	<div class="span8">
+	  <div id="intro" class="<?php echo $this->data["class"] ?>">
+	    <?php include_once($this->data["file"]); ?>
+	  </div>
 
-				  <div id="breadcrumb"></div>
-				  <div id="gopher"></div> <!-- /gopher -->
-				</div> <!-- /span8 -->
+	  <div id="breadcrumb"></div>
+	  <div id="gopher"></div> <!-- /gopher -->
+	</div> <!-- /span8 -->
 
-		  </div><!-- /row -->
+      </div><!-- /row -->
     </div> <!-- /container -->
 
-		<div class="navbar navbar-fixed-bottom">
-	    <div class="navbar-inner">
-	      <div class="container">
-		  		<p>Gophper-PHP &copy;	2012 <a href="http://muffinlabs.com/">Colin
-			  		Mitchell</a>. Content delivered via Gophper belongs to its
-						original authors. Enjoy!</p>
-				</div>
-		  </div>
-		</div>
+    <div class="navbar navbar-fixed-bottom">
+      <div class="navbar-inner">
+	<div class="container">
+	  <p>Gophper-PHP &copy;	2012 <a href="http://muffinlabs.com/">Colin
+	      Mitchell</a>. Content delivered via Gophper belongs to its
+	    original authors. Enjoy!</p>
+	</div>
+      </div>
+    </div>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="/assets/js/jquery.history.js"></script>
     <script src="/assets/js/compressed.js"></script>
-<!--
-    <script src="/assets/js/jquery.colorbox-min.js"></script>
-    <script src="/assets/js/gopher.js"></script>
-    <script src="/assets/js/site.js"></script>
--->
+    <!--
+        <script src="/assets/js/jquery.colorbox-min.js"></script>
+        <script src="/assets/js/gopher.js"></script>
+        <script src="/assets/js/site.js"></script>
+        -->
   </body>
 </html>

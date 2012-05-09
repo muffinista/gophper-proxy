@@ -1,10 +1,11 @@
 <h1>Gophper: A Gopher Proxy for Modern Times</h1>
 <p>
   The <a href="http://en.wikipedia.org/wiki/Gopher_(protocol)">Gopher</a>
-  protocol was published in 1991. It was popular for some
-  time, but died off in the late 1990s, partially because of some
-  poor decisions by the University of Minnesota (which owned
-  the licensing rights), and also because HTTP and HTML was
+  protocol was published in 1991. It was popular for some time, but
+  died off in the late 1990s, partially because of some poor decisions
+  by the University of Minnesota (which owned the licensing rights,
+  and <a href="http://www.nic.funet.fi/pub/vms/networking/gopher/gopher-software-licensing-policy.ancient">decided
+  to charge for use</a>), and also because HTTP and HTML was
   undoubtedly a better system for what became the World Wide Web.
 </p>
 <p>
@@ -21,16 +22,18 @@
 <p>
   Gophper has a bunch of cool features:
   <ul>
-		<li>The backend is written in PHP using the Slim
-		  framework. It is very simple and easy to modify.</li>
-		<li>The bulk of the work is done in Javascript, so you can
-		  very easily re-implement with a different backend if
-		  desired.</li>
-		<li>It caches gopher pages for fast performance.</li>
-		<li>It detects when a user has requested a binary file
-		  (Image, Document, etc) and returns that file to the browser,
-		  rather than returning junk and crashing your browser like
-		  most gopher proxies.</li>
-		<li>Report traffic to GA, and also track stats locally to present reports to users</li>
+    <li>The backend is written in PHP using the
+      <a href="http://www.slimframework.com/">Slim
+      framework</a>. It is very simple and easy to modify.</li>
+    <li>The bulk of the work is done in Javascript, so you can
+      very easily re-implement with a different backend if
+      desired.</li>
+    <li>It caches gopher pages for fast performance.</li>
+    <li>It detects when a user has requested a binary file
+      (Image, Document, etc) and returns that file to the browser,
+      rather than returning junk and crashing your browser like
+      most gopher proxies.</li>
+    <li>Report traffic to GA, and also track stats locally to present
+      reports to users</li>
   </ul>
 </p>

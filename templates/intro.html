@@ -1,67 +1,38 @@
 <!-- intro.html: you can replace me with copy specific to your site if you want -->
 <h1>Gophper: A Gopher Proxy for Modern Times</h1>
-<p>
-  The <a href="http://en.wikipedia.org/wiki/Gopher_(protocol)">Gopher</a>
-  protocol was published in 1991. It was popular for some
-  time, but died off in the late 1990s, partially because of some
-  poor decisions by the University of Minnesota (which owned
-  the licensing rights), and also because HTTP and HTML was
-  undoubtedly a better system for what became the World Wide Web.
-</p>
-<p>
-  There are still gopher servers out there today, but most
-  browsers can't visit them anymore, because support for the
-  Gopher protocol has been removed. There are a couple of
-  proxy servers out there, but they all suck, and none of them
-  are open-source, so I wrote Gophper, a very simple proxy
-  server with a small PHP backend, and a parser written in
-  Javascript.
-</p>
+<p>Hello, welcome to Gophper, a proxy for gopher servers. You can use
+  this site to view your favorite gopher content from the past.</p>
 
-<h2>About Gophper</h2>
-<p>
-  Gophper has a bunch of cool features:
-  <ul>
-		<li>The backend is written in PHP using the Slim
-		  framework. It is very simple and easy to modify.</li>
-		<li>The bulk of the work is done in Javascript, so you can
-		  very easily re-implement with a different backend if
-		  desired.</li>
-		<li>It caches gopher pages for fast performance.</li>
-		<li>It detects when a user has requested a binary file
-		  (Image, Document, etc) and returns that file to the browser,
-		  rather than returning junk and crashing your browser like
-		  most gopher proxies.</li>
-		<li>Report traffic to GA, and also track stats locally to present reports to users</li>
-  </ul>
-</p>
+<p>You can learn more about Gophper on
+  the <a href="/about">About</a> page, or you can just try it out
+  below.</p>
 
 <div class="as-html">
-  <h3>Let's Do This!</h3>
+  <h2>Let's Do This!</h2>
   <p>If you know where you would like to go, enter the URL
-	below, or you can always enter a URL into the box at the top
-	of the page.</p>
+    below, or you can always enter a URL into the box at the top
+    of the page.</p>
 
-	<!--- forms with the class gopher-uri will be handled by gophper -->
+  <!--- forms with the class gopher-uri will be handled by gophper -->
   <form class="well gopher-uri">
-		<fieldset>
-		  <label>Gopher URI to visit:</label>
-		  <input type="text" name="uri" class="span3" placeholder="URL" />
-		</fieldset>
-		<button type="submit" class="btn">go!</button>
+    <fieldset>
+      <label>Gopher URI to visit:</label>
+      <input type="text" name="uri" class="span3" placeholder="URL" />
+    </fieldset>
+    <button type="submit" class="btn">go!</button>
   </form>
 
-  <h3>Or, you can try one of these popular Gopher servers</h3>
+  <h2>Or, you can try one of these popular Gopher servers</h2>
   <ul>
-		<li><a href="/gopher.meulie.net">gopher.meulie.net</a></li>
-		<li><a href="/sdf.org">sdf.org</a></li>
-		<li><a href="/moo.ca">moo.ca</a></li>
-		<li><a href="/gopher.floodgap.com">gopher.floodgap.com</a></li>
-		<li><a href="/gopher.std.com">gopher.std.com</a></li>
-		<li><a href="/gopher.quux.org">gopher.quux.org</a></li>
-		<li><a href="/nemesis.cs.berkeley.edu">nemesis.cs.berkeley.edu</a></li>
-		<li><a href="/telefisk.org">telefisk.org</a></li>
-		<li><a href="/gopher.viste-family.net">gopher.viste-family.net</a></li>
-		<li><a href="/quix.us">quix.us</a></li>
+    <li><a href="/gopher.meulie.net">gopher.meulie.net</a></li>
+    <li><a href="/sdf.org">sdf.org</a></li>
+    <li><a href="/moo.ca">moo.ca</a></li>
+    <li><a href="/gopher.floodgap.com">gopher.floodgap.com</a></li>
+    <li><a href="/gopher.std.com">gopher.std.com</a></li>
+    <li><a href="/gopher.quux.org">gopher.quux.org</a></li>
+    <li><a href="/nemesis.cs.berkeley.edu">nemesis.cs.berkeley.edu</a></li>
+    <li><a href="/telefisk.org">telefisk.org</a></li>
+    <li><a href="/gopher.viste-family.net">gopher.viste-family.net</a></li>
+    <li><a href="/quix.us">quix.us</a></li>
   </ul>
 </div> <!-- /as-html -->
