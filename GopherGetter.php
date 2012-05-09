@@ -127,7 +127,5 @@ class GopherGetter {
 									));
 
   }
-
-
 };
 ?>

@@ -65,14 +65,13 @@ $app->post('/gopher', function () {
 			if ( $x->isBinary() || $x->size() > 1000000 ) {
 			  $result['url'] = "/file?name=" . basename($_POST["url"]) . "&path=" . $x->urlFor();
 			  $result['image'] = $x->isImage();
-
 			}
 			else {
 			  $result['url'] = $_POST["url"];
 			  $result['data'] = $x->result;
 
 			  if (!mb_check_encoding($result['data'], 'UTF-8')) {
-				$result['data'] = utf8_encode($result['data']);
+					$result['data'] = utf8_encode($result['data']);
 			  }
 			}
 	  }
