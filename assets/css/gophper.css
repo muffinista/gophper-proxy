@@ -10,7 +10,7 @@
 }
 
 body {
-  padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+  padding-top: 50px; /* 50px to make the container go all the way to the bottom of the topbar */
 }
 
 #gopher {
@@ -40,4 +40,8 @@ body {
 
 .navbar-fixed-bottom .container {
   padding-top: 5px;
+}
+
+form.gopher-uri {
+    margin: 0 0 5px;
 }
