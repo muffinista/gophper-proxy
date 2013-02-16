@@ -1,6 +1,6 @@
 <?php
 /*
-    Copyright (C) 2008-2011 Sergey Tsalkov (stsalkov@gmail.com)
+    Copyright (C) 2008-2012 Sergey Tsalkov (stsalkov@gmail.com)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -29,11 +29,13 @@ class DB {
   // configure workings
   public static $queryMode = 'queryAllRows';
   public static $param_char = '%';
+  public static $named_param_seperator = '_';
   public static $success_handler = false;
   public static $error_handler = true;
   public static $throw_exception_on_error = false;
   public static $nonsql_error_handler = null;
   public static $throw_exception_on_nonsql_error = false;
+  public static $nested_transactions = false;
   
   // internal
   protected static $mdb = null;
@@ -47,15 +49,18 @@ class DB {
     
     if ($mdb->queryMode !== DB::$queryMode) $mdb->queryMode = DB::$queryMode;
     if ($mdb->param_char !== DB::$param_char) $mdb->param_char = DB::$param_char;
+    if ($mdb->named_param_seperator !== DB::$named_param_seperator) $mdb->named_param_seperator = DB::$named_param_seperator;
     if ($mdb->success_handler !== DB::$success_handler) $mdb->success_handler = DB::$success_handler;
     if ($mdb->error_handler !== DB::$error_handler) $mdb->error_handler = DB::$error_handler;
     if ($mdb->throw_exception_on_error !== DB::$throw_exception_on_error) $mdb->throw_exception_on_error = DB::$throw_exception_on_error;
     if ($mdb->nonsql_error_handler !== DB::$nonsql_error_handler) $mdb->nonsql_error_handler = DB::$nonsql_error_handler;
     if ($mdb->throw_exception_on_nonsql_error !== DB::$throw_exception_on_nonsql_error) $mdb->throw_exception_on_nonsql_error = DB::$throw_exception_on_nonsql_error;
+    if ($mdb->nested_transactions !== DB::$nested_transactions) $mdb->nested_transactions = DB::$nested_transactions;
     
     return $mdb;
   }
   
+  public static function get() { $args = func_get_args(); return call_user_func_array(array(DB::getMDB(), 'get'), $args); }
   public static function query() { $args = func_get_args(); return call_user_func_array(array(DB::getMDB(), 'query'), $args); }
   public static function quickPrepare() { $args = func_get_args(); return call_user_func_array(array(DB::getMDB(), 'quickPrepare'), $args); }
   public static function queryFirstRow() { $args = func_get_args(); return call_user_func_array(array(DB::getMDB(), 'queryFirstRow'), $args); }
@@ -92,6 +97,10 @@ class DB {
   public static function sqlEval() { $args = func_get_args(); return call_user_func_array(array(DB::getMDB(), 'sqlEval'), $args); }
   public static function nonSQLError() { $args = func_get_args(); return call_user_func_array(array(DB::getMDB(), 'nonSQLError'), $args); }
   
+  public static function serverVersion() { $args = func_get_args(); return call_user_func_array(array(DB::getMDB(), 'serverVersion'), $args); }
+  public static function transactionDepth() { $args = func_get_args(); return call_user_func_array(array(DB::getMDB(), 'transactionDepth'), $args); }
+  
+  
   public static function debugMode($handler = true) { 
     DB::$success_handler = $handler;
   }
@@ -111,14 +120,17 @@ class MeekroDB {
   // configure workings
   public $queryMode = 'queryAllRows';
   public $param_char = '%';
+  public $named_param_seperator = '_';
   public $success_handler = false;
   public $error_handler = true;
   public $throw_exception_on_error = false;
   public $nonsql_error_handler = null;
   public $throw_exception_on_nonsql_error = false;
+  public $nested_transactions = false;
   
   // internal
   public $internal_mysql = null;
+  public $server_info = null;
   public $insert_id = 0;
   public $num_rows = 0;
   public $affected_rows = 0;
@@ -126,6 +138,7 @@ class MeekroDB {
   public $queryResultType = null;
   public $old_db = null;
   public $current_db = null;
+  public $nested_transactions_count = 0;
   
   
   public function __construct($host=null, $user=null, $password=null, $dbName=null, $port=null, $encoding=null) {
@@ -158,6 +171,7 @@ class MeekroDB {
       
       $mysql->set_charset($this->encoding);
       $this->internal_mysql = $mysql;
+      $this->server_info = $mysql->server_info;
     }
     
     return $mysql;
@@ -181,6 +195,8 @@ class MeekroDB {
     $this->success_handler = $handler;
   }
   
+  public function serverVersion() { return $this->server_info; }
+  public function transactionDepth() { return $this->nested_transactions_count; }
   public function insertId() { return $this->insert_id; }
   public function affectedRows() { return $this->affected_rows; }
   public function count() { $args = func_get_args(); return call_user_func_array(array($this, 'numRows'), $args); }
@@ -196,15 +212,55 @@ class MeekroDB {
   
   
   public function startTransaction() {
-    $this->queryNull('START TRANSACTION');
+    if ($this->nested_transactions && $this->serverVersion() < '5.5') {
+      return $this->nonSQLError("Nested transactions are only available on MySQL 5.5 and greater. You are using MySQL " . $this->serverVersion());
+    }
+    
+    if (!$this->nested_transactions || $this->nested_transactions_count == 0) {
+      $this->queryNull('START TRANSACTION');
+      $this->nested_transactions_count = 1;
+    } else {
+      $this->queryNull("SAVEPOINT LEVEL{$this->nested_transactions_count}");
+      $this->nested_transactions_count++;
+    }
+    
+    return $this->nested_transactions_count;
   }
   
-  public function commit() {
-    $this->queryNull('COMMIT');
+  public function commit($all=false) {
+    if ($this->nested_transactions && $this->serverVersion() < '5.5') {
+      return $this->nonSQLError("Nested transactions are only available on MySQL 5.5 and greater. You are using MySQL " . $this->serverVersion());
+    }
+    
+    if ($this->nested_transactions && $this->nested_transactions_count > 0)
+      $this->nested_transactions_count--;
+    
+    if (!$this->nested_transactions || $all || $this->nested_transactions_count == 0) {
+      $this->nested_transactions_count = 0;
+      $this->queryNull('COMMIT');
+    } else {
+      $this->queryNull("RELEASE SAVEPOINT LEVEL{$this->nested_transactions_count}");
+    }
+    
+    return $this->nested_transactions_count;
   }
   
-  public function rollback() {
-    $this->queryNull('ROLLBACK');
+  public function rollback($all=false) {
+    if ($this->nested_transactions && $this->serverVersion() < '5.5') {
+      return $this->nonSQLError("Nested transactions are only available on MySQL 5.5 and greater. You are using MySQL " . $this->serverVersion());
+    }
+    
+    if ($this->nested_transactions && $this->nested_transactions_count > 0)
+      $this->nested_transactions_count--;
+    
+    if (!$this->nested_transactions || $all || $this->nested_transactions_count == 0) {
+      $this->nested_transactions_count = 0;
+      $this->queryNull('ROLLBACK');
+    } else {
+      $this->queryNull("ROLLBACK TO SAVEPOINT LEVEL{$this->nested_transactions_count}");
+    }
+    
+    return $this->nested_transactions_count;
   }
   
   public function escape($str) {
@@ -299,7 +355,7 @@ class MeekroDB {
       $insert_values = array();
       
       foreach ($keys as $key) {
-        if ($many && !isset($data[$key])) $this->nonSQLError('insert/replace many: each assoc array must have the same keys!'); 
+        if ($many && !array_key_exists($key, $data)) $this->nonSQLError('insert/replace many: each assoc array must have the same keys!'); 
         $datum = $data[$key];
         $datum = $this->sanitize($datum);
         $insert_values[] = $datum;
@@ -409,6 +465,8 @@ class MeekroDB {
     $posList = array();
     $pos_adj = 0;
     $param_char_length = strlen($this->param_char);
+    $named_seperator_length = strlen($this->named_param_seperator);
+    
     $types = array(
       $this->param_char . 'll', // list of literals
       $this->param_char . 'ls', // list of strings
@@ -438,11 +496,24 @@ class MeekroDB {
       $type = substr($type, $param_char_length);
       $length_type = strlen($type) + $param_char_length;
       
-      if ($arg_number_length = strspn($sql, '0123456789', $pos + $pos_adj + $length_type)) {
-        $arg_number = substr($sql, $pos + $pos_adj + $length_type, $arg_number_length);
+      $new_pos = $pos + $pos_adj;
+      $new_pos_back = $new_pos + $length_type;
+      
+      if ($arg_number_length = strspn($sql, '0123456789', $new_pos_back)) {
+        $arg_number = substr($sql, $new_pos_back, $arg_number_length);
         if (! isset($args_all[$arg_number])) $this->nonSQLError("Non existent argument reference (arg $arg_number): $sql");
         
         $arg = $args_all[$arg_number];
+        
+      } else if (substr($sql, $new_pos_back, $named_seperator_length) == $this->named_param_seperator) {
+        $arg_number_length = strspn($sql, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_', 
+          $new_pos_back + $named_seperator_length) + $named_seperator_length;
+        
+        $arg_number = substr($sql, $new_pos_back + $named_seperator_length, $arg_number_length - $named_seperator_length);
+        if (count($args_all) != 1) $this->nonSQLError("If you use named parameters, the second argument must be an array of parameters");
+        if (! isset($args_all[0][$arg_number])) $this->nonSQLError("Non existent argument reference (arg $arg_number): $sql");
+        
+        $arg = $args_all[0][$arg_number];
         
       } else {
         $arg_number = 0;
@@ -463,7 +534,7 @@ class MeekroDB {
       if ($type == 'ls') $result = $this->wrapStr($arg, "'", true);
       else if ($type == 'li') $result = array_map('intval', $arg);
       else if ($type == 'ld') $result = array_map('floatval', $arg);
-      else if ($type == 'lb') $result = array_map('$this->formatTableName', $arg);
+      else if ($type == 'lb') $result = array_map(array($this, 'formatTableName'), $arg);
       else if ($type == 'll') $result = $arg;
       else if (! $result) $this->nonSQLError("Badly formatted SQL query: $sql");
       
@@ -472,7 +543,7 @@ class MeekroDB {
         else $result = '(' . implode(',', $result) . ')';
       }
       
-      $sql = substr_replace($sql, $result, $pos + $pos_adj, $length_type + $arg_number_length);
+      $sql = substr_replace($sql, $result, $new_pos, $length_type + $arg_number_length);
       $pos_adj += strlen($result) - ($length_type + $arg_number_length);
     }
     return $sql;
@@ -542,7 +613,8 @@ class MeekroDB {
       
       call_user_func($success_handler, array(
         'query' => $sql,
-        'runtime' => $runtime
+        'runtime' => $runtime,
+        'affected' => $db->affected_rows
       )); 
     }
     
@@ -770,6 +842,8 @@ class WhereClause {
     if ($this->negate) $A = '(NOT ' . $A . ')';
     return $A;
   }
+  
+  function __toString() { return $this->text(); }
 }
 
 class DBTransaction {
@@ -800,6 +874,56 @@ class MeekroDBException extends Exception {
   public function getQuery() { return $this->query; }
 }
 
+class DBHelper {
+  /*
+    verticalSlice
+    1. For an array of assoc rays, return an array of values for a particular key
+    2. if $keyfield is given, same as above but use that hash key as the key in new array
+  */
+  
+  public static function verticalSlice($array, $field, $keyfield = null) {
+    $array = (array) $array;
+    
+    $R = array();
+    foreach ($array as $obj) {
+      if (! array_key_exists($field, $obj)) die("verticalSlice: array doesn't have requested field\n");
+      
+      if ($keyfield) {
+        if (! array_key_exists($keyfield, $obj)) die("verticalSlice: array doesn't have requested field\n");  
+        $R[$obj[$keyfield]] = $obj[$field];
+      } else { 
+        $R[] = $obj[$field];
+      }
+    }
+    return $R;
+  }
+  
+  /*
+    reIndex
+    For an array of assoc rays, return a new array of assoc rays using a certain field for keys
+  */
+  
+  public static function reIndex() {
+    $fields = func_get_args();
+    $array = array_shift($fields);
+    $array = (array) $array;
+    
+    $R = array();
+    foreach ($array as $obj) {
+      $target =& $R;
+      
+      foreach ($fields as $field) {
+        if (! array_key_exists($field, $obj)) die("reIndex: array doesn't have requested field\n");
+        
+        $nextkey = $obj[$field];
+        $target =& $target[$nextkey];
+      }
+      $target = $obj;
+    }
+    return $R;
+  }
+}
+
 function meekrodb_error_handler($params) {
   if (isset($params['query'])) $out[] = "QUERY: " . $params['query'];
   if (isset($params['error'])) $out[] = "ERROR: " . $params['error'];
@@ -810,8 +934,6 @@ function meekrodb_error_handler($params) {
   } else {
     echo implode("<br>\n", $out);
   }
-  
-  debug_print_backtrace();
   
   die;
 }

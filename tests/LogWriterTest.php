@@ -7,7 +7,6 @@
  * @link        http://www.slimframework.com
  * @license     http://www.slimframework.com/license
  * @version     2.2.0
- * @package     Slim
  *
  * MIT LICENSE
  *
@@ -30,19 +29,20 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-namespace Slim\Exception;
 
-/**
- * Stop Exception
- *
- * This Exception is thrown when the Slim application needs to abort
- * processing and return control flow to the outer PHP script.
- *
- * @package Slim
- * @author  Josh Lockhart
- * @since   1.0.0
- */
-class Stop extends \Exception
+class LogWriterTest extends PHPUnit_Framework_TestCase
 {
+    public function testInstantiation()
+    {
+        $this->expectOutputString('Hello!' . PHP_EOL);
+        $handle = fopen('php://output', 'w');
+        $fw = new \Slim\LogWriter($handle);
+        $this->assertTrue($fw->write('Hello!') > 0); //<-- Returns number of bytes written if successful
+    }
 
+    public function testInstantiationWithNonResource()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $fw = new \Slim\LogWriter(@fopen('/foo/bar.txt', 'w'));
+    }
 }

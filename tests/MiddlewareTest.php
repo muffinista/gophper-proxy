@@ -7,7 +7,6 @@
  * @link        http://www.slimframework.com
  * @license     http://www.slimframework.com/license
  * @version     2.2.0
- * @package     Slim
  *
  * MIT LICENSE
  *
@@ -30,19 +29,58 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-namespace Slim\Exception;
 
-/**
- * Stop Exception
- *
- * This Exception is thrown when the Slim application needs to abort
- * processing and return control flow to the outer PHP script.
- *
- * @package Slim
- * @author  Josh Lockhart
- * @since   1.0.0
- */
-class Stop extends \Exception
+class My_Middleware extends \Slim\Middleware
 {
+    public function call()
+    {
+        echo "Before";
+        $this->next->call();
+        echo "After";
+    }
+}
 
+class My_Application
+{
+    public function call()
+    {
+        echo "Application";
+    }
+}
+
+class MiddlewareTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * Get and set application
+     */
+    public function testGetAndSetApplication()
+    {
+        $app = new My_Application();
+        $mw = new My_Middleware();
+        $mw->setApplication($app);
+        $this->assertSame($app, $mw->getApplication());
+    }
+
+    /**
+     * Get and set next middleware
+     */
+    public function testGetAndSetNextMiddleware()
+    {
+        $mw1 = new My_Middleware();
+        $mw2 = new My_Middleware();
+        $mw1->setNextMiddleware($mw2);
+        $this->assertSame($mw2, $mw1->getNextMiddleware());
+    }
+
+    /**
+     * Test call
+     */
+    public function testCall()
+    {
+        $this->expectOutputString('BeforeApplicationAfter');
+        $app = new My_Application();
+        $mw = new My_Middleware();
+        $mw->setNextMiddleware($app);
+        $mw->call();
+    }
 }

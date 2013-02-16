@@ -1,64 +1,152 @@
-# Gophper: A Gopher Proxy for Modern Times #
+# Slim Framework
 
-The [Gopher](http://en.wikipedia.org/wiki/Gopher_(protocol))
-protocol was published in 1991. It was popular for some
-time, but died off in the late 1990s, partially because of some
-poor decisions by the University of Minnesota (which owned
-the licensing rights), and also because HTTP and HTML was
-undoubtedly a better system for what became the World Wide Web.
+[![Build Status](https://secure.travis-ci.org/codeguy/Slim.png)](http://travis-ci.org/codeguy/Slim)
 
-There are still gopher servers out there today, but most
-browsers can't visit them anymore, because support for the
-Gopher protocol has been removed. There are a couple of
-proxy servers out there, but they all suck, and none of them
-are open-source, so I wrote Gophper, a very simple proxy
-server with a small PHP backend, and a parser written in
-Javascript.
+Slim is a PHP micro framework that helps you quickly write simple yet powerful web applications and APIs.
+Slim is easy to use for both beginners and professionals. Slim favors cleanliness over terseness and common cases
+over edge cases. Its interface is simple, intuitive, and extensively documented — both online and in the code itself.
+Thank you for choosing the Slim Framework for your next project. I think you're going to love it.
 
-## About Gophper ##
+## Features
 
-Gophper has a bunch of cool features:
+* Powerful router
+    * Standard and custom HTTP methods
+    * Route parameters with wildcards and conditions
+    * Route redirect, halt, and pass
+    * Route middleware
+* Template rendering with custom views
+* Flash messages
+* Secure cookies with AES-256 encryption
+* HTTP caching
+* Logging with custom log writers
+* Error handling and debugging
+* Middleware and hook architecture
+* Simple configuration
 
-* The backend is written in PHP using the Slim framework. It is very
-  simple and easy to modify.
-* The bulk of the work is done in Javascript, so you can very easily
-  re-implement with a different backend if desired.
-* Uses the Twitter Bootstrap framework for output -- it's visually
-  appealing, generates nice code, and should be easy to tweak if
-  needed.
-* It caches gopher pages for fast performance.
-* Displays images in modal windows
-* Detects when a user has requested a binary file (Image, Document,
-  etc) and returns that file to the browser, rather than returning junk
-  and crashing your browser like most gopher proxies.
-* Report traffic to GA, and also track stats locally to present reports to users.
-* Restrict the proxy to a single host or port if desired. That way you
-  can use it as the web frontend to your nifty gopher project.
+## Getting Started
 
-## Using Gophper ##
+### Install
 
-Using Gophper is easy:
-* drop the code wherever you want it
-* copy config.php.example to config.php, and update any values inside
-  if needed
-* If you want to track traffic in the database, run stats.sql, and
-  make sure that you've set the right login credentials in the config
-  file.
-* Update templates/intro.html if you want, to point to your Gopher
-  server, etc. Right now, it has a description of gophper-proxy and
-  links to some popular gopher sites.
+You may install the Slim Framework with Composer (recommended) or manually.
 
-## Bugs/Troubleshooting ##
+[Read how to install Slim](http://docs.slimframework.com/pages/getting-started-install)
 
-If you have a problem, feel free to submit a support request on Github.
+### System Requirements
 
-## TODO ##
+You need **PHP >= 5.3.0**. If you use encrypted cookies, you'll also need the `mcrypt` extension.
 
-* Make it possible to run in a subdirectory
+### Hello World Tutorial
 
-## Copyright/License ##
+Instantiate a Slim application:
 
-Copyright (c) 2012 Colin Mitchell. Licensed under WTFPL
-licence. Please see LICENSE.txt for further details.
+    $app = new \Slim\Slim();
 
-http://muffinlabs.com
+Define a HTTP GET route:
+
+    $app->get('/hello/:name', function ($name) {
+        echo "Hello, $name";
+    });
+
+Run the Slim application:
+
+    $app->run();
+
+### Setup your web server
+
+#### Apache
+
+Ensure the `.htaccess` and `index.php` files are in the same public-accessible directory. The `.htaccess` file
+should contain this code:
+
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [QSA,L]
+
+#### Nginx
+
+Your nginx configuration file should contain this code (along with other settings you may need) in your `location` block:
+
+    try_files $uri $uri/ /index.php;
+
+This assumes that Slim's `index.php` is in the root folder of your project (www root).
+
+#### lighttpd ####
+
+Your lighttpd configuration file should contain this code (along with other settings you may need). This code requires
+lighttpd >= 1.4.24.
+
+    url.rewrite-if-not-file = ("(.*)" => "/index.php/$0")
+
+This assumes that Slim's `index.php` is in the root folder of your project (www root).
+
+#### IIS
+
+Ensure the `Web.config` and `index.php` files are in the same public-accessible directory. The `Web.config` file should contain this code:
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <configuration>
+        <system.webServer>
+            <rewrite>
+                <rules>
+                    <rule name="slim" patternSyntax="Wildcard">
+                        <match url="*" />
+                        <conditions>
+                            <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+                            <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+                        </conditions>
+                        <action type="Rewrite" url="index.php" />
+                    </rule>
+                </rules>
+            </rewrite>
+        </system.webServer>
+    </configuration>
+
+## Documentation
+
+<http://docs.slimframework.com/>
+
+## How to Contribute
+
+### Pull Requests
+
+1. Fork the Slim Framework repository
+2. Create a new branch for each feature or improvement
+3. Send a pull request from each feature branch to the **develop** branch
+
+It is very important to separate new features or improvements into separate feature branches, and to send a pull
+request for each branch. This allows me to review and pull in new features or improvements individually.
+
+### Style Guide
+
+All pull requests must adhere to the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) standard.
+
+### Unit Testing
+
+All pull requests must be accompanied by passing unit tests and complete code coverage. The Slim Framework uses
+`phpunit` for testing.
+
+[Learn about PHPUnit](https://github.com/sebastianbergmann/phpunit/)
+
+## Community
+
+### Forum and Knowledgebase
+
+Visit Slim's official forum and knowledge base at <http://help.slimframework.com> where you can find announcements,
+chat with fellow Slim users, ask questions, help others, or show off your cool Slim Framework apps.
+
+### Twitter
+
+Follow [@slimphp](http://www.twitter.com/slimphp) on Twitter to receive news and updates about the framework.
+
+## Author
+
+The Slim Framework is created and maintained by [Josh Lockhart](https://www.joshlockhart.com). Josh is a senior
+web developer at [New Media Campaigns](http://www.newmediacampaigns.com/). Josh also created and maintains
+[PHP: The Right Way](http://www.phptherightway.com/), a popular movement in the PHP community to introduce new
+PHP programmers to best practices and good information.
+
+## License
+
+The Slim Framework is released under the MIT public license.
+
+<http://www.slimframework.com/license>

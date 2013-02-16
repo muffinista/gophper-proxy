@@ -33,82 +33,43 @@
 namespace Slim;
 
 /**
- * Middleware
+ * Log Writer
+ *
+ * This class is used by Slim_Log to write log messages to a valid, writable
+ * resource handle (e.g. a file or STDERR).
  *
  * @package Slim
  * @author  Josh Lockhart
  * @since   1.6.0
  */
-abstract class Middleware
+class LogWriter
 {
     /**
-     * @var \Slim Reference to the primary application instance
+     * @var resource
      */
-    protected $app;
+    protected $resource;
 
     /**
-     * @var mixed Reference to the next downstream middleware
+     * Constructor
+     * @param  resource                  $resource
+     * @throws \InvalidArgumentException If invalid resource
      */
-    protected $next;
-
-    /**
-     * Set application
-     *
-     * This method injects the primary Slim application instance into
-     * this middleware.
-     *
-     * @param  \Slim $application
-     */
-    final public function setApplication($application)
+    public function __construct($resource)
     {
-        $this->app = $application;
+        if (!is_resource($resource)) {
+            throw new \InvalidArgumentException('Cannot create LogWriter. Invalid resource handle.');
+        }
+        $this->resource = $resource;
     }
 
     /**
-     * Get application
-     *
-     * This method retrieves the application previously injected
-     * into this middleware.
-     *
-     * @return \Slim
+     * Write message
+     * @param  mixed     $message
+     * @param  int       $level
+     * @return int|false
      */
-    final public function getApplication()
+    public function write($message, $level = null)
     {
-        return $this->app;
+        return fwrite($this->resource, (string) $message . PHP_EOL);
     }
-
-    /**
-     * Set next middleware
-     *
-     * This method injects the next downstream middleware into
-     * this middleware so that it may optionally be called
-     * when appropriate.
-     *
-     * @param \Slim|\Slim\Middleware
-     */
-    final public function setNextMiddleware($nextMiddleware)
-    {
-        $this->next = $nextMiddleware;
-    }
-
-    /**
-     * Get next middleware
-     *
-     * This method retrieves the next downstream middleware
-     * previously injected into this middleware.
-     *
-     * @return \Slim|\Slim\Middleware
-     */
-    final public function getNextMiddleware()
-    {
-        return $this->next;
-    }
-
-    /**
-     * Call
-     *
-     * Perform actions specific to this middleware and optionally
-     * call the next downstream middleware.
-     */
-    abstract public function call();
 }

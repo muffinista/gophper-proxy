@@ -6,7 +6,7 @@
  * @copyright   2011 Josh Lockhart
  * @link        http://www.slimframework.com
  * @license     http://www.slimframework.com/license
- * @version     1.6.0
+ * @version     2.2.0
  * @package     Slim
  *
  * MIT LICENSE
@@ -30,6 +30,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+namespace Slim\Middleware;
 
  /**
   * Flash
@@ -44,7 +45,8 @@
   * @author     Josh Lockhart
   * @since      1.6.0
   */
-class Slim_Middleware_Flash extends Slim_Middleware implements ArrayAccess {
+class Flash extends \Slim\Middleware implements \ArrayAccess, \IteratorAggregate
+{
     /**
      * @var array
      */
@@ -57,14 +59,14 @@ class Slim_Middleware_Flash extends Slim_Middleware implements ArrayAccess {
 
     /**
      * Constructor
-     * @param   Slim  $app
-     * @param   array $settings
-     * @return  void
+     * @param  \Slim  $app
+     * @param  array  $settings
      */
-    public function __construct( $settings = array() ) {
+    public function __construct($settings = array())
+    {
         $this->settings = array_merge(array('key' => 'slim.flash'), $settings);
         $this->messages = array(
-            'prev' => isset($_SESSION[$this->settings['key']]) ? $_SESSION[$this->settings['key']] : array(), //flash messages from prev request
+            'prev' => array(), //flash messages from prev request (loaded when middleware called)
             'next' => array(), //flash messages for next request
             'now' => array() //flash messages for current request
         );
@@ -72,9 +74,13 @@ class Slim_Middleware_Flash extends Slim_Middleware implements ArrayAccess {
 
     /**
      * Call
-     * @return  void
      */
-    public function call() {
+    public function call()
+    {
+        //Read flash messaging from previous request if available
+        $this->loadMessages();
+
+        //Prepare flash messaging for current request
         $env = $this->app->environment();
         $env['slim.flash'] = $this;
         $this->next->call();
@@ -86,12 +92,12 @@ class Slim_Middleware_Flash extends Slim_Middleware implements ArrayAccess {
      *
      * Specify a flash message for a given key to be shown for the current request
      *
-     * @param   string $key
-     * @param   string $value
-     * @return  void
+     * @param  string $key
+     * @param  string $value
      */
-    public function now( $key, $value ) {
-        $this->messages['now'][(string)$key] = $value;
+    public function now($key, $value)
+    {
+        $this->messages['now'][(string) $key] = $value;
     }
 
     /**
@@ -99,23 +105,22 @@ class Slim_Middleware_Flash extends Slim_Middleware implements ArrayAccess {
      *
      * Specify a flash message for a given key to be shown for the next request
      *
-     * @param   string $key
-     * @param   string $value
-     * @return  void
+     * @param  string $key
+     * @param  string $value
      */
-    public function set( $key, $value ) {
-        $this->messages['next'][(string)$key] = $value;
+    public function set($key, $value)
+    {
+        $this->messages['next'][(string) $key] = $value;
     }
 
     /**
      * Keep
      *
      * Retain flash messages from the previous request for the next request
-     *
-     * @return  void
      */
-    public function keep() {
-        foreach ( $this->messages['prev'] as $key => $val ) {
+    public function keep()
+    {
+        foreach ($this->messages['prev'] as $key => $val) {
             $this->messages['next'][$key] = $val;
         }
     }
@@ -123,48 +128,75 @@ class Slim_Middleware_Flash extends Slim_Middleware implements ArrayAccess {
     /**
      * Save
      */
-    public function save() {
+    public function save()
+    {
         $_SESSION[$this->settings['key']] = $this->messages['next'];
     }
 
     /**
-     * Get messages
-     *
+     * Load messages from previous request if available
+     */
+    public function loadMessages()
+    {
+        if (isset($_SESSION[$this->settings['key']])) {
+            $this->messages['prev'] = $_SESSION[$this->settings['key']];
+        }
+    }
+
+    /**
      * Return array of flash messages to be shown for the current request
      *
      * @return array
      */
-    public function getMessages() {
+    public function getMessages()
+    {
         return array_merge($this->messages['prev'], $this->messages['now']);
     }
 
     /**
      * Array Access: Offset Exists
      */
-    public function offsetExists( $offset ) {
+    public function offsetExists($offset)
+    {
         $messages = $this->getMessages();
+
         return isset($messages[$offset]);
     }
 
     /**
      * Array Access: Offset Get
      */
-    public function offsetGet( $offset ) {
+    public function offsetGet($offset)
+    {
         $messages = $this->getMessages();
+
         return isset($messages[$offset]) ? $messages[$offset] : null;
     }
 
     /**
      * Array Access: Offset Set
      */
-    public function offsetSet( $offset, $value ) {
+    public function offsetSet($offset, $value)
+    {
         $this->now($offset, $value);
     }
 
     /**
      * Array Access: Offset Unset
      */
-    public function offsetUnset( $offset ) {
+    public function offsetUnset($offset)
+    {
         unset($this->messages['prev'][$offset], $this->messages['now'][$offset]);
+    }
+
+    /**
+     * Iterator Aggregate: Get Iterator
+     * @return \ArrayIterator
+     */
+    public function getIterator()
+    {
+        $messages = $this->getMessages();
+
+        return new \ArrayIterator($messages);
     }
 }
