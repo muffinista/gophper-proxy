@@ -157,6 +157,17 @@ GopherParser.prototype.entryToLink = function(e) {
     return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
   }
 
+/*    function urlify(text) {
+        var urlRegex = /(https?:\/\/[^\s]+)/g;
+        return text.replace(urlRegex, function(url) {
+            return '<a href="' + url + '">' + url + '</a>';
+        })
+        // or alternatively
+        // return text.replace(urlRegex, '<a href="$1">$1</a>')
+    }
+*/
+
+
   /**
    * parse some gophertext and render some pretty HTML from it.
    *
@@ -185,6 +196,9 @@ GopherParser.prototype.entryToLink = function(e) {
       else {
         $(this).html(nl2br(data));
       }
+
+//        $(this).html(urlify(data));
+
     }
     else {
       entries = parser.parseGopher(data);
