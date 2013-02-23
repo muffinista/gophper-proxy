@@ -58,7 +58,7 @@ $app->get('/file', function () use($app) {
 /**
  * this will handle incoming requests that have a gopher URL tacked onto the end
  */
-$app->notFound(function () use ($app) {
+$app->get('/:dest+', function ($dest) use ($app) {
 	$app->render('home.html', array("class" => "hide"));
 });
 
@@ -72,12 +72,14 @@ $app->post('/gopher', function () {
 	$input = isset($_POST["input"]) ? $_POST["input"] : NULL;
 
 	try {
+    error_log("$url $input");
 	  $x = new GopherGetter($url, $input);
 	  if ( $x->isValid() ) {
 			$x->get();
 
 			// send binary files and large text back as an attachment
 			if ( $x->isBinary() || $x->size() > 1000000 ) {
+        error_log("binar!");
 			  $result['url'] = "/file?name=" . basename($_POST["url"]) . "&path=" . $x->urlFor();
 			  $result['image'] = $x->isImage();
 			}

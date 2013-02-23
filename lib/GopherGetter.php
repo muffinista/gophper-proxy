@@ -1,6 +1,12 @@
 <?php
 require 'Cache.php';
 
+/**
+   todo:
+   - limit download size
+   - santize input
+*/
+
 class GopherGetter {
   public $uri;
   public $host;
@@ -80,7 +86,6 @@ class GopherGetter {
 
 		$this->result = $this->cache->get($this->key);
 		if ( $this->result === FALSE ) {
-			//	  error_log("tcp://$this->host:$this->port\t$this->input");
 	  	$fp = stream_socket_client("tcp://$this->host:$this->port", $this->errno, $this->errstr, 30);
 
 		  if (!$fp) {

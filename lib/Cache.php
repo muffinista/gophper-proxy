@@ -37,9 +37,12 @@ class Cache {
 
 		// return mime type ala mimetype extension
 		$finfo = finfo_open(FILEINFO_MIME);
+    error_log(finfo_file($finfo, $cache_path));
+    error_log($cache_path);
 
 		//check to see if the mime-type starts with 'text' -- if not, BINARY
-		return substr(finfo_file($finfo, $cache_path), 0, 4) != 'text';
+		return substr(finfo_file($finfo, $cache_path), 0, 4) != 'text' &&
+      substr(finfo_file($finfo, $cache_path), 0, 7) != 'message';
   }
 
   public function isImage($key, $expiration = CACHE_LIFETIME) {

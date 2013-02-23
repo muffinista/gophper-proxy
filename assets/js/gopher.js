@@ -196,9 +196,6 @@ GopherParser.prototype.entryToLink = function(e) {
       else {
         $(this).html(nl2br(data));
       }
-
-//        $(this).html(urlify(data));
-
     }
     else {
       entries = parser.parseGopher(data);
@@ -239,7 +236,7 @@ GopherParser.prototype.entryToLink = function(e) {
 
         // if there was no path, don't output a URL
         else if ( type.link === false ) {
-          result = text;
+            result = text;
         }
 
         // output a link

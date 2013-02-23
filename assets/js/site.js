@@ -95,11 +95,12 @@ $(document).ready(function() {
       type: 'post',
       dataType: 'json',
       data: data,
-      error : function() {
-        displayError();
-      }
+        error:function (xhr, ajaxOptions, thrownError){
+            if(xhr.status==404) {
+                alert(thrownError);
+            }
+        }
     }).done(function ( data ) {
-
       spinner.unspin();
 
       if ( typeof(params.onComplete) !== "undefined" ) {
@@ -114,8 +115,7 @@ $(document).ready(function() {
       //
       // we got data, let's render it
       //
-      else if ( data.data ) {
-
+      else if ( data.data && data.data !== "" ) {
         // update browser url and store the data hash for
         // later use. for now we'll set the title to be the
         // URI as well

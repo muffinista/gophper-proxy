@@ -15,8 +15,9 @@ body {
 
 #gopher {
   font-family: DroidSansMonoRegular, monospace;
-	white-space: pre;
+	white-space: pre-wrap;
 	padding-bottom: 100px;
+  line-height: 18px;
 }
 #gopher .as-html {
 	white-space: normal;
