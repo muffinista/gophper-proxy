@@ -98,8 +98,18 @@ class GopherGetter {
 		  	}
 
 				fwrite($fp, "$data\r\n");
+        $size = 0;
 				while (!feof($fp)) {
-				  $this->result .= fgets($fp, 1024);
+          $buf = fread($fp, 1024);
+				  $this->result .= $buf;
+          $size += strlen($buf);
+
+          if ( defined('MAX_FILESIZE') && $size > MAX_FILESIZE ) {
+            fclose($fp);
+            $this->cache->clear($this->key);
+            return FALSE;
+          }
+
 				}
 				fclose($fp);
 	  	}

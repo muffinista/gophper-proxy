@@ -193,4 +193,9 @@ $(document).ready(function() {
   if ( window.location.pathname != "/" && $("#intro").hasClass("hide") ) {
     loadGopherUri(unescape(window.location.pathname));
   }
+
+    if ( $("#gopher").html() !== "" ) {
+        $("#gopher").fromGopher();
+    }
+
 });

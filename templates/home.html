@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <?php
-   // class default for gopher intro
-   if ( ! array_key_exists('class', $this->data) ) {
-     $this->data["class"] = "";
-   }
-   if ( ! array_key_exists('file', $this->data) ) {
-     $this->data["file"] = "intro.html";
-   }
+ // class default for gopher intro
+if ( ! array_key_exists('class', $this->data) ) {
+  $this->data["class"] = "";
+} 
+if ( ! array_key_exists('result', $this->data) && ! array_key_exists('file', $this->data) ) {
+  $this->data["file"] = "intro.html";
+}
 ?>
 <html lang="en">
   <head>
@@ -57,14 +57,23 @@
 	    <div class="span2"></div>
 	    <div class="span10">
 	      <div id="intro" class="<?php echo $this->data["class"] ?>">
-	        <?php include_once($this->data["file"]); ?>
-	      </div>
+          <?php 
+            if ( array_key_exists('file', $this->data) ) {
+              include_once($this->data["file"]); 
+            }
+          ?>
+        </div>
 
 	      <div id="breadcrumb"></div>
-	      <div id="gopher"></div> <!-- /gopher -->
+	      <div id="gopher">
+          <?php 
+            if ( array_key_exists('result', $this->data) ) {
+              print $this->data["result"]['data'];
+            } 
+          ?>
+        </div> <!-- /gopher -->
 	    </div> <!-- /span8 -->
     </div> <!-- /container -->
-
 
     <div class="navbar navbar-inverse navbar-fixed-bottom">
       <div class="navbar-inner">

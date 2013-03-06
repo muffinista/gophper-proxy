@@ -13,8 +13,17 @@ $app = new \Slim\Slim();
 // default route
 //
 $app->get('/', function () use($app) {
-	$app->render('home.html', array("file" => "intro.html"));
+    $params = array();
+    if ( defined('START_REQUEST') ) {
+      $params['result'] = loadGopher(START_REQUEST, START_INPUT);
+    }
+    else {
+      $params['file'] = "intro.html";
+    }
+    
+    $app->render('home.html', $params);
 });
+
 $app->get('/about', function () use($app) {
 	$app->render('home.html', array("file" => "about.html"));
 });
@@ -49,43 +58,47 @@ $app->get('/:dest+', function ($dest) use ($app) {
  * handle AJAX requests for a gopher page
  */
 $app->post('/gopher', function () {
-	$result = array();
-
 	$url = $_POST["url"];
 	$input = isset($_POST["input"]) ? $_POST["input"] : NULL;
 
 	try {
-    error_log("$url $input");
-	  $x = new GopherGetter($url, $input);
-	  if ( $x->isValid() ) {
-			$x->get();
-
-			// send binary files and large text back as an attachment
-			if ( $x->isBinary() || $x->size() > 1000000 ) {
-        error_log("binar!");
-			  $result['url'] = "/file?name=" . basename($_POST["url"]) . "&path=" . $x->urlFor();
-			  $result['image'] = $x->isImage();
-			}
-			else {
-			  $result['url'] = $_POST["url"];
-			  $result['data'] = $x->result;
-
-			  if (!mb_check_encoding($result['data'], 'UTF-8')) {
-					$result['data'] = utf8_encode($result['data']);
-			  }
-			}
-	  }
-	  else {
-			$result['url'] = $_POST["url"];
-			$result['data'] = "3Sorry, there was a problem with your request\t\tNULL\t70";
-	  }
+    $result = loadGopher($url, $input);
 	} catch(Exception $e) {
 	  $result['url'] = $_POST["url"];
 	  $result['data'] = "3Sorry, there was a problem with your request (" . $e->getMessage() . ")\t\tNULL\t70";
 	}
 
 	echo json_encode($result);
-
 });
 
 $app->run();
+
+function loadGopher($url, $input) {
+	$result = array();
+
+  error_log("$url $input");
+  $x = new GopherGetter($url, $input);
+  if ( $x->isValid() ) {
+    $x->get();
+
+    // send binary files and large text back as an attachment
+    if ( $x->isBinary() || $x->size() > 1000000 ) {
+      $result['url'] = "/file?name=" . basename($url) . "&path=" . $x->urlFor();
+      $result['image'] = $x->isImage();
+    }
+    else {
+      $result['url'] = $url;
+      $result['data'] = $x->result;
+      
+      if (!mb_check_encoding($result['data'], 'UTF-8')) {
+        $result['data'] = utf8_encode($result['data']);
+      }
+    }
+  }
+  else {
+    $result['url'] = $url;
+    $result['data'] = "3Sorry, there was a problem with your request\t\tNULL\t70";
+  }
+
+  return $result;
+}

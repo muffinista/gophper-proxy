@@ -16,6 +16,13 @@ define('CACHE_PATH', "/tmp");
 
 define('APP_NAME', 'Gophper');
 
+// default request to serve up on the index page
+//define('START_REQUEST', 'gopherpedia.com/');
+//define('START_INPUT', '');
+
+// maximum filesize allowed when browsing/downloading files, etc
+define('MAX_FILESIZE', 10000000);
+
 // should we log stats to the db?
 define('LOG_STATS', true);
 

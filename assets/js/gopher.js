@@ -157,17 +157,6 @@ GopherParser.prototype.entryToLink = function(e) {
     return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
   }
 
-/*    function urlify(text) {
-        var urlRegex = /(https?:\/\/[^\s]+)/g;
-        return text.replace(urlRegex, function(url) {
-            return '<a href="' + url + '">' + url + '</a>';
-        })
-        // or alternatively
-        // return text.replace(urlRegex, '<a href="$1">$1</a>')
-    }
-*/
-
-
   /**
    * parse some gophertext and render some pretty HTML from it.
    *
@@ -190,7 +179,7 @@ GopherParser.prototype.entryToLink = function(e) {
     if ( ! parser.shouldRender(data) ) {
       // if we're specifying preformatted text via CSS, then
       // don't add any newlines to the output
-      if ( $(this).css("white-space") == "pre" ) {
+      if ( $(this).css("white-space") == "pre" || $(this).css("white-space") == "pre-wrap" ) {
         $(this).html(data);
       }
       else {
@@ -223,15 +212,16 @@ GopherParser.prototype.entryToLink = function(e) {
         // generate a form for search entries
         //
         if ( typeof(type.form) !== "undefined" && type.form === true ) {
-          result = $("<form method='post' />").
-            attr("action", href).
-            addClass("form-inline");
+            result = $("<form />").
+                attr("method", "post").
+                attr("action", href).
+                addClass("form-inline");
 
-          var button = $("<button />").attr("type", "submit").addClass("btn").html("Go!");
-          $(result).
-            append("<input name='text' class='span3' placeholder='input' />").
-            append(button);
-
+            var button = $("<button />").attr("type", "submit").addClass("btn").html("Go!");
+            $(result).
+                append("<input name='text' class='span3' placeholder='input' />").
+                append(button);
+            
         }
 
         // if there was no path, don't output a URL
