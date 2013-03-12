@@ -5177,31 +5177,6 @@ html, body {
   height: 40px;
 }
 
-/* line 4, ../sass/_gophper.scss */
-body.oldschool {
-  background: #000;
-  color: #0f0;
-}
-/* line 8, ../sass/_gophper.scss */
-body.oldschool #breadcrumb {
-  border: 1px dashed #0f0;
-  height: 45px;
-  margin-bottom: 20px;
-}
-/* line 12, ../sass/_gophper.scss */
-body.oldschool #breadcrumb ul {
-  background: #000;
-  border: none;
-}
-/* line 17, ../sass/_gophper.scss */
-body.oldschool #breadcrumb ul li a {
-  color: #0f0;
-}
-/* line 20, ../sass/_gophper.scss */
-body.oldschool #breadcrumb ul li a:hover {
-  color: #f00;
-}
-
 @font-face {
   font-family: 'DroidSansMonoRegular';
   src: url("/assets/font/DroidSansMono-webfont.eot");
@@ -5210,12 +5185,12 @@ body.oldschool #breadcrumb ul li a:hover {
   font-style: normal;
 }
 
-/* line 39, ../sass/_gophper.scss */
+/* line 15, ../sass/_gophper.scss */
 #main {
   padding-top: 20px;
 }
 
-/* line 43, ../sass/_gophper.scss */
+/* line 19, ../sass/_gophper.scss */
 #gopher {
   font-family: DroidSansMonoRegular, monospace;
   white-space: pre-wrap;
@@ -5223,43 +5198,81 @@ body.oldschool #breadcrumb ul li a:hover {
   line-height: 18px;
 }
 
-/* line 49, ../sass/_gophper.scss */
+/* line 25, ../sass/_gophper.scss */
 #gopher .as-html {
   white-space: normal;
 }
 
-/* line 53, ../sass/_gophper.scss */
+/* line 29, ../sass/_gophper.scss */
 #gopher i {
   width: 25px;
   /* padding for icons */
 }
 
-/* line 56, ../sass/_gophper.scss */
+/* line 32, ../sass/_gophper.scss */
 #gopher i.icon-search {
   float: left;
 }
 
-/* line 60, ../sass/_gophper.scss */
+/* line 36, ../sass/_gophper.scss */
 #spinner {
   float: right;
 }
 
-/* line 63, ../sass/_gophper.scss */
+/* line 39, ../sass/_gophper.scss */
 #spinner img {
   position: fixed;
   right: 25px;
   display: none;
 }
 
-/* line 69, ../sass/_gophper.scss */
+/* line 45, ../sass/_gophper.scss */
 #footer {
   background: #000000;
   color: #fff;
   margin-top: 30px;
 }
-/* line 74, ../sass/_gophper.scss */
+/* line 50, ../sass/_gophper.scss */
 #footer p {
   margin-top: 9px;
   font-size: 80%;
   line-height: 1.6;
+}
+
+/* line 58, ../sass/_gophper.scss */
+body.oldschool {
+  background: #000;
+  color: #0f0;
+}
+/* line 62, ../sass/_gophper.scss */
+body.oldschool #breadcrumb {
+  font-family: Courier;
+  border: 1px dashed #0f0;
+  height: 45px;
+  margin-bottom: 20px;
+}
+/* line 67, ../sass/_gophper.scss */
+body.oldschool #breadcrumb ul {
+  background: #000;
+  border: none;
+}
+/* line 72, ../sass/_gophper.scss */
+body.oldschool #breadcrumb ul li a {
+  color: #0f0;
+}
+/* line 75, ../sass/_gophper.scss */
+body.oldschool #breadcrumb ul li a:hover {
+  color: #f00;
+}
+/* line 82, ../sass/_gophper.scss */
+body.oldschool #gopher {
+  font-family: Courier;
+}
+/* line 84, ../sass/_gophper.scss */
+body.oldschool #gopher a {
+  color: #0f0;
+}
+/* line 87, ../sass/_gophper.scss */
+body.oldschool #gopher a:hover {
+  color: #f00;
 }

@@ -1,30 +1,6 @@
 @import "compass/layout/sticky-footer";
 @include sticky-footer(40px);
 
-body.oldschool {
- background: #000;
- color: #0f0;
-
-  #breadcrumb {
-    border: 1px dashed #0f0;
-    height: 45px;
-    margin-bottom: 20px;
-    ul {
-      background: #000;
-      border: none;
-
-      li {
-        a {
-          color: #0f0;
-        }
-        a:hover {
-          color: #f00;
-        }
-      }
-    }
-  }
-}
-
 @font-face {
     font-family: 'DroidSansMonoRegular';
     src: url('/assets/font/DroidSansMono-webfont.eot');
@@ -78,3 +54,39 @@ body.oldschool {
   }
 }
 
+
+body.oldschool {
+ background: #000;
+ color: #0f0;
+
+  #breadcrumb {
+    font-family: Courier;
+    border: 1px dashed #0f0;
+    height: 45px;
+    margin-bottom: 20px;
+    ul {
+      background: #000;
+      border: none;
+
+      li {
+        a {
+          color: #0f0;
+        }
+        a:hover {
+          color: #f00;
+        }
+      }
+    }
+  }
+
+  #gopher {
+    font-family: Courier;
+    a {
+      color: #0f0;
+    }
+    a:hover {
+      color: #f00;
+    }
+  }
+
+}
