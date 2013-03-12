@@ -15,13 +15,13 @@ if ( ! array_key_exists('result', $this->data) && ! array_key_exists('file', $th
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-<!---
-    <link href="/assets/css/assets.css" rel="stylesheet">
---->
-        <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/assets/css/bootstrap-responsive.min.css" rel="stylesheet">
-        <link href="/assets/css/colorbox.css" rel="stylesheet">
-        <link href="/assets/css/gophper.css" rel="stylesheet">
+
+    <link href="/stylesheets/normalize.css" media="screen, projector, print" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/app.css" media="screen, projector, print" rel="stylesheet" type="text/css" />
+
+    <link href="/assets/css/colorbox.css" rel="stylesheet">
+    <script src="/javascripts/vendor/custom.modernizr.js"></script>
+
     <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
@@ -29,63 +29,112 @@ if ( ! array_key_exists('result', $this->data) && ! array_key_exists('file', $th
   </head>
 
   <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="brand" href="/">Gophper</a>
-          <div class="nav-collapse">
-            <ul class="nav">
+    <div id="root">
+      <div class="fixed">
+        <nav class="top-bar">
+          <ul class="title-area">
+            <li class="name">
+              <h1><a href="/">Gophper</a></h1>
+            </li>
+            <li class="toggle-topbar"><a href="#"><span>Menu</span></a></li>
+          </ul>
+          <section class="top-bar-section">
+            <ul class="left">
               <li class="active"><a href="/">Home</a></li>
               <li><a href="/about">About</a></li>
               <li><a href="https://github.com/muffinista/gophper-proxy">Code</a></li>
             </ul>
-          </div><!--/.nav-collapse -->
-          
-	        <form class="gopher-uri form-inline">
-	          <input type="text" name="uri" class="span4" style="margin-top:5px" placeholder="URL" />
-	          <button type="submit" class="btn">go</button>
-	        </form>
-        </div>
+            
+            <ul class="right">
+              <li><a href="#" class="theme-switcher">Theme: <span>modern</span></a></li>
+              <li class="has-form">
+	              <form class="gopher-uri">
+                  <div class="row collapse">
+                    <div class="large-10 columns">
+	                    <input type="text" name="uri" placeholder="URL" />
+                    </div>
+                    <div class="large-2 columns">
+	                    <input type="submit" class="button" value="go" />
+                    </div>
+                  </div>
+	              </form>
+              </li>
+            </ul>
+          </section>
+        </nav>
       </div>
+
+      <div id="main" class="row container">
+	      <div id="spinner">
+	        <img src="/assets/img/spinner.gif" />
+	      </div>
+	      <div class="large-12">
+	        <div id="intro" class="<?php echo $this->data["class"] ?>">
+            <?php 
+               if ( array_key_exists('file', $this->data) ) {
+                 include_once($this->data["file"]); 
+               }
+             ?>
+          </div>
+          
+	        <div id="breadcrumb"></div>
+	        <div id="gopher">
+            <?php 
+               if ( array_key_exists('result', $this->data) ) {
+                 print $this->data["result"]['data'];
+               } 
+            ?>
+          </div> <!-- /gopher -->
+	      </div> <!-- /span8 -->
+      </div> <!-- /container -->
+      <div id="root_footer"></div>
     </div>
 
-    <div class="container">
-	    <div id="spinner">
-	      <img src="/assets/img/spinner.gif" />
-	    </div>
-
-	    <div class="span2"></div>
-	    <div class="span10">
-	      <div id="intro" class="<?php echo $this->data["class"] ?>">
-          <?php 
-            if ( array_key_exists('file', $this->data) ) {
-              include_once($this->data["file"]); 
-            }
-          ?>
-        </div>
-
-	      <div id="breadcrumb"></div>
-	      <div id="gopher">
-          <?php 
-            if ( array_key_exists('result', $this->data) ) {
-              print $this->data["result"]['data'];
-            } 
-          ?>
-        </div> <!-- /gopher -->
-	    </div> <!-- /span8 -->
-    </div> <!-- /container -->
-
-    <div class="navbar navbar-inverse navbar-fixed-bottom">
-      <div class="navbar-inner">
-	      <div class="container">
-	        <p class="muted credit">Gophper-PHP &copy; 2013 <a href="http://muffinlabs.com/">Colin
+    <div id="footer">
+      <div class="row fill-width">
+        <div class="small-10">
+	        <p>Gophper-PHP &copy; 2013 <a href="http://muffinlabs.com/">Colin
 	            Mitchell</a>. Content delivered via Gophper belongs to its
 	          original authors. Enjoy!</p>
-	      </div>
+        </div>
       </div>
     </div>
     
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <script src="/javascripts/foundation/foundation.js"></script>
+        
+    <script src="/javascripts/foundation/foundation.alerts.js"></script>
+    
+    <script src="/javascripts/foundation/foundation.placeholder.js"></script>
+    
+    <script src="/javascripts/foundation/foundation.tooltips.js"></script>
+    
+    <script src="/javascripts/foundation/foundation.section.js"></script>
+    
+    <script src="/javascripts/foundation/foundation.magellan.js"></script>
+    
+    <script src="/javascripts/foundation/foundation.forms.js"></script>
+    
+    <script src="/javascripts/foundation/foundation.cookie.js"></script>
+    
+    <script src="/javascripts/foundation/foundation.topbar.js"></script>
+    
+    <script src="/javascripts/foundation/foundation.orbit.js"></script>
+    
+    <script src="/javascripts/foundation/foundation.joyride.js"></script>
+    
+    <script src="/javascripts/foundation/foundation.clearing.js"></script>
+    
+    <script src="/javascripts/foundation/foundation.reveal.js"></script>
+    
+    <script src="/javascripts/foundation/foundation.dropdown.js"></script>
+        
+  
+  <script>
+    $(document).foundation();
+  </script>
+
     <script src="/assets/js/jquery.history.js"></script>
     <!--    <script src="/assets/js/compressed.js"></script>-->
     <script src="/assets/js/jquery.colorbox.js"></script>

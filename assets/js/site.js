@@ -42,23 +42,23 @@ $(document).ready(function() {
     var crumb = "";
     var li;
 
-    $("#breadcrumb").html("<ul class='breadcrumb' />");
+    $("#breadcrumb").html("<ul class='breadcrumbs' />");
 
     for ( var i = 0; i < bc.length; i++ ) {
       crumb = crumb + bc[i] + "/";
 
       li = $("<li />");
       if ( i + 1 == bc.length ) {
-        $(li).addClass("active");
+        $(li).addClass("current");
       }
 
       $(li).html($("<a />").attr("href", crumb).html(bc[i]));
 
       if ( i + 1 < bc.length ) {
-        $(li).append($("<span />").addClass("divider").html("/"));
+        $(li).append($("<span />").addClass("divider")); //.html("/"));
       }
 
-      $(".breadcrumb").append(li);
+      $(".breadcrumbs").append(li);
     }
   };
 
@@ -160,39 +160,51 @@ $(document).ready(function() {
 
   };
 
-  /**
-   * handle clicks on gopher selectors
-   */
-  $("#gopher,#breadcrumb,#intro .as-html").on("click", "a", function() {
-    loadGopherUri({
-      url : $(this).attr("href")
+    /**
+     * handle clicks on gopher selectors
+     */
+    $("#gopher,#breadcrumb,#intro .as-html").on("click", "a", function() {
+        loadGopherUri({
+            url : $(this).attr("href")
+        });
+        return false;
+    }).on("submit", "form", function() {
+        loadGopherUri({
+            url : $(this).attr("action"),
+            input : $(this).find("input").val()
+        });
+        return false;
     });
-    return false;
-  }).on("submit", "form", function() {
-    loadGopherUri({
-      url : $(this).attr("action"),
-      input : $(this).find("input").val()
+
+    /**
+     * handle URI form submission
+     */
+    $("form.gopher-uri").on("submit", function() {
+        loadGopherUri($(this).find("input[name=uri]").val());
+        return false;
     });
-    return false;
-  });
 
 
-  /**
-   * handle URI form submission
-   */
-  $("form.gopher-uri").on("submit", function() {
-    loadGopherUri($(this).find("input[name=uri]").val());
-    return false;
-  });
+    /** theme switcher! */
+    $(".theme-switcher").on("click", function(e) {
+        e.preventDefault();
+        $("body").toggleClass("oldschool");
 
+        if ( $("body").hasClass("oldschool") ) {
+            $(".theme-switcher span").html("old school!");
+        }
+        else {
+            $(".theme-switcher span").html("modern");     
+        }
+    });
 
-  /**
-   * Handle existing URI on the browser's URL -- we'll only do this if the intro is hidden, 
-   * and there's something to load. We'll add the 'hide' class to the output in home.html to trigger this.
-   */
-  if ( window.location.pathname != "/" && $("#intro").hasClass("hide") ) {
-    loadGopherUri(unescape(window.location.pathname));
-  }
+    /**
+     * Handle existing URI on the browser's URL -- we'll only do this if the intro is hidden, 
+     * and there's something to load. We'll add the 'hide' class to the output in home.html to trigger this.
+     */
+    if ( window.location.pathname != "/" && $("#intro").hasClass("hide") ) {
+        loadGopherUri(unescape(window.location.pathname));
+    }
 
     if ( $("#gopher").html() !== "" ) {
         $("#gopher").fromGopher();

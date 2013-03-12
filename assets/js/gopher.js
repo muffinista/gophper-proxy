@@ -231,9 +231,9 @@ GopherParser.prototype.entryToLink = function(e) {
 
         // output a link
         else {
-          result = $("<a />").
-            attr("href", href).
-            html(text);
+            result = $("<a />").
+                attr("href", href).
+                html(text);
         }
 
         // if we have an icon class, add it here

@@ -15,7 +15,7 @@ class Cache {
 		}
 
 		$cache_path = $this->_name($key);
-
+    error_log("PATH $cache_path");
 		if (!@file_exists($cache_path)) {
 		  return FALSE;
 		}
@@ -34,6 +34,8 @@ class Cache {
 		}
 
 		$cache_path = $this->_name($key);
+
+    error_log("PATH $cache_path");
 
 		// return mime type ala mimetype extension
 		$finfo = finfo_open(FILEINFO_MIME);
@@ -66,6 +68,7 @@ class Cache {
 
   public function get($key, $expiration = CACHE_LIFETIME) {
 		if ( !is_dir($this->dir) OR !is_writable($this->dir)) {
+      error_log("problem with " . $this->dir);
 		  return FALSE;
 		}
 
@@ -128,6 +131,7 @@ class Cache {
 		}
 
 		$cache_path = $this->_name($key);
+    error_log("PATH $cache_path");
 
 		$this->mkdir_p(dirname($cache_path));
 

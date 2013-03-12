@@ -83,6 +83,7 @@ function loadGopher($url, $input) {
 
     // send binary files and large text back as an attachment
     if ( $x->isBinary() || $x->size() > 1000000 ) {
+      error_log("binar!");
       $result['url'] = "/file?name=" . basename($url) . "&path=" . $x->urlFor();
       $result['image'] = $x->isImage();
     }

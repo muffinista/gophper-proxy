@@ -1,3 +1,30 @@
+@import "compass/layout/sticky-footer";
+@include sticky-footer(40px);
+
+body.oldschool {
+ background: #000;
+ color: #0f0;
+
+  #breadcrumb {
+    border: 1px dashed #0f0;
+    height: 45px;
+    margin-bottom: 20px;
+    ul {
+      background: #000;
+      border: none;
+
+      li {
+        a {
+          color: #0f0;
+        }
+        a:hover {
+          color: #f00;
+        }
+      }
+    }
+  }
+}
+
 @font-face {
     font-family: 'DroidSansMonoRegular';
     src: url('/assets/font/DroidSansMono-webfont.eot');
@@ -9,6 +36,9 @@
     font-style: normal;
 }
 
+#main {
+  padding-top: 20px;
+}
 
 #gopher {
   font-family: DroidSansMonoRegular, monospace;
@@ -36,12 +66,15 @@
 	display: none;
 }
 
-.navbar-fixed-bottom .container {
-  padding-top: 5px;
+#footer {
+  background: #000000;
+  color: #fff;
+  margin-top: 30px;
+
+  p {
+    margin-top: 9px;
+    font-size: 80%;
+    line-height: 1.6;
+  }
 }
-.navbar-fixed-bottom .navbar-inner {
-    min-height: 30px;
-}
-form.gopher-uri {
-    margin: 0 0 5px;
-}
+
