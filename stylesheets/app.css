@@ -6748,45 +6748,45 @@ html.oldschool {
 }
 
 /* line 61, ../sass/_gophper.scss */
-body.oldschool {
+html.oldschool body {
   background: #000;
   color: #0f0;
 }
-/* line 65, ../sass/_gophper.scss */
-body.oldschool #breadcrumb {
+/* line 64, ../sass/_gophper.scss */
+html.oldschool body #breadcrumb {
   font-family: Courier;
   border: 1px dashed #0f0;
   height: 45px;
   margin-bottom: 20px;
 }
-/* line 70, ../sass/_gophper.scss */
-body.oldschool #breadcrumb ul {
+/* line 69, ../sass/_gophper.scss */
+html.oldschool body #breadcrumb ul {
   background: #000;
   border: none;
 }
-/* line 75, ../sass/_gophper.scss */
-body.oldschool #breadcrumb ul li a {
+/* line 74, ../sass/_gophper.scss */
+html.oldschool body #breadcrumb ul li a {
   color: #0f0;
 }
-/* line 78, ../sass/_gophper.scss */
-body.oldschool #breadcrumb ul li a:hover {
+/* line 77, ../sass/_gophper.scss */
+html.oldschool body #breadcrumb ul li a:hover {
   color: #f00;
 }
-/* line 85, ../sass/_gophper.scss */
-body.oldschool #gopher, body.oldschool #intro {
+/* line 84, ../sass/_gophper.scss */
+html.oldschool body #gopher, html.oldschool body #intro {
   font-family: Courier;
 }
-/* line 87, ../sass/_gophper.scss */
-body.oldschool #gopher h1, body.oldschool #gopher h2, body.oldschool #gopher h3, body.oldschool #intro h1, body.oldschool #intro h2, body.oldschool #intro h3 {
+/* line 86, ../sass/_gophper.scss */
+html.oldschool body #gopher h1, html.oldschool body #gopher h2, html.oldschool body #gopher h3, html.oldschool body #intro h1, html.oldschool body #intro h2, html.oldschool body #intro h3 {
   font-family: Courier;
   color: #0f0;
   font-size: 120%;
 }
-/* line 93, ../sass/_gophper.scss */
-body.oldschool #gopher a, body.oldschool #gopher label, body.oldschool #intro a, body.oldschool #intro label {
+/* line 92, ../sass/_gophper.scss */
+html.oldschool body #gopher a, html.oldschool body #gopher label, html.oldschool body #intro a, html.oldschool body #intro label {
   color: #0f0;
 }
-/* line 96, ../sass/_gophper.scss */
-body.oldschool #gopher a:hover, body.oldschool #intro a:hover {
+/* line 95, ../sass/_gophper.scss */
+html.oldschool body #gopher a:hover, html.oldschool body #intro a:hover {
   color: #f00;
 }

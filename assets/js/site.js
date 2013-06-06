@@ -185,7 +185,7 @@ $(document).ready(function() {
     });
 
     var toggleTheme = function() {
-        if ( $("body").hasClass("oldschool") ) {
+        if ( $("html").hasClass("oldschool") ) {
             $(".theme-switcher span").html("old school!");
         }
         else {
@@ -195,7 +195,6 @@ $(document).ready(function() {
 
     var theme = $.cookie('theme');
     if(theme) {
-        $('body').addClass(theme);
         $('html').addClass(theme);
         toggleTheme();
     }
@@ -203,8 +202,8 @@ $(document).ready(function() {
     /** theme switcher! */
     $(".theme-switcher").on("click", function(e) {
         e.preventDefault();
-        $("body").toggleClass("oldschool");
-        if ( $("body").hasClass("oldschool") ) {
+        $("html").toggleClass("oldschool");
+        if ( $("html").hasClass("oldschool") ) {
             $.cookie('theme', "oldschool");
         }
         else {

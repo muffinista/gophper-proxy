@@ -58,10 +58,9 @@ html.oldschool {
  background: #000;
 }
 
-body.oldschool {
+html.oldschool body {
  background: #000;
- color: #0f0;
-
+  color: #0f0;
   #breadcrumb {
     font-family: Courier;
     border: 1px dashed #0f0;
