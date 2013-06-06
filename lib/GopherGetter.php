@@ -85,8 +85,13 @@ class GopherGetter {
 
 		$this->result = $this->cache->get($this->key);
 		if ( $this->result === FALSE ) {
-      error_log("load it");
-	  	$fp = stream_socket_client("tcp://$this->host:$this->port", $this->errno, $this->errstr, 30);
+      try { 
+        $fp = stream_socket_client("tcp://$this->host:$this->port", $this->errno, $this->errstr, 30);
+      }
+      catch(Exception $e) {
+        $this->errstr = $e->getMessage();
+        return FALSE;
+      }
 
 		  if (!$fp) {
 				return FALSE;
@@ -94,7 +99,7 @@ class GopherGetter {
 	  	else {
 			  $data = $this->path;
 			  if ( isset($this->input) && $this->input != "" ) {
-		  		 $data .= "\t$this->input";
+          $data .= "\t$this->input";
 		  	}
 
 				fwrite($fp, "$data\r\n");
@@ -134,12 +139,12 @@ class GopherGetter {
 		$ip_address = ip2long($_SERVER['REMOTE_ADDR']);
 
 		DB::insert('traffic', array(
-									'hostname' => $host,
-									'selector' => $selector,
-									'remote_ip' => $ip_address,
-									'filesize' => $this->size(),
-									'request_at' => DB::sqleval("NOW()")
-									));
+                                'hostname' => $host,
+                                'selector' => $selector,
+                                'remote_ip' => $ip_address,
+                                'filesize' => $this->size(),
+                                'request_at' => DB::sqleval("NOW()")
+                                ));
 
   }
 };
