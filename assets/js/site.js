@@ -184,18 +184,34 @@ $(document).ready(function() {
         return false;
     });
 
-
-    /** theme switcher! */
-    $(".theme-switcher").on("click", function(e) {
-        e.preventDefault();
-        $("body").toggleClass("oldschool");
-
+    var toggleTheme = function() {
         if ( $("body").hasClass("oldschool") ) {
             $(".theme-switcher span").html("old school!");
         }
         else {
             $(".theme-switcher span").html("modern");     
         }
+    };
+
+    var theme = $.cookie('theme');
+    if(theme) {
+        $('body').addClass(theme);
+        $('html').addClass(theme);
+        toggleTheme();
+    }
+
+    /** theme switcher! */
+    $(".theme-switcher").on("click", function(e) {
+        e.preventDefault();
+        $("body").toggleClass("oldschool");
+        if ( $("body").hasClass("oldschool") ) {
+            $.cookie('theme', "oldschool");
+        }
+        else {
+            $.cookie('theme', "");
+        }
+
+        toggleTheme();
     });
 
     /**

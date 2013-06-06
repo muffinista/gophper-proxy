@@ -46,14 +46,17 @@
   background: #000000;
   color: #fff;
   margin-top: 30px;
-
   p {
     margin-top: 9px;
+    margin-bottom: 0px;
     font-size: 80%;
     line-height: 1.6;
   }
 }
 
+html.oldschool {
+ background: #000;
+}
 
 body.oldschool {
  background: #000;
@@ -79,9 +82,15 @@ body.oldschool {
     }
   }
 
-  #gopher {
+  #gopher, #intro {
     font-family: Courier;
-    a {
+     h1, h2, h3 {
+       font-family: Courier;
+       color: #0f0;
+       font-size: 120%;
+     }
+
+    a, label {
       color: #0f0;
     }
     a:hover {
