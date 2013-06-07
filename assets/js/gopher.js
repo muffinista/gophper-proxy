@@ -135,6 +135,11 @@ GopherParser.prototype.entryToLink = function(e) {
         return e.path.replace("URL:", "");
     }
 
+    // add the port if needed
+    if ( e.port != 70 ) {
+        href = href + ":" + e.port;
+    }
+
     // clean up the path a bit, make sure there's always a slash
     if ( e.path && e.path[0] != "/" ) {
         e.path = "/" + e.path;

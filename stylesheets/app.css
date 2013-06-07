@@ -6784,7 +6784,7 @@ html.oldschool body #gopher h1, html.oldschool body #gopher h2, html.oldschool b
 }
 /* line 92, ../sass/_gophper.scss */
 html.oldschool body #gopher a, html.oldschool body #gopher label, html.oldschool body #intro a, html.oldschool body #intro label {
-  color: #0f0;
+  color: #c20;
 }
 /* line 95, ../sass/_gophper.scss */
 html.oldschool body #gopher a:hover, html.oldschool body #intro a:hover {
