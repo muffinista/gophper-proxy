@@ -221,9 +221,9 @@ GopherParser.prototype.entryToLink = function(e) {
                         attr("action", href).
                         addClass("form-inline");
 
-                    var button = $("<button />").attr("type", "submit").addClass("btn").html("Go!");
+                    var button = $("<button />").attr("type", "submit").html("Go!");
                     $(result).
-                        append("<input name='text' class='span3' placeholder='input' />").
+                        append("<input name='text' class='gopher' placeholder='input' />").
                         append(button);
                     
                 }

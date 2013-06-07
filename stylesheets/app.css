@@ -6717,24 +6717,29 @@ html, body {
 }
 
 /* line 36, ../sass/_gophper.scss */
+input.gopher {
+  height: 43px;
+}
+
+/* line 40, ../sass/_gophper.scss */
 #spinner {
   float: right;
 }
 
-/* line 39, ../sass/_gophper.scss */
+/* line 43, ../sass/_gophper.scss */
 #spinner img {
   position: fixed;
   right: 25px;
   display: none;
 }
 
-/* line 45, ../sass/_gophper.scss */
+/* line 49, ../sass/_gophper.scss */
 #footer {
   background: #000000;
   color: #fff;
   margin-top: 30px;
 }
-/* line 49, ../sass/_gophper.scss */
+/* line 53, ../sass/_gophper.scss */
 #footer p {
   margin-top: 9px;
   margin-bottom: 0px;
@@ -6742,51 +6747,51 @@ html, body {
   line-height: 1.6;
 }
 
-/* line 57, ../sass/_gophper.scss */
+/* line 61, ../sass/_gophper.scss */
 html.oldschool {
   background: #000;
 }
 
-/* line 61, ../sass/_gophper.scss */
+/* line 65, ../sass/_gophper.scss */
 html.oldschool body {
   background: #000;
   color: #0f0;
 }
-/* line 64, ../sass/_gophper.scss */
+/* line 68, ../sass/_gophper.scss */
 html.oldschool body #breadcrumb {
   font-family: Courier;
   border: 1px dashed #0f0;
   height: 45px;
   margin-bottom: 20px;
 }
-/* line 69, ../sass/_gophper.scss */
+/* line 73, ../sass/_gophper.scss */
 html.oldschool body #breadcrumb ul {
   background: #000;
   border: none;
 }
-/* line 74, ../sass/_gophper.scss */
+/* line 78, ../sass/_gophper.scss */
 html.oldschool body #breadcrumb ul li a {
   color: #0f0;
 }
-/* line 77, ../sass/_gophper.scss */
+/* line 81, ../sass/_gophper.scss */
 html.oldschool body #breadcrumb ul li a:hover {
   color: #f00;
 }
-/* line 84, ../sass/_gophper.scss */
+/* line 88, ../sass/_gophper.scss */
 html.oldschool body #gopher, html.oldschool body #intro {
   font-family: Courier;
 }
-/* line 86, ../sass/_gophper.scss */
+/* line 90, ../sass/_gophper.scss */
 html.oldschool body #gopher h1, html.oldschool body #gopher h2, html.oldschool body #gopher h3, html.oldschool body #intro h1, html.oldschool body #intro h2, html.oldschool body #intro h3 {
   font-family: Courier;
   color: #0f0;
   font-size: 120%;
 }
-/* line 92, ../sass/_gophper.scss */
+/* line 96, ../sass/_gophper.scss */
 html.oldschool body #gopher a, html.oldschool body #gopher label, html.oldschool body #intro a, html.oldschool body #intro label {
   color: #c20;
 }
-/* line 95, ../sass/_gophper.scss */
+/* line 99, ../sass/_gophper.scss */
 html.oldschool body #gopher a:hover, html.oldschool body #intro a:hover {
   color: #f00;
 }
