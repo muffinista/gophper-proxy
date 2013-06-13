@@ -6,6 +6,7 @@ javascript for maximum portability.
 
 ## Features
 * It runs on PHP using [Slim][slim], which is a nifty lightweight application framework.
+* It's built on Zurb Foundation, a great HTML framework.
 * It caches requests for faster response times.
 * All of the rendering happens in the browser, which means someone could easily write a different backend.
 * If the user accesses a binary file, they can download it. If they click on an image, they can see it in the browser.
