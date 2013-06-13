@@ -6795,3 +6795,8 @@ html.oldschool body #gopher a, html.oldschool body #gopher label, html.oldschool
 html.oldschool body #gopher a:hover, html.oldschool body #intro a:hover {
   color: #f00;
 }
+
+/* line 106, ../sass/_gophper.scss */
+#footer .social {
+  margin-top: 9px;
+}
