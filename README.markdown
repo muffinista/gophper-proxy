@@ -1,152 +1,50 @@
-# Slim Framework
+# gophper-proxy
 
-[![Build Status](https://secure.travis-ci.org/codeguy/Slim.png)](http://travis-ci.org/codeguy/Slim)
-
-Slim is a PHP micro framework that helps you quickly write simple yet powerful web applications and APIs.
-Slim is easy to use for both beginners and professionals. Slim favors cleanliness over terseness and common cases
-over edge cases. Its interface is simple, intuitive, and extensively documented — both online and in the code itself.
-Thank you for choosing the Slim Framework for your next project. I think you're going to love it.
+gophper-proxy is a simple web proxy for gopher servers. It should run
+on any modernish PHP server, and most of the processing is actually done in
+javascript for maximum portability.
 
 ## Features
+* It runs on PHP using [Slim][slim], which is a nifty lightweight application framework.
+* It caches requests for faster response times.
+* All of the rendering happens in the browser, which means someone could easily write a different backend.
+* If the user accesses a binary file, they can download it. If they click on an image, they can see it in the browser.
+* It can be integrated with Google Analytics, and it also has it's own
+internal stats.
+* You can restrict it to a single gopher server, so you can integrate
+it into your project without any fears of someone using your proxy for
+naughty tricks.
 
-* Powerful router
-    * Standard and custom HTTP methods
-    * Route parameters with wildcards and conditions
-    * Route redirect, halt, and pass
-    * Route middleware
-* Template rendering with custom views
-* Flash messages
-* Secure cookies with AES-256 encryption
-* HTTP caching
-* Logging with custom log writers
-* Error handling and debugging
-* Middleware and hook architecture
-* Simple configuration
+## Installing
+* Copy the code to your web tree
+* Copy config.php.example to config.php, and double-check the
+variables for anything you might need to set. In particular, you need
+to create a cache directory and make sure it is writable.
 
-## Getting Started
+TODO
+====
+* better docs
+* clean up the js
 
-### Install
+Contributing
+------------
 
-You may install the Slim Framework with Composer (recommended) or manually.
+Fixes and contributions are happily accepted. Please fork the code and
+submit a pull request.
 
-[Read how to install Slim](http://docs.slimframework.com/pages/getting-started-install)
 
-### System Requirements
+Copyright/License
+-----------------
 
-You need **PHP >= 5.3.0**. If you use encrypted cookies, you'll also need the `mcrypt` extension.
+Copyright (c) 2013 Colin Mitchell. Chatterbot is distributed under a
+modified WTFPL licence -- it's the 'Do what the fuck you want to --
+but don't be an asshole' public license. Please see LICENSE.txt for
+further details. Basically, do whatever you want with this code, but
+don't be an asshole about it. If you are an asshole, expect your karma
+to suffer.
 
-### Hello World Tutorial
 
-Instantiate a Slim application:
+http://muffinlabs.com
 
-    $app = new \Slim\Slim();
 
-Define a HTTP GET route:
 
-    $app->get('/hello/:name', function ($name) {
-        echo "Hello, $name";
-    });
-
-Run the Slim application:
-
-    $app->run();
-
-### Setup your web server
-
-#### Apache
-
-Ensure the `.htaccess` and `index.php` files are in the same public-accessible directory. The `.htaccess` file
-should contain this code:
-
-    RewriteEngine On
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [QSA,L]
-
-#### Nginx
-
-Your nginx configuration file should contain this code (along with other settings you may need) in your `location` block:
-
-    try_files $uri $uri/ /index.php;
-
-This assumes that Slim's `index.php` is in the root folder of your project (www root).
-
-#### lighttpd ####
-
-Your lighttpd configuration file should contain this code (along with other settings you may need). This code requires
-lighttpd >= 1.4.24.
-
-    url.rewrite-if-not-file = ("(.*)" => "/index.php/$0")
-
-This assumes that Slim's `index.php` is in the root folder of your project (www root).
-
-#### IIS
-
-Ensure the `Web.config` and `index.php` files are in the same public-accessible directory. The `Web.config` file should contain this code:
-
-    <?xml version="1.0" encoding="UTF-8"?>
-    <configuration>
-        <system.webServer>
-            <rewrite>
-                <rules>
-                    <rule name="slim" patternSyntax="Wildcard">
-                        <match url="*" />
-                        <conditions>
-                            <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
-                            <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
-                        </conditions>
-                        <action type="Rewrite" url="index.php" />
-                    </rule>
-                </rules>
-            </rewrite>
-        </system.webServer>
-    </configuration>
-
-## Documentation
-
-<http://docs.slimframework.com/>
-
-## How to Contribute
-
-### Pull Requests
-
-1. Fork the Slim Framework repository
-2. Create a new branch for each feature or improvement
-3. Send a pull request from each feature branch to the **develop** branch
-
-It is very important to separate new features or improvements into separate feature branches, and to send a pull
-request for each branch. This allows me to review and pull in new features or improvements individually.
-
-### Style Guide
-
-All pull requests must adhere to the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) standard.
-
-### Unit Testing
-
-All pull requests must be accompanied by passing unit tests and complete code coverage. The Slim Framework uses
-`phpunit` for testing.
-
-[Learn about PHPUnit](https://github.com/sebastianbergmann/phpunit/)
-
-## Community
-
-### Forum and Knowledgebase
-
-Visit Slim's official forum and knowledge base at <http://help.slimframework.com> where you can find announcements,
-chat with fellow Slim users, ask questions, help others, or show off your cool Slim Framework apps.
-
-### Twitter
-
-Follow [@slimphp](http://www.twitter.com/slimphp) on Twitter to receive news and updates about the framework.
-
-## Author
-
-The Slim Framework is created and maintained by [Josh Lockhart](https://www.joshlockhart.com). Josh is a senior
-web developer at [New Media Campaigns](http://www.newmediacampaigns.com/). Josh also created and maintains
-[PHP: The Right Way](http://www.phptherightway.com/), a popular movement in the PHP community to introduce new
-PHP programmers to best practices and good information.
-
-## License
-
-The Slim Framework is released under the MIT public license.
-
-<http://www.slimframework.com/license>
