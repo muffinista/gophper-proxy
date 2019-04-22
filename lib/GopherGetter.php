@@ -20,7 +20,7 @@ class GopherGetter {
 
   function __construct($u, $i = NULL) {
 		$this->cache = new Cache(CACHE_PATH);  //Make sure it exists and is writeable
-
+        
 		// split the incoming URI on :// to prevent too much fooling 
 		// around and to make sure that we normalize our data
 		$u = array_pop(explode("://", $u));

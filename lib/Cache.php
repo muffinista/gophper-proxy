@@ -1,55 +1,56 @@
 <?php
 class Cache {
-  function __construct($dir) {
+    function __construct($dir) {
 		$this->dir = $dir;
-  }
+        $this->mkdir_p($dir);
+    }
 
-  private function _name($key) {
+    private function _name($key) {
 		$k = sha1($key);
 		return sprintf("%s/%s/%s", $this->dir, substr($k, 0, 2), $k);
-  }
+    }
 
-  public function hasKey($key, $expiration = CACHE_LIFETIME) {
+    public function hasKey($key, $expiration = CACHE_LIFETIME) {
 		if ( !is_dir($this->dir) OR !is_writable($this->dir)) {
-		  return FALSE;
+            return FALSE;
 		}
 
 		$cache_path = $this->_name($key);
-    error_log("PATH $cache_path");
+        error_log("PATH $cache_path");
 		if (!@file_exists($cache_path)) {
-		  return FALSE;
+            return FALSE;
 		}
 
 		if (filemtime($cache_path) < (time() - $expiration)) {
-		  $this->clear($key);
-		  return FALSE;
+            $this->clear($key);
+            return FALSE;
 		}
 
 		return TRUE;
-  }
+    }
 
-  public function isBinary($key, $expiration = CACHE_LIFETIME) {
+    public function isBinary($key, $expiration = CACHE_LIFETIME) {
 		if ( !is_dir($this->dir) OR !is_writable($this->dir)) {
-		  return FALSE;
+            return FALSE;
 		}
 
 		$cache_path = $this->_name($key);
 
-    error_log("PATH $cache_path");
+        error_log("PATH $cache_path");
 
 		// return mime type ala mimetype extension
 		$finfo = finfo_open(FILEINFO_MIME);
-    error_log(finfo_file($finfo, $cache_path));
-    error_log($cache_path);
+        error_log(finfo_file($finfo, $cache_path));
+        error_log($cache_path);
 
 		//check to see if the mime-type starts with 'text' -- if not, BINARY
 		return substr(finfo_file($finfo, $cache_path), 0, 4) != 'text' &&
-      substr(finfo_file($finfo, $cache_path), 0, 7) != 'message';
-  }
+                                                              substr(finfo_file($finfo, $cache_path), 0, 7) != 'message';
+    }
 
-  public function isImage($key, $expiration = CACHE_LIFETIME) {
+    public function isImage($key, $expiration = CACHE_LIFETIME) {
 		if ( !is_dir($this->dir) OR !is_writable($this->dir)) {
-		  return FALSE;
+            return FALSE;
 		}
 
 		$cache_path = $this->_name($key);
@@ -59,32 +60,32 @@ class Cache {
 
 		//check to see if the mime-type starts with 'text' -- if not, BINARY
 		return substr(finfo_file($finfo, $cache_path), 0, 5) == 'image';
-  }
+    }
 
-  public function url($key) {
+    public function url($key) {
 		$cache_path = $this->_name($key);
 		return $cache_path;
-  }
+    }
 
-  public function get($key, $expiration = CACHE_LIFETIME) {
+    public function get($key, $expiration = CACHE_LIFETIME) {
 		if ( !is_dir($this->dir) OR !is_writable($this->dir)) {
-      error_log("problem with " . $this->dir);
-		  return FALSE;
+            error_log("problem with " . $this->dir);
+            return FALSE;
 		}
 
 		$cache_path = $this->_name($key);
 
 		if (!@file_exists($cache_path)) {
-		  return FALSE;
+            return FALSE;
 		}
 
 		if (filemtime($cache_path) < (time() - $expiration)) {
-		  $this->clear($key);
-		  return FALSE;
+            $this->clear($key);
+            return FALSE;
 		}
 
 		if (!$fp = @fopen($cache_path, 'rb')) {
-		  return FALSE;
+            return FALSE;
 		}
 
 		flock($fp, LOCK_SH);
@@ -92,75 +93,75 @@ class Cache {
 		$cache = '';
 
 		if (filesize($cache_path) > 0) {
-		  $cache = fread($fp, filesize($cache_path));
+            $cache = fread($fp, filesize($cache_path));
 		}
 		else {
-		  $cache = NULL;
+            $cache = NULL;
 		}
 
 		flock($fp, LOCK_UN);
 		fclose($fp);
 
 		return $cache;
-  }
+    }
 
-  public function size($key, $expiration = CACHE_LIFETIME) {
+    public function size($key, $expiration = CACHE_LIFETIME) {
 		if ( !is_dir($this->dir) OR !is_writable($this->dir)) {
-		  return FALSE;
+            return FALSE;
 		}
 
 		$cache_path = $this->_name($key);
 
 		if (!@file_exists($cache_path)) {
-		  return FALSE;
+            return FALSE;
 		}
 
 		return filesize($cache_path);
-  }
+    }
 
-  private function mkdir_p($path) {
+    private function mkdir_p($path) {
 		if (!is_dir($path)) {
-		  $this->mkdir_p(dirname($path));
-		  mkdir($path, 0777);
+            $this->mkdir_p(dirname($path));
+            mkdir($path, 0777);
 		}
-  }
+    }
 
-  public function set($key, $data) {
+    public function set($key, $data) {
 		if ( !is_dir($this->dir) OR !is_writable($this->dir)) {
-		  return FALSE;
+            return FALSE;
 		}
 
 		$cache_path = $this->_name($key);
-    error_log("PATH $cache_path");
+        error_log("PATH $cache_path");
 
 		$this->mkdir_p(dirname($cache_path));
 
 
 		if ( ! $fp = fopen($cache_path, 'wb')) {
-		  return FALSE;
+            return FALSE;
 		}
 
 		if (flock($fp, LOCK_EX)) {
-		  fwrite($fp, $data);
-		  flock($fp, LOCK_UN);
+            fwrite($fp, $data);
+            flock($fp, LOCK_UN);
 		}
 		else {
-		  return FALSE;
+            return FALSE;
 		}
 
 		fclose($fp);
 		@chmod($cache_path, 0777);
 		return TRUE;
-	  }
+    }
 
-	  public function clear($key) {
+    public function clear($key) {
 		$cache_path = $this->_name($key);
 
 		if (file_exists($cache_path)) {
-		  unlink($cache_path);
-		  return TRUE;
+            unlink($cache_path);
+            return TRUE;
 		}
 
 		return FALSE;
-  }
+    }
 }

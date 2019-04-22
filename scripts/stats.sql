@@ -1,3 +1,4 @@
+USE gopher;
 DROP TABLE IF EXISTS traffic;
 CREATE TABLE traffic (
 	   hostname varchar(100) NOT NULL,
