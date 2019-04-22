@@ -37,15 +37,17 @@ class Cache {
 		$cache_path = $this->_name($key);
 
         error_log("PATH $cache_path");
+        $mime = mime_content_type($cache_path);
+        error_log($mime);
 
-		// return mime type ala mimetype extension
-		$finfo = finfo_open(FILEINFO_MIME);
-        error_log(finfo_file($finfo, $cache_path));
-        error_log($cache_path);
-
-		//check to see if the mime-type starts with 'text' -- if not, BINARY
-		return substr(finfo_file($finfo, $cache_path), 0, 4) != 'text' &&
-                                                              substr(finfo_file($finfo, $cache_path), 0, 7) != 'message';
+        // The file is binary if it's neither text nor a message, and if
+        // it's an application/octet-stream but the file doesn't start with an i
+        // (which is a lot of gopher files)
+		return (
+            substr($mime, 0, 4) != 'text' &&
+            substr($mime, 0, 7) != 'message' &&
+            !($mime == 'application/octet-stream' && substr(file_get_contents($cache_path, FALSE, NULL, 0, 1), 0, 1) == 'i')
+        );
     }
 
     public function isImage($key, $expiration = CACHE_LIFETIME) {
