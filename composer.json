@@ -1,21 +1,23 @@
 {
-    "name": "slim/slim",
-    "type": "library",
-    "description": "Slim Framework, a PHP micro framework",
-    "keywords": ["microframework","rest","router"],
-    "homepage": "http://github.com/codeguy/Slim",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Josh Lockhart",
-            "email": "info@joshlockhart.com",
-            "homepage": "http://www.joshlockhart.com/"
-        }
-    ],
-    "require": {
-        "php": ">=5.3.0"
-    },
-    "autoload": {
-        "psr-0": { "Slim": "." }
+  "name": "muffinista/gophper",
+  "description": "gopher proxy!",
+  "homepage": "http://gopher.muffinlabs.com",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Colin Mitchell",
+      "email": "colin@muffinlabs.com",
+      "homepage": "http://muffinlabs.com/"
     }
+  ],
+  "require": {
+    "php": ">=5.6",
+    "sergeytsalkov/meekrodb": "*",
+    "slim/slim": "^3.1",
+    "slim/php-view": "^2.0",
+    "monolog/monolog": "^1.17"
+  },
+  "autoload": {
+    "psr-0": { "Slim": "." }
+  }
 }

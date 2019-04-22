@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <?php
- // class default for gopher intro
-if ( ! array_key_exists('class', $this->data) ) {
-  $this->data["class"] = "";
+// class default for gopher intro
+if ( ! isset($class) ) {
+  $class = "";
 } 
-if ( ! array_key_exists('result', $this->data) && ! array_key_exists('file', $this->data) ) {
-  $this->data["file"] = "intro.html";
-}
 ?>
 <html lang="en">
   <head>
@@ -66,19 +63,20 @@ if ( ! array_key_exists('result', $this->data) && ! array_key_exists('file', $th
 	        <img src="/assets/img/spinner.gif" />
 	      </div>
 	      <div class="large-12">
-	        <div id="intro" class="<?php echo $this->data["class"] ?>">
-            <?php 
-               if ( array_key_exists('file', $this->data) ) {
-                 include_once($this->data["file"]); 
+	        <div id="intro" class="<?php echo $class ?>">
+            <?php
+               if ( isset($file) ) {
+                 include_once($file); 
                }
              ?>
           </div>
           
 	        <div id="breadcrumb"></div>
 	        <div id="gopher">
-            <?php 
-               if ( array_key_exists('result', $this->data) ) {
-                 print $this->data["result"]['data'];
+            <?php
+            print_r($result);
+               if ( isset($result) ) {
+                 print $result['data'];
                } 
             ?>
           </div> <!-- /gopher -->

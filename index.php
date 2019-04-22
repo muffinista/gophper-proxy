@@ -1,37 +1,44 @@
 <?php
 
-require 'Slim/Slim.php';
-\Slim\Slim::registerAutoloader();
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+
+require __DIR__ . '/vendor/autoload.php';
 
 require 'lib/GopherGetter.php';
-require_once 'lib/meekrodb.2.1.class.php';
 require_once 'config.php';
 
-$app = new \Slim\Slim();
+$app = new \Slim\App();
+
+// Get container
+$container = $app->getContainer();
+$container['view'] = function ($container) {
+    return new \Slim\Views\PhpRenderer('templates/');
+};
 
 //
 // default route
 //
-$app->get('/', function () use($app) {
+$app->get('/', function (Request $request, Response $response, array $args) use($app) {
     $params = array();
     if ( defined('START_REQUEST') ) {
       $params['result'] = loadGopher(START_REQUEST, START_INPUT);
     }
     else {
-      $params['file'] = "intro.html";
+      $params['file'] = "templates/intro.html";
     }
     
-    $app->render('home.html', $params);
+    return $this->view->render($response, 'home.html', $params);
 });
 
-$app->get('/about', function () use($app) {
-	$app->render('home.html', array("file" => "about.html"));
+$app->get('/about', function (Request $request, Response $response, array $args) use($app) {
+    return $this->view->render($response, 'home.html', array("file" => "templates/about.html"));
 });
 
 /**
  * handle binary file requests
  */
-$app->get('/file', function () use($app) {
+$app->get('/file', function (Request $request, Response $response, array $args) use($app) {
 	$path = $_GET['path'];
 	$file = $_GET['name'];
 
@@ -50,8 +57,10 @@ $app->get('/file', function () use($app) {
 /**
  * this will handle incoming requests that have a gopher URL tacked onto the end
  */
-$app->get('/:dest+', function ($dest) use ($app) {
-	$app->render('home.html', array("class" => "hide"));
+//$app->get('/:dest+', function (Request $request, Response $response, array $args) use($app) {
+$app->get('/{dest:.*}', function (Request $request, Response $response, array $args) use($app) {    
+	//$app->render('home.html', array("class" => "hide"));
+    return $this->view->render($response, 'home.html', array("class" => "hide"));
 });
 
 /**
