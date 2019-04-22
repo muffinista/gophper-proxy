@@ -47,17 +47,21 @@ $app->get('/file', function (Request $request, Response $response, array $args) 
 	// header("Content-type: application/octet-stream");
 	// header('Content-Disposition: attachment; filename="' . basename($file) . '"');
 
-	$app->contentType(mime_content_type($path));
-	header("Content-type: " . mime_content_type($path));
-	header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+    $response->withHeader('Content-Type', mime_content_type($path))
+        ->withHeader('Content-Disposition', 'attachment; filename="' . basename($file) . '"')
+        ->withHeader('Content-Length', filesize($path));
+
+    header("Content-type: " . mime_content_type($path));
+    header('Content-Disposition: attachment; filename="' . basename($file) . '"');
 	header("Content-Length: ". filesize($path));
 	readfile($path);
+
+    return $response;
 });
 
 /**
  * this will handle incoming requests that have a gopher URL tacked onto the end
  */
-//$app->get('/:dest+', function (Request $request, Response $response, array $args) use($app) {
 $app->get('/{dest:.*}', function (Request $request, Response $response, array $args) use($app) {    
 	//$app->render('home.html', array("class" => "hide"));
     return $this->view->render($response, 'home.html', array("class" => "hide"));
@@ -69,14 +73,14 @@ $app->get('/{dest:.*}', function (Request $request, Response $response, array $a
 $app->post('/gopher', function () {
 	$url = $_POST["url"];
 	$input = isset($_POST["input"]) ? $_POST["input"] : NULL;
-
+    
 	try {
-    $result = loadGopher($url, $input);
+        $result = loadGopher($url, $input);
 	} catch(Exception $e) {
-	  $result['url'] = $_POST["url"];
-	  $result['data'] = "3Sorry, there was a problem with your request (" . $e->getMessage() . ")\t\tNULL\t70";
+        $result['url'] = $_POST["url"];
+        $result['data'] = "3Sorry, there was a problem with your request (" . $e->getMessage() . ")\t\tNULL\t70";
 	}
-
+    
 	echo json_encode($result);
 });
 
@@ -84,31 +88,29 @@ $app->run();
 
 function loadGopher($url, $input) {
 	$result = array();
-
-  error_log("$url $input");
-  $x = new GopherGetter($url, $input);
-  if ( $x->isValid() ) {
-    $x->get();
-
-    // send binary files and large text back as an attachment
-    if ( $x->isBinary() || $x->size() > 1000000 ) {
-      error_log("binar!");
-      $result['url'] = "/file?name=" . basename($url) . "&path=" . $x->urlFor();
-      $result['image'] = $x->isImage();
+    
+    $x = new GopherGetter($url, $input);
+    if ( $x->isValid() ) {
+        $x->get();
+        
+        // send binary files and large text back as an attachment
+        if ( $x->isBinary() || $x->size() > 1000000 ) {
+            $result['url'] = "/file?name=" . basename($url) . "&path=" . $x->urlFor();
+            $result['image'] = $x->isImage();
+        }
+        else {
+            $result['url'] = $url;
+            $result['data'] = $x->result;
+            
+            if (!mb_check_encoding($result['data'], 'UTF-8')) {
+                $result['data'] = utf8_encode($result['data']);
+            }
+        }
     }
     else {
-      $result['url'] = $url;
-      $result['data'] = $x->result;
-      
-      if (!mb_check_encoding($result['data'], 'UTF-8')) {
-        $result['data'] = utf8_encode($result['data']);
-      }
+        $result['url'] = $url;
+        $result['data'] = "3Sorry, there was a problem with your request\t\tNULL\t70";
     }
-  }
-  else {
-    $result['url'] = $url;
-    $result['data'] = "3Sorry, there was a problem with your request\t\tNULL\t70";
-  }
-
-  return $result;
+    
+    return $result;
 }
