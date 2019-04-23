@@ -69,7 +69,6 @@ $(document).ready(function() {
      */
     var loadGopherUri = function(params) {
         var data = {};
-
         if ( typeof(params) === "string" ) {
             data.url = params;
         }
@@ -218,11 +217,10 @@ $(document).ready(function() {
      * and there's something to load. We'll add the 'hide' class to the output in home.html to trigger this.
      */
     if ( window.location.pathname != "/" && $("#intro").hasClass("hide") ) {
-        loadGopherUri(unescape(window.location.pathname));
+      loadGopherUri(unescape(window.location.pathname));
     }
-
-    if ( $("#gopher").html() !== "" ) {
-        $("#gopher").fromGopher();
-    }
-
+  
+  if ( $("#gopher").html() !== "" ) {
+    $("#gopher").fromGopher();
+  }
 });

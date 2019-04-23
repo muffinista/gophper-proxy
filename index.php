@@ -21,8 +21,9 @@ $container['view'] = function ($container) {
 //
 $app->get('/', function (Request $request, Response $response, array $args) use($app) {
     $params = array();
-    if ( defined('START_REQUEST') ) {
-      $params['result'] = loadGopher(START_REQUEST, START_INPUT);
+
+    if ( getenv('START_REQUEST') !== FALSE ) {
+        $params['result'] = loadGopher(getenv('START_REQUEST'), getenv('START_INPUT'));
     }
     else {
       $params['file'] = "templates/intro.html";

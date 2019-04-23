@@ -1,14 +1,11 @@
-<!DOCTYPE html>
 <?php
-// class default for gopher intro
-if ( ! isset($class) ) {
-  $class = "";
-} 
+$title = getenv("GOPHER_TITLE");
 ?>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Gophper, a Gopher Proxy Tool</title>
+    <title><?php echo $title ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -16,10 +13,6 @@ if ( ! isset($class) ) {
     <link href="/stylesheets/app.css" media="screen, projector, print" rel="stylesheet" type="text/css" />
     <link href="/assets/css/colorbox.css" rel="stylesheet">
     <script src="/javascripts/vendor/custom.modernizr.js"></script>
-
-    <!--[if lt IE 9]>
-        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
   </head>
 
   <body>
@@ -63,6 +56,13 @@ if ( ! isset($class) ) {
 	        <img src="/assets/img/spinner.gif" />
 	      </div>
 	      <div class="large-12">
+          <?php
+          // class default for gopher intro
+          if ( ! isset($class) ) {
+            $class = "";
+          } 
+          ?>
+
 	        <div id="intro" class="<?php echo $class ?>">
             <?php
                if ( isset($file) ) {
@@ -74,7 +74,6 @@ if ( ! isset($class) ) {
 	        <div id="breadcrumb"></div>
 	        <div id="gopher">
             <?php
-            print_r($result);
                if ( isset($result) ) {
                  print $result['data'];
                } 
