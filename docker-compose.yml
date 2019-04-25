@@ -13,7 +13,7 @@ services:
       docker: "true"
       production: "false"
     volumes:
-      - .:/var/www/html:cached
+      - .:/var/www/html #:cached
       - ./logs:/var/www/logs:cached
     ports:
       - 80:80
