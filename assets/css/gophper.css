@@ -167,3 +167,32 @@ nav > form {
 }
 
 
+
+html.oldschool {
+  background: #000;
+}
+
+html.oldschool body {
+  background: #000;
+  color: #0f0;
+}
+html.oldschool ul.breadcrumbs {
+  font-family: Courier;
+  background: #000;
+  border: 1px dashed #0f0;
+}
+html.oldschool a {
+  color: #ffcc00;
+}
+html.oldschool a:hover {
+  color: #f00;
+}
+
+html.oldschool #gopher, html.oldschool #intro {
+  font-family: Courier;
+}
+html.oldschool h1, html.oldschool h2, html.oldschool h3 {
+  font-family: Courier;
+  color: #0f0;
+}
+
