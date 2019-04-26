@@ -9,11 +9,143 @@
   font-style: normal;
 }
 
+body {
+  font-size: 16px;
+  margin: 0px;
+  font-family: DroidSansMonoRegular, monospace;
+}
+
+body > nav {
+  position: sticky;
+  top: 0;
+  height: 45px;
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+body > nav, footer {
+  background: black;
+  color: white;
+}
+
+footer {
+  font-size: 0.8em;
+}
+
+.container {
+  display: grid;
+  grid-template-areas:
+    "breadcrumb"
+    "main"
+    "footer";
+  grid-template-rows: auto 1fr auto;
+  grid-gap: 10px;
+  height: calc(100vh - 45px);
+}
+
+@media screen and (max-width: 800px) {
+  body {
+    font-size: 12px;
+  }
+  body > nav {
+    display: block;
+    height: auto;
+  }
+  body > nav > form {
+    padding-bottom: 20px;
+  }
+}
+
+
+h1 {
+  font-size: 1.5em;
+}
+h2 {
+  font-size: 1.2em;
+}
+
+nav > ul {
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  list-style: none;
+}
+nav h1 {
+  margin: 0px;
+  padding: 0px;
+}
+
+#breadcrumb, main, footer {
+  padding-left: 1em;
+  padding-right: 1em;       
+}
+body > nav {
+  padding-left: 0.5em;
+}
+
+nav > ul h1, nav > ul a {
+  padding-right: 1.0em;
+  text-decoration: none;
+  color: white;
+  line-height: 40px;
+}
+
+footer a {
+  color: white;
+}
+
+a:hover {
+  color: red;
+}
+
+.hide {
+  display: none;
+}
+
+form.gopher-uri, form.form-inline {
+  display: flex;
+  margin-top: 10px;
+  margin-right: 1em;
+}
+
+.theme-switcher {
+  font-size: 0.8em;
+}
+
+a {
+  text-decoration: none;
+}    
+
+ul.breadcrumbs {
+  display: flex;
+  list-style: none;
+  padding: 0px;
+  background: #f6f6f6;
+  line-height: 40px;
+  padding-left: 12px;
+  font-size: 0.8em;
+  border: 1px solid #dcdcdc;
+}
+
+ul.breadcrumbs .divider::after {
+  content: "/";
+}
+
+form.gopher-uri input, form.form-inline input {
+  max-width: 50em;
+  flex-grow: 1;
+}
+
+nav > form {
+  flex-grow: 1;
+  margin-bottom: 10px;
+  max-width: 30em;
+}
+
 
 #gopher {
-  font-family: DroidSansMonoRegular, monospace;
 	white-space: pre-wrap;
-	padding-bottom: 100px;
   line-height: 18px;
 }
 #gopher .as-html {
@@ -26,22 +158,12 @@
 #gopher i.icon-search {
   float: left
 }
-
-#spinner {
-	float: right;
-}
-#spinner img {
-	position: fixed;
-	right: 25px;
-	display: none;
+#gopher form {
+  margin-top: 0px;
 }
 
-.navbar-fixed-bottom .container {
-  padding-top: 5px;
+#intro {
+  max-width: 50em;
 }
-.navbar-fixed-bottom .navbar-inner {
-  min-height: 30px;
-}
-form.gopher-uri {
-  margin: 0 0 5px;
-}
+
+

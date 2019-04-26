@@ -17,182 +17,28 @@ if ( ! isset($class) ) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <!--   <link href="/stylesheets/app.css" media="screen, projector, print" rel="stylesheet" type="text/css" />-->
+    <link href="/assets/css/gophper.css" media="screen, projector, print" rel="stylesheet" type="text/css" />
     <link href="/assets/css/glyphs.css" rel="stylesheet">
     <link href="/assets/css/colorbox.css" rel="stylesheet">
     <style>
-     @font-face {
-       font-family: 'DroidSansMonoRegular';
-       src: url('/assets/font/DroidSansMono-webfont.eot');
-       src: url('/assets/font/DroidSansMono-webfont.eot?#iefix') format('embedded-opentype'),
-       url('/assets/font/DroidSansMono-webfont.woff') format('woff'),
-       url('/assets/font/DroidSansMono-webfont.ttf') format('truetype'),
-       url('/assets/font/DroidSansMono-webfont.svg#DroidSansMonoRegular') format('svg');
-       font-weight: normal;
-       font-style: normal;
-     }
-
-     
-     body {
-       font-size: 16px;
-       margin: 0px;
-       font-family: DroidSansMonoRegular, monospace;
-     }
-
-     h1 {
-       font-size: 1.5em;
-     }
-     h2 {
-       font-size: 1.2em;
-     }
-     
-     #gopher {
-	     white-space: pre-wrap;
-       line-height: 18px;
-     }
-     #gopher .as-html {
-	     white-space: normal;
-     }
-
-     #gopher i {
-       width: 25px; /* padding for icons */
-     }
-     #gopher i.icon-search {
-       float: left
-     }
-
-     body > nav {
-       position: sticky;
-       top: 0;
-       height: 45px;
-       display: flex;
-       justify-content: space-between;
-     }
-     
-     body > nav, footer {
-       background: black;
-       color: white;
-     }
-
-     footer {
-       font-size: 0.8em;
-     }
-
-     .container {
-       display: grid;
-       grid-template-areas:
-         "breadcrumb"
-         "main"
-         "footer";
-       grid-template-rows: auto 1fr auto;
-       grid-gap: 10px;
-       height: calc(100vh - 45px);
-     }
-
-     nav > ul {
-       margin: 0px;
-       padding: 0px;
-       display: flex;
-       list-style: none;
-     }
-     nav h1 {
-       margin: 0px;
-       padding: 0px;
-     }
-     #breadcrumb, main, footer {
-       padding-left: 1em;
-       padding-right: 1em;       
-     }
-     body > nav {
-       padding-left: 0.5em;
-     }
-
-     nav > ul h1, nav > ul a {
-       padding-right: 1.0em;
-       text-decoration: none;
-       color: white;
-       line-height: 40px;
-     }
-
-     footer a {
-       color: white;
-     }
-
-     .hide {
-       display: none;
-     }
-
-     form.gopher-uri, form.form-inline {
-       display: flex;
-       margin-top: 10px;
-       margin-right: 1em;
-     }
-
-     #gopher form {
-       margin-top: 0px;
-     }
-
-     #intro {
-       max-width: 50em;
-     }
-
-     .theme-switcher {
-       font-size: 0.8em;
-     }
-
-     a {
-       text-decoration: none;
-     }
-
-     
-     
-     ul.breadcrumbs {
-       display: flex;
-       list-style: none;
-       padding: 0px;
-       background: #f6f6f6;
-       line-height: 40px;
-       padding-left: 12px;
-       font-size: 0.8em;
-       border: 1px solid #dcdcdc;
-     }
-
-     ul.breadcrumbs .divider::after {
-       content: "/";
-     }
-
-     form.gopher-uri input, form.form-inline input {
-       max-width: 50em;
-       flex-grow: 1;
-     }
-
-     a:hover {
-       color: red;
-     }
-
     </style>
   </head>
 
   <body>
     <nav class="top-bar">
-      <ul class="title-area">
+      <ul>
         <li class="name">
           <h1><a href="/"><?php echo $title; ?></a></h1>
-          <li class="active"><a href="/">Home</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="https://github.com/muffinista/gophper-proxy">Code</a></li>
         </li>
+        <li class="active"><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="https://github.com/muffinista/gophper-proxy">Code</a></li>
+        <li class="theme-wrapper"><a href="#" class="theme-switcher">Theme: <span>modern</span></a></li>
       </ul>
-
-      <ul class="right">
-        <li><a href="#" class="theme-switcher">Theme: <span>modern</span></a></li>
-        <li class="search">
-	        <form class="gopher-uri">
-	          <input type="text" name="uri" placeholder="URL" />
-	          <input type="submit" class="button" value="go" />
-	        </form>
-        </li>
-      </ul>
+	    <form class="gopher-uri">
+	      <input type="text" name="uri" placeholder="URL" />
+	      <button type="submit" class="button">go</button>
+	    </form>
     </nav>
 
     <div class="container">
