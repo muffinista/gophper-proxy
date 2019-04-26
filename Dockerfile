@@ -1,4 +1,3 @@
-#FROM php:7.2.2-fpm
 FROM php:7.2-apache
 
 RUN apt-get update && \
@@ -10,10 +9,6 @@ RUN apt-get update && \
 WORKDIR /var/www/html
 COPY ./ /var/www/html/
 
-COPY php-debugging.ini $PHP_INI_DIR/conf.d/
+#COPY php-debugging.ini $PHP_INI_DIR/conf.d/
 
 RUN composer install --prefer-source --no-interaction
-#php composer.phar install
-
-#RUN pecl install swoole
-#RUN docker-php-ext-enable swoole

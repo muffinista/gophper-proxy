@@ -6,7 +6,6 @@ $(document).ready(function() {
    */
 
   window.addEventListener('popstate', function(event) {
-    console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
     var state = event.state;
 
     if ( state.data ) {
@@ -107,8 +106,6 @@ $(document).ready(function() {
         params.onComplete();
       }
 
-      console.log(data);
-
       // did we get valid data? if not, display the error
       if ( data.error ) {
         $("#gopher").html(data.error);
@@ -134,11 +131,6 @@ $(document).ready(function() {
 
         // scroll to the top of the page
         $('html, body').animate({ scrollTop: 0 }, 0);
-
-        // Google Analytics support
-        if ( window._gaq ) {
-          _gaq.push(['_trackPageview']);
-        }
       }
 
 
@@ -195,7 +187,7 @@ $(document).ready(function() {
     }
   };
 
-  var theme = $.cookie('theme');
+  var theme = Cookies.get('theme');
   if(theme) {
     $('html').addClass(theme);
     toggleTheme();
@@ -206,10 +198,10 @@ $(document).ready(function() {
     e.preventDefault();
     $("html").toggleClass("oldschool");
     if ( $("html").hasClass("oldschool") ) {
-      $.cookie('theme', "oldschool");
+      Cookies.set('theme', "oldschool");
     }
     else {
-      $.cookie('theme', "");
+      Cookies.set('theme', "");
     }
 
     toggleTheme();

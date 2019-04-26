@@ -1,12 +1,12 @@
 @font-face {
-    font-family: 'DroidSansMonoRegular';
-    src: url('/assets/font/DroidSansMono-webfont.eot');
-    src: url('/assets/font/DroidSansMono-webfont.eot?#iefix') format('embedded-opentype'),
-         url('/assets/font/DroidSansMono-webfont.woff') format('woff'),
-         url('/assets/font/DroidSansMono-webfont.ttf') format('truetype'),
-         url('/assets/font/DroidSansMono-webfont.svg#DroidSansMonoRegular') format('svg');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'DroidSansMonoRegular';
+  src: url('/assets/font/DroidSansMono-webfont.eot');
+  src: url('/assets/font/DroidSansMono-webfont.eot?#iefix') format('embedded-opentype'),
+  url('/assets/font/DroidSansMono-webfont.woff') format('woff'),
+  url('/assets/font/DroidSansMono-webfont.ttf') format('truetype'),
+  url('/assets/font/DroidSansMono-webfont.svg#DroidSansMonoRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
 
@@ -40,8 +40,8 @@
   padding-top: 5px;
 }
 .navbar-fixed-bottom .navbar-inner {
-    min-height: 30px;
+  min-height: 30px;
 }
 form.gopher-uri {
-    margin: 0 0 5px;
+  margin: 0 0 5px;
 }

@@ -1,5 +1,12 @@
 <?php
-$title = getenv("GOPHER_TITLE");
+//$title = getenv("GOPHER_TITLE");
+
+$title = 'Gophper';
+
+// class default for gopher intro
+if ( ! isset($class) ) {
+  $class = "";
+} 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,104 +17,218 @@ $title = getenv("GOPHER_TITLE");
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <link href="/stylesheets/app.css" media="screen, projector, print" rel="stylesheet" type="text/css" />
+    <!--   <link href="/stylesheets/app.css" media="screen, projector, print" rel="stylesheet" type="text/css" />-->
+    <link href="/assets/css/glyphs.css" rel="stylesheet">
     <link href="/assets/css/colorbox.css" rel="stylesheet">
-    <script src="/javascripts/vendor/custom.modernizr.js"></script>
+    <style>
+     @font-face {
+       font-family: 'DroidSansMonoRegular';
+       src: url('/assets/font/DroidSansMono-webfont.eot');
+       src: url('/assets/font/DroidSansMono-webfont.eot?#iefix') format('embedded-opentype'),
+       url('/assets/font/DroidSansMono-webfont.woff') format('woff'),
+       url('/assets/font/DroidSansMono-webfont.ttf') format('truetype'),
+       url('/assets/font/DroidSansMono-webfont.svg#DroidSansMonoRegular') format('svg');
+       font-weight: normal;
+       font-style: normal;
+     }
+
+     
+     body {
+       font-size: 16px;
+       margin: 0px;
+       font-family: DroidSansMonoRegular, monospace;
+     }
+
+     h1 {
+       font-size: 1.5em;
+     }
+     h2 {
+       font-size: 1.2em;
+     }
+     
+     #gopher {
+	     white-space: pre-wrap;
+       line-height: 18px;
+     }
+     #gopher .as-html {
+	     white-space: normal;
+     }
+
+     #gopher i {
+       width: 25px; /* padding for icons */
+     }
+     #gopher i.icon-search {
+       float: left
+     }
+
+     body > nav {
+       position: sticky;
+       top: 0;
+       height: 45px;
+       display: flex;
+       justify-content: space-between;
+     }
+     
+     body > nav, footer {
+       background: black;
+       color: white;
+     }
+
+     footer {
+       font-size: 0.8em;
+     }
+
+     .container {
+       display: grid;
+       grid-template-areas:
+         "breadcrumb"
+         "main"
+         "footer";
+       grid-template-rows: auto 1fr auto;
+       grid-gap: 10px;
+       height: calc(100vh - 45px);
+     }
+
+     nav > ul {
+       margin: 0px;
+       padding: 0px;
+       display: flex;
+       list-style: none;
+     }
+     nav h1 {
+       margin: 0px;
+       padding: 0px;
+     }
+     #breadcrumb, main, footer {
+       padding-left: 1em;
+       padding-right: 1em;       
+     }
+     body > nav {
+       padding-left: 0.5em;
+     }
+
+     nav > ul h1, nav > ul a {
+       padding-right: 1.0em;
+       text-decoration: none;
+       color: white;
+       line-height: 40px;
+     }
+
+     footer a {
+       color: white;
+     }
+
+     .hide {
+       display: none;
+     }
+
+     form.gopher-uri, form.form-inline {
+       display: flex;
+       margin-top: 10px;
+       margin-right: 1em;
+     }
+
+     #gopher form {
+       margin-top: 0px;
+     }
+
+     #intro {
+       max-width: 50em;
+     }
+
+     .theme-switcher {
+       font-size: 0.8em;
+     }
+
+     a {
+       text-decoration: none;
+     }
+
+     
+     
+     ul.breadcrumbs {
+       display: flex;
+       list-style: none;
+       padding: 0px;
+       background: #f6f6f6;
+       line-height: 40px;
+       padding-left: 12px;
+       font-size: 0.8em;
+       border: 1px solid #dcdcdc;
+     }
+
+     ul.breadcrumbs .divider::after {
+       content: "/";
+     }
+
+     form.gopher-uri input, form.form-inline input {
+       max-width: 50em;
+       flex-grow: 1;
+     }
+
+     a:hover {
+       color: red;
+     }
+
+    </style>
   </head>
 
   <body>
-    <div id="root">
-      <div class="fixed">
-        <nav class="top-bar">
-          <ul class="title-area">
-            <li class="name">
-              <h1><a href="/">Gophper</a></h1>
-            </li>
-            <li class="toggle-topbar"><a href="#"><span>Menu</span></a></li>
-          </ul>
-          <section class="top-bar-section">
-            <ul class="left">
-              <li class="active"><a href="/">Home</a></li>
-              <li><a href="/about">About</a></li>
-              <li><a href="https://github.com/muffinista/gophper-proxy">Code</a></li>
-            </ul>
-            
-            <ul class="right">
-              <li><a href="#" class="theme-switcher">Theme: <span>modern</span></a></li>
-              <li class="has-form search">
-	              <form class="gopher-uri">
-                  <div class="row collapse">
-                    <div class="large-10 columns">
-	                    <input type="text" name="uri" placeholder="URL" />
-                    </div>
-                    <div class="large-2 columns">
-	                    <input type="submit" class="button" value="go" />
-                    </div>
-                  </div>
-	              </form>
-              </li>
-            </ul>
-          </section>
-        </nav>
-      </div>
+    <nav class="top-bar">
+      <ul class="title-area">
+        <li class="name">
+          <h1><a href="/"><?php echo $title; ?></a></h1>
+          <li class="active"><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="https://github.com/muffinista/gophper-proxy">Code</a></li>
+        </li>
+      </ul>
 
-      <div id="main" class="row container">
-	      <div id="spinner">
+      <ul class="right">
+        <li><a href="#" class="theme-switcher">Theme: <span>modern</span></a></li>
+        <li class="search">
+	        <form class="gopher-uri">
+	          <input type="text" name="uri" placeholder="URL" />
+	          <input type="submit" class="button" value="go" />
+	        </form>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="container">
+	    <div id="breadcrumb"></div>
+      <main>
+	      <div id="spinner" class="hide">
 	        <img src="/assets/img/spinner.gif" />
 	      </div>
-	      <div class="large-12">
+        
+	      <div id="intro" class="<?php echo $class ?>">
           <?php
-          // class default for gopher intro
-          if ( ! isset($class) ) {
-            $class = "";
+          if ( isset($file) ) {
+            include_once($file); 
+          }
+          ?>
+        </div>
+        
+	      <div id="gopher">
+          <?php
+          if ( isset($result) ) {
+            print $result['data'];
           } 
           ?>
-
-	        <div id="intro" class="<?php echo $class ?>">
-            <?php
-               if ( isset($file) ) {
-                 include_once($file); 
-               }
-             ?>
-          </div>
-          
-	        <div id="breadcrumb"></div>
-	        <div id="gopher">
-            <?php
-               if ( isset($result) ) {
-                 print $result['data'];
-               } 
-            ?>
-          </div> <!-- /gopher -->
-	      </div> <!-- /span8 -->
-      </div> <!-- /container -->
-      <div id="root_footer"></div>
+        </div>
+      </main>
+      
+      <footer id="footer">
+	      <p>Gophper &copy; <?php echo date("Y"); ?> <a href="http://muffinlabs.com/">Colin
+	        Mitchell</a>. Content delivered via Gophper belongs to its
+	        original authors. Enjoy!
+        </p>
+      </footer>
     </div>
-
-    <footer id="footer">
-      <div class="row fill-width">
-        <div class="small-8 columns">
-	        <p>Gophper &copy; <?php echo date("Y"); ?> <a href="http://muffinlabs.com/">Colin
-	            Mitchell</a>. Content delivered via Gophper belongs to its
-	          original authors. Enjoy!
-          </p>
-        </div>
-        <div class="small-4 columns">
-        </div>
-      </div>
-    </footer>
     
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
-    <script src="/javascripts/foundation/foundation.js"></script>
-    <script src="/javascripts/foundation/foundation.forms.js"></script>
-    <script src="/javascripts/foundation/foundation.cookie.js"></script>
-    <script src="/javascripts/foundation/foundation.topbar.js"></script>
-
-    <script>
-     $(document).foundation();
-    </script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
     <script src="/assets/js/jquery.colorbox.js"></script>
     <script src="/assets/js/gopher.js"></script>
     <script src="/assets/js/site.js"></script>
