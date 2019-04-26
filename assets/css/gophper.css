@@ -128,6 +128,13 @@ ul.breadcrumbs {
   border: 1px solid #dcdcdc;
 }
 
+.divider {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+ul.breadcrumbs li:first-child .divider {
+  padding-left: 0;
+}
 ul.breadcrumbs .divider::after {
   content: "/";
 }
