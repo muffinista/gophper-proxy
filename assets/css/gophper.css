@@ -64,12 +64,25 @@ footer {
   body > nav {
     display: block;
     height: auto;
+    position: initial;
   }
   body > nav > form {
     padding-bottom: 20px;
+    max-width: initial;
+  }
+
+  .container {
+    margin-top: 0px;
+    height: auto;
   }
 }
 
+
+@media screen and (max-width: 600px) {
+  .container {
+    font-size: 10px;
+  }
+}
 
 h1 {
   font-size: 1.5em;
