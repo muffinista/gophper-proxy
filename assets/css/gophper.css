@@ -16,12 +16,24 @@ body {
 }
 
 body > nav {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   height: 45px;
   display: flex;
   flex-grow: 1;
-  justify-content: space-between;
+  justify-content: flex-start;
+}
+body > nav > .theme-wrapper {
+  margin-left: auto;
+  padding-right: 1.0em;
+  line-height: 40px;
+}
+
+body > nav > .theme-wrapper  a {
+  text-decoration: none;
+  color: white;
 }
 
 body > nav, footer {
@@ -41,6 +53,7 @@ footer {
     "footer";
   grid-template-rows: auto 1fr auto;
   grid-gap: 10px;
+  margin-top: 45px;
   height: calc(100vh - 45px);
 }
 
@@ -147,7 +160,7 @@ form.gopher-uri input, form.form-inline input {
 nav > form {
   flex-grow: 1;
   margin-bottom: 10px;
-  max-width: 30em;
+  max-width: 20em;
 }
 
 
