@@ -110,8 +110,8 @@ body > nav {
   padding-left: 0.5em;
 }
 
-nav > ul h1, nav > ul a {
-  padding-right: 1.0em;
+nav > ul a {
+  padding-right: 0.75em;
   text-decoration: none;
   color: white;
   line-height: 40px;
