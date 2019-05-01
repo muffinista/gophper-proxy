@@ -26,7 +26,7 @@ $app->get('/', function (Request $request, Response $response, array $args) use(
         $params['result'] = loadGopher(getenv('START_REQUEST'), getenv('START_INPUT'));
     }
     else {
-      $params['file'] = "templates/intro.html";
+        $params['file'] = "templates/intro.html";
     }
     
     return $this->view->render($response, 'home.html', $params);
