@@ -6,7 +6,20 @@ use Psr\Http\Message\ResponseInterface as Response;
 require __DIR__ . '/vendor/autoload.php';
 
 require 'lib/GopherGetter.php';
-require_once 'config.php';
+
+define('LOG_STATS', (getenv('MYSQL_USER') !== FALSE));
+
+if ( defined('LOG_STATS') && LOG_STATS == true ) {
+    DB::$user = getenv('MYSQL_USER');
+    DB::$password = getenv('MYSQL_PASSWORD');
+    DB::$dbName = getenv('MYSQL_DATABASE');
+    DB::$host = getenv('MYSQL_HOST');
+}
+
+define('CACHE_LIFETIME', 3600);
+define('CACHE_PATH', "/tmp/gopher");
+define('MAX_FILESIZE', 10000000);
+
 
 $app = new \Slim\App();
 
