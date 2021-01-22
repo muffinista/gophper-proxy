@@ -2,9 +2,9 @@
 require 'Cache.php';
 
 /**
-   todo:
-   - limit download size
-   - santize input
+  todo:
+  - limit download size
+  - santize input
 */
 
 class GopherGetter {
@@ -85,7 +85,7 @@ class GopherGetter {
 
 		$this->result = $this->cache->get($this->key);
 		if ( $this->result === FALSE ) {
-            try { 
+            try {
                 $fp = stream_socket_client("tcp://$this->host:$this->port", $this->errno, $this->errstr, 30);
             }
             catch(Exception $e) {
@@ -94,7 +94,7 @@ class GopherGetter {
             }
 
             if (!$fp) {
-				return FALSE;
+                return FALSE;
             }
             else {
                 $data = $this->path;

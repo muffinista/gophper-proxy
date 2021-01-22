@@ -94,14 +94,14 @@ $(document).ready(function() {
       type: 'post',
       dataType: 'json',
       data: data,
-      error:function (xhr, ajaxOptions, thrownError){
+      error: function (xhr, ajaxOptions, thrownError){
         if(xhr.status==404) {
           alert(thrownError);
         }
       }
     }).done(function ( data ) {
       spinner.unspin();
-
+      
       if ( typeof(params.onComplete) !== "undefined" ) {
         params.onComplete();
       }

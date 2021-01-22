@@ -1,5 +1,7 @@
 <?php
 
+error_reporting(0);
+
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
@@ -94,7 +96,7 @@ $app->post('/gopher', function () {
         $result['url'] = $_POST["url"];
         $result['data'] = "3Sorry, there was a problem with your request (" . $e->getMessage() . ")\t\tNULL\t70";
 	}
-    
+
 	echo json_encode($result);
 });
 
@@ -105,10 +107,14 @@ function loadGopher($url, $input) {
     
     $x = new GopherGetter($url, $input);
     if ( $x->isValid() ) {
-        $x->get();
-        
+        $result = $x->get();
+
+        if ( $result == FALSE ) {
+            $result['url'] = $url;
+            $result['data'] = "3Sorry, there was a problem with your request - " . $x->errstr . "\t\tNULL\t70";
+        }
         // send binary files and large text back as an attachment
-        if ( $x->isBinary() || $x->size() > 1000000 ) {
+        else if ( $x->isBinary() || $x->size() > 1000000 ) {
             $result['url'] = "/file?name=" . basename($url) . "&path=" . $x->urlFor();
             $result['image'] = $x->isImage();
         }
