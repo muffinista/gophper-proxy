@@ -114,7 +114,6 @@ class GopherGetter {
                         $this->cache->clear($this->key);
                         return FALSE;
                     }
-
 				}
 				fclose($fp);
             }

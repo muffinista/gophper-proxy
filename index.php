@@ -36,14 +36,13 @@ $container['view'] = function ($container) {
 //
 $app->get('/', function (Request $request, Response $response, array $args) use($app) {
     $params = array();
-
     if ( getenv('START_REQUEST') !== FALSE ) {
         $params['result'] = loadGopher(getenv('START_REQUEST'), getenv('START_INPUT'));
     }
     else {
         $params['file'] = "templates/intro.html";
     }
-    
+
     return $this->view->render($response, 'home.html', $params);
 });
 
@@ -104,12 +103,11 @@ $app->run();
 
 function loadGopher($url, $input) {
 	$result = array();
-    
     $x = new GopherGetter($url, $input);
     if ( $x->isValid() ) {
-        $result = $x->get();
+        $success = $x->get();
 
-        if ( $result == FALSE ) {
+        if ( $success == FALSE ) {
             $result['url'] = $url;
             $result['data'] = "3Sorry, there was a problem with your request - " . $x->errstr . "\t\tNULL\t70";
         }
@@ -121,7 +119,6 @@ function loadGopher($url, $input) {
         else {
             $result['url'] = $url;
             $result['data'] = $x->result;
-            
             if (!mb_check_encoding($result['data'], 'UTF-8')) {
                 $result['data'] = utf8_encode($result['data']);
             }
@@ -131,6 +128,6 @@ function loadGopher($url, $input) {
         $result['url'] = $url;
         $result['data'] = "3Sorry, there was a problem with your request\t\tNULL\t70";
     }
-    
+
     return $result;
 }
