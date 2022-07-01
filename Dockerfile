@@ -11,6 +11,9 @@ COPY ./ /var/www/html/
 
 COPY .htaccess /var/www/html/
 
-COPY php-debugging.ini $PHP_INI_DIR/conf.d/
+#COPY php-debugging.ini $PHP_INI_DIR/conf.d/
+
+#RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
 RUN composer install --prefer-source --no-interaction

@@ -12,29 +12,13 @@ services:
     environment:
       docker: "true"
       production: "false"
+      ALLOW_ALL_PORTS: 'false'
+      GOPHER_TITLE: "Gophper, a Gopher Proxy Tool"
     volumes:
       - .:/var/www/html #:cached
       - ./logs:/var/www/logs:cached
     ports:
       - 80:80
-  # database:
-  #   image: library/mysql:5.7.20
-  #   restart: on-failure
-  #   networks:
-  #     - internal_network
-  #   volumes:
-  #     - mysql:/var/lib/mysql
-  #     - ./scripts/stats.sql:/docker-entrypoint-initdb.d/stats.sql
-  #   environment:
-  #     # Change the passwords below
-  #     # root (This user will be able to view database restored from schema.sql / all databases)
-  #     MYSQL_ROOT_PASSWORD: dfdskgh239yhdsjbf
-            
-  #     # Create new user (This user only has access to the new database)
-  #     MYSQL_USER: gopher
-  #     MYSQL_PASSWORD: gopher
-  #     # Create New Database
-  #     MYSQL_DATABASE: gopher
 networks:
   external_network:
   internal_network:
