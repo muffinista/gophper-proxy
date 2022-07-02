@@ -1,4 +1,3 @@
-a
 <?php
 
 error_reporting(1);
@@ -133,4 +132,4 @@ function loadGopher($url, $input) {
 
     return $result;
 }
-?>b
+
