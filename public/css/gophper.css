@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'DroidSansMonoRegular';
-  src: url('/assets/font/DroidSansMono-webfont.eot');
-  src: url('/assets/font/DroidSansMono-webfont.eot?#iefix') format('embedded-opentype'),
-  url('/assets/font/DroidSansMono-webfont.woff') format('woff'),
-  url('/assets/font/DroidSansMono-webfont.ttf') format('truetype'),
-  url('/assets/font/DroidSansMono-webfont.svg#DroidSansMonoRegular') format('svg');
+  src: url('/font/DroidSansMono-webfont.eot');
+  src: url('/font/DroidSansMono-webfont.eot?#iefix') format('embedded-opentype'),
+  url('/font/DroidSansMono-webfont.woff') format('woff'),
+  url('/font/DroidSansMono-webfont.ttf') format('truetype'),
+  url('/font/DroidSansMono-webfont.svg#DroidSansMonoRegular') format('svg');
   font-weight: normal;
   font-style: normal;
 }

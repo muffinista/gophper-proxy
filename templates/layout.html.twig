@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ description }}">
+    <meta name="author" content="">
+
+    <link href="{{ asset('css/gophper.css') }}" media="screen, projector, print" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/glyphs.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/colorbox.css') }}" rel="stylesheet">
+    <style>
+    </style>
+  </head>
+
+  <body>
+    <nav class="top-bar">
+      <ul>
+        <li class="name">
+          <h1><a href="/">{{ title }}</a></h1>
+        </li>
+        <li><a href="{{ about_path }}">About</a></li>
+      </ul>
+
+      <div class="theme-wrapper"><a href="#" class="theme-switcher">Theme: <span>modern</span></a></div>
+      <form class="gopher-uri">
+	      <input type="text" name="uri" placeholder="URL" />
+	      <button type="submit" class="button">go</button>
+	    </form>
+    </nav>
+
+    <div class="container">
+	    <div id="breadcrumb"></div>
+      <main>
+	      <div id="spinner" class="hide">
+	        <img src="/img/spinner.gif" />
+	      </div>
+        
+	      <div id="intro" class="<?php echo $class ?>">
+          <?php
+          if ( isset($file) ) {
+            include_once($file); 
+          }
+          ?>
+        </div>
+        
+	      <div id="gopher">{{ data }}</div>
+      </main>
+      
+      <footer id="footer">
+	      <p>Gophper &copy; {{ date }} <a href="http://muffinlabs.com/">Colin
+	        Mitchell</a>. Content delivered via Gophper belongs to its
+	        original authors. Enjoy!
+        </p>
+      </footer>
+    </div>
+    
+    <script src="{{ asset('js/gopher.js') }}"></script>
+    <script src="{{ asset('js/site.js') }}"></script>
+
+    <template id="row-link-template"><div class="row"><i class="icon"></i><a href=""></a></div></template>
+    <template id="row-text-template"><div class="row"><i class="icon"></i><span></span></div></template>
+    <template id="row-form-template"><div class="row"><i class="icon"></i><form method="post" action="" class="form-inline">
+        <input name='text' class='gopher' placeholder='input' />
+        <button type="submit">Go!</button>
+      </form></div></template>
+
+
+
+    <style>
+      div.row {
+        display: block;
+      }
+  </body>
+</html>
