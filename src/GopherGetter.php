@@ -89,9 +89,9 @@ class GopherGetter {
     $this->result = $this->cache->get($this->key);
     if ( $this->result === FALSE ) {
       try {
-        $fp = stream_socket_client("tcp://$this->host:$this->port", $this->errno, $this->errstr, 30);
+        $fp = @stream_socket_client("tcp://$this->host:$this->port", $this->errno, $this->errstr, 10);
       }
-      catch(Exception $e) {
+      catch(ErrorException $e) {
         $this->errstr = $e->getMessage();
         return FALSE;
       }

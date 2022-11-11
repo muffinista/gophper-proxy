@@ -37,7 +37,7 @@ class GopherParser {
   * @return true if we should parse as gopher menu, false otherwise
   */
   shouldRender = function(d) {
-    var data = d.split("\n");
+    var data = d.trim().split("\n");
     return data[0].match(this.entryPattern) !== null;
   }
   
@@ -156,7 +156,13 @@ addEventListener('load', (event) => {
   const parser = new GopherParser();
   let data, entries;
   const el = document.querySelector('#gopher');
-  data = el.textContent;
+
+  if (el.dataset.parse === "false" ) {
+    console.log("skipping parsing");
+    return;
+  }
+
+  data = el.textContent.trim();
 
   // make sure we should render -- if this doesn't look like gophertext,
   // we'll just spit back the text itself
@@ -175,9 +181,9 @@ addEventListener('load', (event) => {
   el.innerHTML = "";
   
   entries.filter((e) => e.type).forEach((e) => {
-    
-    var text = e.title;
-    var type = e.type;
+
+    const text = e.title;
+    const type = e.type;
     
     let row;
 
@@ -192,8 +198,12 @@ addEventListener('load', (event) => {
     }
 
     // if we have an icon class, add it here
-    if ( type.icon ) {
-      row.querySelector('i.icon').classList.add(type.icon);
+    if ( type.icon && row.querySelector('.icon') ) {
+      row.querySelector('.icon').classList.add(type.icon);
+      const svgUse = row.querySelector('svg > use');
+      if (svgUse) {
+        svgUse.setAttribute('xlink:href', `#${type.icon}`);
+      }
     }
     
     //

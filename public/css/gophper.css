@@ -25,20 +25,14 @@ body > nav {
   flex-grow: 1;
   justify-content: flex-start;
 }
-body > nav > .theme-wrapper {
-  margin-left: auto;
-  padding-right: 1.0em;
-  line-height: 40px;
-}
-
-body > nav > .theme-wrapper  a {
-  text-decoration: none;
-  color: white;
-}
 
 body > nav, footer {
   background: black;
   color: white;
+}
+
+body main {
+  min-height: 100%;
 }
 
 footer {
@@ -54,7 +48,7 @@ footer {
   grid-template-rows: auto 1fr auto;
   grid-gap: 10px;
   margin-top: 45px;
-  height: calc(100vh - 45px);
+  min-height: calc(100vh - 45px);
 }
 
 @media screen and (max-width: 800px) {
@@ -141,9 +135,9 @@ form.gopher-uri, form.form-inline {
 
 a {
   text-decoration: none;
-}    
+}
 
-ul.breadcrumbs {
+#breadcrumb > ul {
   display: flex;
   list-style: none;
   padding: 0px;
@@ -152,6 +146,13 @@ ul.breadcrumbs {
   padding-left: 12px;
   font-size: 0.8em;
   border: 1px solid #dcdcdc;
+}
+
+
+#breadcrumb > ul > li:not(:last-child)::after {
+  display: inline-block;
+  margin: 0 .25rem;
+  content: "→";
 }
 
 .divider {
@@ -176,6 +177,9 @@ nav > form {
   max-width: 20em;
 }
 
+svg.icons {
+  display: none;
+}
 
 #gopher {
 	white-space: pre-wrap;
@@ -199,33 +203,25 @@ nav > form {
   max-width: 50em;
 }
 
-
-
-html.oldschool {
-  background: #000;
+.icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
 }
 
-html.oldschool body {
-  background: #000;
-  color: #0f0;
-}
-html.oldschool ul.breadcrumbs {
-  font-family: Courier;
-  background: #000;
-  border: 1px dashed #0f0;
-}
-html.oldschool a {
-  color: #ffcc00;
-}
-html.oldschool a:hover {
-  color: #f00;
+.row.link + .row.text, .row.link + .row.form, .row.form + .row.text  {
+  margin-top: 1rem;
+} 
+
+.row.form {
+  display: flex;
+  width: 100%;
 }
 
-html.oldschool #gopher, html.oldschool #intro {
-  font-family: Courier;
-}
-html.oldschool h1, html.oldschool h2, html.oldschool h3 {
-  font-family: Courier;
-  color: #0f0;
+.row.form form {
+  min-width: 20em;
 }
 
+input.gopher {
+  margin-right: 4px;
+}
