@@ -67,13 +67,22 @@ class GopherController extends AbstractController
   #[Route('/')]
   public function landing(): Response
   {
-      return $this->render('layout.html.twig', [
-        'title' => getenv("GOPHER_TITLE"),
-        'about_path' => getenv("GOPHER_ABOUT_URL"),
-        'description' => getenv("GOPHER_DESCRIPTION"),
-        'date' => date("Y"),
-        'intro' => file_get_contents(dirname(".") . "/../templates/intro.html")
-      ]);
+
+    $opts = array(
+      'title' => getenv("GOPHER_TITLE"),
+      'about_path' => getenv("GOPHER_ABOUT_URL"),
+      'description' => getenv("GOPHER_DESCRIPTION"),
+      'date' => date("Y")
+    );
+
+    if ( getenv('START_REQUEST') !== FALSE ) {
+      $opts['data'] = $this->loadGopher(getenv('START_REQUEST'), getenv('START_INPUT'))['data'];
+    }
+    else {
+      $opts['intro'] = file_get_contents(dirname(".") . "/../templates/intro.html");
+    }
+    
+    return $this->render('layout.html.twig', $opts);
   }
 
     
