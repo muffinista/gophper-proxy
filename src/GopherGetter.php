@@ -1,6 +1,8 @@
 <?php
 namespace App;
 
+use Exception;
+
 
 /**
 todo:
@@ -37,11 +39,14 @@ class GopherGetter {
     $data = parse_url($this->uri);
     
     $this->host = $data['host'];
-    $this->port = array_key_exists('port', $data) ? $data['port'] : 70;
-    
+    $this->port = array_key_exists('port', $data) ? intval($data['port']) : 70;
+
+    $allow_all_ports = getenv('ALLOW_ALL_PORTS') == TRUE || getenv('ALLOW_ALL_PORTS') == "true";
+    $good_port = $this->port == 70 || ( $allow_all_ports && $this->port < 1024 );
+   
     // only allow port 70, or if ALLOW_ALL_PORTS is true, also allow ports over 1024
-    if ( $this->port != 70 && ( (getenv('ALLOW_ALL_PORTS') !== TRUE || getenv('ALLOW_ALL_PORTS') !== "true") || $this->port < 1024 ) ) {
-      throw new Exception("Port violation");
+    if ( !$good_port ) {
+      throw new Exception("Port violation " . $this->port);
     }
     
     if ( getenv('RESTRICT_TO_MATCH') !== FALSE && ! preg_match(getenv('RESTRICT_TO_MATCH'), $this->host) ) {
