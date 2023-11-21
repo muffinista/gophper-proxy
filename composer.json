@@ -10,14 +10,14 @@
         "sensio/framework-extra-bundle": "^6.2",
         "symfony/apache-pack": "^1.0",
         "symfony/asset": "6.1.*",
-        "symfony/console": "6.1.*",
-        "symfony/dotenv": "6.1.*",
+        "symfony/console": "6.3.*",
+        "symfony/dotenv": "6.3.*",
         "symfony/flex": "^2",
-        "symfony/framework-bundle": "6.1.*",
-        "symfony/mime": "6.1.*",
-        "symfony/runtime": "6.1.*",
-        "symfony/twig-bundle": "6.1.*",
-        "symfony/yaml": "6.1.*"
+        "symfony/framework-bundle": "6.3.*",
+        "symfony/mime": "6.3.*",
+        "symfony/runtime": "6.3.*",
+        "symfony/twig-bundle": "6.3.*",
+        "symfony/yaml": "6.3.*"
     },
     "config": {
         "allow-plugins": {
@@ -68,7 +68,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "6.1.*"
+            "require": "6.3.*"
         }
     }
 }
