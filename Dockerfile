@@ -1,4 +1,4 @@
-FROM php:8.1-apache
+FROM php:8.2-apache
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 
@@ -15,8 +15,6 @@ COPY ./ /var/www/html/
 
 RUN mkdir -p /var/www/html/var/log && chmod -R 777 /var/www/html/var/
 
-# COPY .htaccess /var/www/html/
-
 #COPY php-debugging.ini $PHP_INI_DIR/conf.d/
 
 #RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
@@ -25,4 +23,4 @@ RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-RUN /bin/composer install --prefer-source --no-interaction
+RUN COMPOSER_ALLOW_SUPERUSER=1 /bin/composer install --prefer-source --no-interaction
