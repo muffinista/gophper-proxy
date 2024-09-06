@@ -1,6 +1,6 @@
-FROM php:8.2-apache
+FROM php:8.3-apache
 
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
 RUN apt-get update && \
     apt-get install -y git unzip libzip-dev zlib1g-dev mariadb-client libssl-dev --no-install-recommends && \
