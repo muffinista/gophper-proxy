@@ -35,6 +35,7 @@ class GopherController extends AbstractController
       if (str_starts_with($mimeType, "image/")) {
         return $this->render('layout.html.twig', [
           'title' => getenv("GOPHER_TITLE"),
+          'subtitle' => getenv("GOPHER_SUBTITLE"),
           'about_path' => getenv("GOPHER_ABOUT_URL"),
           'description' => getenv("GOPHER_DESCRIPTION"),
           'date' => date("Y"),
@@ -56,6 +57,7 @@ class GopherController extends AbstractController
 
     return $this->render('layout.html.twig', [
       'title' => getenv("GOPHER_TITLE"),
+      'subtitle' => getenv("GOPHER_SUBTITLE"),
       'about_path' => getenv("GOPHER_ABOUT_URL"),
       'description' => getenv("GOPHER_DESCRIPTION"),
       'date' => date("Y"),
@@ -70,6 +72,7 @@ class GopherController extends AbstractController
 
     $opts = array(
       'title' => getenv("GOPHER_TITLE"),
+      'subtitle' => getenv("GOPHER_SUBTITLE"),
       'about_path' => getenv("GOPHER_ABOUT_URL"),
       'description' => getenv("GOPHER_DESCRIPTION"),
       'date' => date("Y")

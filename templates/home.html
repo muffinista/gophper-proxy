@@ -1,5 +1,6 @@
 <?php
 $title = getenv("GOPHER_TITLE");
+$subtitle = getenv("GOPHER_SUBTITLE");
 $about_path = getenv("GOPHER_ABOUT_URL");
 $description = getenv("GOPHER_DESCRIPTION");
 
@@ -28,7 +29,7 @@ if ( ! isset($class) ) {
     <nav class="top-bar">
       <ul>
         <li class="name">
-          <h1><a href="/"><?php echo $title; ?></a></h1>
+          <h1><a href="/"><?php echo $title; ?></a><?php echo $subtitle; ?></h1>
         </li>
         <li><a href="<?php echo $about_path; ?>">About</a></li>
       </ul>

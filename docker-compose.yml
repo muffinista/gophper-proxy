@@ -11,7 +11,8 @@ services:
       docker: "true"
       production: "false"
       ALLOW_ALL_PORTS: 'false'
-      GOPHER_TITLE: "Gophper, a Gopher Proxy Tool"
+      GOPHER_TITLE: "Gophper"
+      GOPHER_SUBTITLE: "a Gopher Proxy Tool"
     volumes:
       - .:/var/www/html #:cached
       - ./logs:/var/www/logs:cached

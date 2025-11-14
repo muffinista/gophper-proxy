@@ -15,9 +15,11 @@
     <nav class="top-bar">
       <ul>
         <li class="name">
-          <h1><a href="/">{{ title }}</a></h1>
+          <h1><a href="/">{{ title }}</a><small>{{ subtitle }}</small></h1>
         </li>
+        {% if about_path %}
         <li><a href="{{ about_path }}">About</a></li>
+        {% endif %}
       </ul>
 
       <form class="gopher-uri">
@@ -57,7 +59,7 @@
       <footer id="footer">
 	      <p>Gophper &copy; {{ date }} <a href="http://muffinlabs.com/">Colin
 	        Mitchell</a>. Content delivered via Gophper belongs to its
-	        original authors. Enjoy!
+	        original authors.
         </p>
       </footer>
     </div>

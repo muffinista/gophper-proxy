@@ -23,7 +23,7 @@ body > nav {
   height: 45px;
   display: flex;
   flex-grow: 1;
-  justify-content: flex-start;
+  justify-content: space-between;
 }
 
 body > nav, footer {
@@ -90,6 +90,9 @@ nav > ul {
   padding: 0px;
   display: flex;
   list-style: none;
+}
+nav > ul > li {
+  margin-right: 10px;
 }
 nav h1 {
   margin: 0px;
