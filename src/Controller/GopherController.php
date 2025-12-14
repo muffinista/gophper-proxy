@@ -16,6 +16,9 @@ class GopherController extends AbstractController
   #[Route('/{dest}', requirements: ['dest' => '.+'])]
   public function gopher(string $dest): Response
   {
+    if (getenv('DEFAULT_HOST') && !preg_match("/^" . getenv('DEFAULT_HOST') . "/", $dest)) {
+      $dest = getenv('DEFAULT_HOST') . "/" . $dest;
+    }
     $result = $this->loadGopher($dest, array_key_exists('text', $_POST) ? $_POST['text'] : null);
 
     $breadcrumb = array();

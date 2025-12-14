@@ -17,7 +17,12 @@ class GopherGetter {
   public $port;
   public $path;
   public $key;
-  
+
+  public $result = "";
+  public $errstr = "";
+  public $errno = "";
+
+
   public $input;
   
   private $cache;
@@ -39,6 +44,10 @@ class GopherGetter {
     $data = parse_url($this->uri);
     
     $this->host = $data['host'];
+    print_r($this);
+    if ( !isset($this->host) || $this->host == "" ) {
+       $this->host = getenv('DEFAULT_HOST');
+    }
     $this->port = array_key_exists('port', $data) ? intval($data['port']) : 70;
 
     $allow_all_ports = getenv('ALLOW_ALL_PORTS') == TRUE || getenv('ALLOW_ALL_PORTS') == "true";
@@ -49,7 +58,8 @@ class GopherGetter {
       throw new Exception("Port violation " . $this->port);
     }
     
-    if ( getenv('RESTRICT_TO_MATCH') !== FALSE && ! preg_match(getenv('RESTRICT_TO_MATCH'), $this->host) ) {
+    if ( getenv('RESTRICT_TO_MATCH') !== FALSE && !preg_match(getenv('RESTRICT_TO_MATCH'), $this->host) ) {
+      error_log("Restriction: " . getenv('RESTRICT_TO_MATCH') . " -- " . $this->host);
       throw new Exception("Host violation");
     }
     
@@ -86,7 +96,6 @@ class GopherGetter {
   }
   
   function get() {
-    
     $this->result = "";
     $this->errstr = "";
     $this->errno = "";

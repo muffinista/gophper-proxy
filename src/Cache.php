@@ -6,7 +6,9 @@ define('CACHE_PATH', "/tmp/gopher");
 define('MAX_FILESIZE', 10000000);
 
 class Cache {
-	function __construct($dir) {
+  public $dir = "/tmp";
+
+  function __construct($dir) {
 		$this->dir = $dir;
 		$this->mkdir_p($dir);
 	}
