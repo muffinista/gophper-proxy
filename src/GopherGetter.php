@@ -44,7 +44,6 @@ class GopherGetter {
     $data = parse_url($this->uri);
     
     $this->host = $data['host'];
-    print_r($this);
     if ( !isset($this->host) || $this->host == "" ) {
        $this->host = getenv('DEFAULT_HOST');
     }
