@@ -58,7 +58,7 @@ class GopherController extends AbstractController
       return $response;
     }
 
-    return $this->render('layout.html.twig', [
+    $response = $this->render('layout.html.twig', [
       'title' => getenv("GOPHER_TITLE"),
       'subtitle' => getenv("GOPHER_SUBTITLE"),
       'about_path' => getenv("GOPHER_ABOUT_URL"),
@@ -67,6 +67,8 @@ class GopherController extends AbstractController
       'data' => $result['data'],
       'breadcrumb' => $breadcrumb
     ]);
+    $response->headers->set('X-Robots-Tag', 'noindex, nofollow');
+    return $response;
   }
 
   #[Route('/')]
