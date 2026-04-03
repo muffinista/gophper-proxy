@@ -1,4 +1,7 @@
 {
+    "deuchnord/no-ai-bundle": {
+        "version": "v1.2.0"
+    },
     "symfony/apache-pack": {
         "version": "1.0",
         "recipe": {

@@ -7,6 +7,7 @@
         "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "deuchnord/no-ai-bundle": "^1.2",
         "symfony/apache-pack": "^1.0",
         "symfony/asset": "*",
         "symfony/console": "*",
