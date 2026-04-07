@@ -1,6 +1,7 @@
 # Block all known AI crawlers and assistants
 # from using content for training AI models.
 # Source: https://robotstxt.com/ai
+User-Agent: Applebot
 User-Agent: GPTBot
 User-Agent: ClaudeBot
 User-Agent: Claude-User
