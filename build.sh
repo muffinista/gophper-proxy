@@ -2,4 +2,4 @@
 
 NAME="gopher-proxy"
 echo $NAME
-docker build -t $NAME .
+docker build --progress plain -t $NAME .

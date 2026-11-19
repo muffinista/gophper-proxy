@@ -1,4 +1,4 @@
-FROM php:8.4-apache
+FROM php:8.6.0-apache
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
@@ -13,7 +13,9 @@ RUN apt-get update && \
 WORKDIR /var/www/html
 COPY ./ /var/www/html/
 
-RUN mkdir -p /var/www/html/var/log && chmod -R 777 /var/www/html/var/
+RUN mkdir -p /var/www/html/var/log
+RUN chown -R root:www-data /var/www/html
+
 
 #COPY php-debugging.ini $PHP_INI_DIR/conf.d/
 
